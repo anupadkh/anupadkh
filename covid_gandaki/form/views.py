@@ -27,59 +27,73 @@ def index(request):
 def submit_general(request):
     theerrors = []
     values = request.POST
-    person = Person(
-        full_name=values['person_name'],
-        mobile=values['mobile'],
-        location=str("%s,%s"%(values['long'], values['lat'])),
-        permanent_address = values['perm_address'],
-        current_address = values['temp_address'],
-        age = values['age']
-        )
     try:
-        n = person.save()
+        make_call = Person.objects.get(full_name=values['person_name'],
+                           mobile=values['mobile'],
+                           location=str("%s,%s" %
+                                        (values['long'], values['lat'])),
+                           permanent_address=values['perm_address'],
+                           current_address=values['temp_address'],
+                           age=values['age'])
+
+        return render(request, 'base/body.html', context={'message': "Submission Already Registered!  However it was already entered. Please contact us for making changes."})
     except:
-        theerrors.append('Error Saving Person')
-
-    for x in values['food'].split('\r\n'):
-        food = x.split(':')
-        if (food[0] == ""):
-            continue
-        else:
-            food = Food(name=food[0], qty=food[1], qty_unit=food[2], sufficiency=food[3], ordered_by=person.id, order_type=1)
-            # food.save()
-            try:
-                food.save()
-            except:
-                theerrors.append('Error saving food')
-    
-    for x in values['members'].split('\r\n'):
-        member = x .split(':')
-        if (member[0] == ""):
-            continue
-        else:
-            new_member = Person(full_name=member[0], age=member[1])
-            # new_member.save()
-            # fm = Family(head=person, member=new_member)
-            try:
-                new_member.save()
-                fm = Family(head=person, member=new_member)
-            except:
-                theerrors.append('Error saving '+ member[0])
-                pass
-
-    for x in values['medicine'].split('\r\n'):
-        medicine = x .split(':')
-        if (medicine[0] == ""):
-            continue
-        else:
-            new_medicine = Medicine(name=medicine[0], type_medicine=medicine[1], qty= medicine[2], sufficiency = medicine[3], ordered_by = person.id, order_type=1)
-            # new_medicine.save()
+        person = Person(
+            full_name=values['person_name'],
+            mobile=values['mobile'],
+            location=str("%s,%s"%(values['long'], values['lat'])),
+            permanent_address = values['perm_address'],
+            current_address = values['temp_address'],
+            age = values['age']
+            )
         try:
-            new_medicine.save()
-
+            n = person.save()
         except:
-            theerrors.append('Error saving '+ medicine[0])
+            theerrors.append('Error Saving Person')
 
+        for x in values['food'].split('\r\n'):
+            food = x.split(':')
+            if (food[0] == ""):
+                continue
+            else:
+                food = Food(name=food[0], qty=food[1], qty_unit=food[2], sufficiency=food[3], ordered_by=person.id, order_type=1)
+                # food.save()
+                try:
+                    food.save()
+                except:
+                    theerrors.append('Error saving food')
+        
+        for x in values['members'].split('\r\n'):
+            member = x .split(':')
+            if (member[0] == ""):
+                continue
+            else:
+                new_member = Person(full_name=member[0], age=member[1])
+                # new_member.save()
+                # fm = Family(head=person, member=new_member)
+                try:
+                    new_member.save()
+                    fm = Family(head=person, member=new_member)
+                except:
+                    theerrors.append('Error saving '+ member[0])
+                    pass
+
+        for x in values['medicine'].split('\r\n'):
+            medicine = x .split(':')
+            if (medicine[0] == ""):
+                continue
+            else:
+                new_medicine = Medicine(name=medicine[0], type_medicine=medicine[1], qty= medicine[2], sufficiency = medicine[3], ordered_by = person.id, order_type=1)
+                # new_medicine.save()
+            try:
+                new_medicine.save()
+
+            except:
+                theerrors.append('Error saving '+ medicine[0])
+        if len(theerrors) == 0:
+            return render(request, 'base/body.html', context={'message': "Submit Successful! तपाईँको माग दर्ता भएको छ ।  हामी तपाईँलाई मोबाइलमा सम्पर्क गर्नेछौँ । धन्यवाद "})
+        else:
+            return render(request, 'form/index.html', context={'errors' : theerrors})
     for x in values:
         print(values[x])
     return HttpResponse(values)

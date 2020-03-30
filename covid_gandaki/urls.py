@@ -25,4 +25,5 @@ urlpatterns = [
     # url(r'', include(frontend_urls)),
     path('', include('covid_gandaki.form.urls')),
     path('users/', include('covid_gandaki.users.urls')),
+    path('lb/', include('covid_gandaki.lb.urls')),
 ]

@@ -1,0 +1,28 @@
+{% load static %}
+{% extends 'base/body.html' %}
+{% block body %}
+<form action="{% url 'lb:submit' %}" method="POST" data-role="validator">
+    {% csrf_token %}
+    <h5>स्थानिय तह विवरण</h5>
+    <div class="form-group offset-1">
+        <div class="row">
+            <div class="cell-12">
+                <div class="row">
+                    <label class="cell-6">अध्यक्षको नाम</label>
+                    <input type="text" class="cell-5 offset-1" placeholder="Name of Chairperson" name="chair_name" />
+                    <label class="cell-6">मोबाइल नं</label>
+                    <input type="number" class="cell-5 offset-1" placeholder="मोबाइल नं"  name="chair_mobile" />
+                    <label class="cell-6"> उपाध्यक्षको नाम</label>
+                    <input type="text" class="cell-5 offset-1" placeholder="Name of Deputy- Chairperson" name="deputy_chair_name" />
+                    <label class="cell-6">मोबाइल नं</label>
+                    <input type="number" class="cell-5 offset-1" placeholder="मोबाइल नं" name="deputy_mobile" />
+                    <label class="cell-6">प्रमुख प्रशासकीय अधिकृत नाम</label>
+                    <input type="text" class="cell-5 offset-1" placeholder="Name of Deputy- Chairperson" name="admin_name" />
+                    <label class="cell-6">मोबाइल नं</label>
+                    <input type="number" class="cell-5 offset-1" placeholder="मोबाइल नं" name="admin_mobile" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

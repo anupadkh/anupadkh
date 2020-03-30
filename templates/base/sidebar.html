@@ -1,0 +1,31 @@
+<aside class="sidebar" data-role="sidebar">
+    <div class="sidebar-header" data-image="images/sb-bg-1.jpg">
+        {% block side-header %}
+        <a href="/" class="fg-white sub-action" onclick="Metro.sidebar.close('#sb1'); return false;">
+            <span class="mif-arrow-left mif-2x"></span>
+        </a>
+        <div class="avatar">
+            <img data-role="gravatar" data-email="sergey@pimenov.com.ua">
+        </div>
+        <span class="title">Metro 4 Components Library</span>
+        <span class="subtitle"> 2018 © Sergey Pimenov</span>
+        {% endblock %}
+    </div>
+    <ul class="sidebar-menu">
+        {% block  side-menu %}
+        <ul class="sidebar-menu">
+            <li class="group-title">Group one</li>
+            <li><a>Item 1</a></li>
+            <li><a>Item 2</a></li>
+            <li><a>Item 3</a></li>
+            <li class="divider"></li>
+            <li><a>Item 4</a></li>
+            <li><a>Item 5</a></li>
+        
+            <li class="group-title">Group two</li>
+            <li><a>Item 6</a></li>
+            <li><a>Item 7</a></li>
+        </ul>
+        {% endblock %}
+    </ul>
+</aside>

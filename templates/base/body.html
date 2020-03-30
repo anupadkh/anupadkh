@@ -1,0 +1,18 @@
+{% extends 'base/head.html' %}
+{% block title  %}{% endblock %}
+{% block header-scripts %}{% endblock %}
+{% block body %}
+<div class="container-fluid grid" style="margin-top:30px;">
+    <div class="row">
+        <div class="cell-3" style="background-color:chocolate;">
+            {% block sidebar %}{% endblock %}
+        </div>
+        <div class="cell-9" style="background-color: azure; padding-left:50px; ">
+            {% block main %} <h2>{{message}}</h2>{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block footer-scripts %}
+{% endblock %}
+{% include 'base/footer.html' %}

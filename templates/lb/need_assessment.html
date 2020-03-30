@@ -1,0 +1,459 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emergency Backups</title>
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Cambay|Noto+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="grid">
+            <div class="row" style="background-color:#00cc66">
+                <div class="cell-3 img-container" style="max-width: 15%; height:auto;"> <img
+                        src={% static "Emblem_of_Nepal.svg" %} alt="Nepal Logo" /> </div>
+                <div class="cell-6 text-center" style="font-family: Noto Sans;">
+                    <h4>प्रदेश सरकार</h4>
+                    <h3>मुख्यमन्त्री तथा मन्त्रिपरिषद्को कार्यालय</h3>
+                    <h5>गण्डकी प्रदेश, पोखरा, नेपाल</h5>
+                </div>
+                <div class="cell-3  " style="font-family:Cambay;">
+                    <h4 class="text-center va-bottom">COVID-19 को महामारीमा आपुर्ती व्यवस्थापन </h4>
+
+
+                    <button class="button primary" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज
+                        जानकारी</button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid grid" style="margin-top:30px;">
+            <div class="row">
+                <div class="cell-3" style="background-color:chocolate;">
+
+                </div>
+                <div class="cell-9" style="background-color: azure; padding-left:50px; ">
+
+                    <form action="{% url 'lb:submit' %}" method="POST" data-role="validator">
+                        {% csrf_token %}
+                        <div id="food_medicine">
+
+                            <div id="medicine">
+                                <h5>तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा
+                                    आदि) सम्वन्धि विवरण</h5>
+                                <div class="form-group offset-1">
+                                    <div class="row">
+                                        <div class="cell-9">
+                                            <div class="row">
+                                                <label class="cell-6">औषधि र मेडीकल उपकरणको नाम</label>
+                                                <input type="text" class="cell-5 offset-1"
+                                                    placeholder="Name of Medicine (औषधी)" name="med_name" />
+                                                <label class="cell-6">मौज्दात
+                                                    परिमाण/संख्या</label>
+                                                <input type="text" class="cell-5 offset-1" placeholder="प्रकार"
+                                                    name="med_type" />
+                                                <label class="cell-6"> आवश्यक
+                                                    परिमाण/संख्या </label>
+                                                <input type="number" class="cell-5 offset-1" placeholder=""
+                                                    name="med_qty" />
+                                            </div>
+                                        </div>
+                                        <div class="cell-3">
+                                            <textarea name="medicine" readonly rows="4" id="all_meds"></textarea>
+                                            <button class="button" type="button" onclick="add_meds();">औषधी थप्नुहोस्
+                                            </button>
+                                        </div>
+                                        <div class="cell-12">
+                                            <label class="cell-6">Remarks</label>
+                                            <textarea name="remarks_medicine" cols="30" rows="5"
+                                                placeholder="Remarks"></textarea>
+                                        </div>
+
+
+                                        <!--                                         
+                                                                    <input type="text" class="cell-3" placeholder="औषधीको नाम" />
+                                                                    <input type="text" class="cell-2 offset-1" placeholder="प्रकार" />
+                                                                    <input type="text" class="cell-2" placeholder="आवश्यक मात्रा" />
+                                                                    <input type="text" class="cell-3 offset-1"
+                                                                        placeholder="खान पुग्ने अन्दाजी दिन" /> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="medicine">
+                                <h5>स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु (खाद्यान्न, तरकारी, दुध, अण्डा, मासु) र
+                                    पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम
+                                    पदार्थ</h5>
+                                <div class="form-group offset-1">
+                                    <div class="row">
+                                        <div class="cell-9">
+                                            <div class="row">
+                                                <label class="cell-6">आवश्यक वस्तु नाम</label>
+                                                <input type="text" class="cell-5 offset-1"
+                                                    placeholder="Name of Medicine (औषधी)" name="petrol_name" />
+                                                <label class="cell-6">परिमाणको विधि
+                                                    केजी/लिटर/संख्या</label>
+                                                <input type="text" class="cell-5 offset-1" placeholder="प्रकार"
+                                                    name="petrol_type" />
+                                                <label class="cell-6">परिमाण</label>
+                                                <input type="number" class="cell-5 offset-1" placeholder=""
+                                                    name="petrol_qty" />
+                                                <label class="cell-6">माग गरिएको
+                                                    बस्तुले पुग्ने अवधि</label>
+                                                <input type="number" class="cell-5 offset-1"
+                                                    placeholder="पुग्ने अन्दाजी दिन" name="petrol_sufficient" />
+                                            </div>
+                                        </div>
+                                        <div class="cell-3">
+                                            <textarea name="petrol" readonly rows="4" id="all_petrol"></textarea>
+                                            <button class="button" type="button" onclick="add_petrol();">अन्य वस्तु
+                                                थप्नुहोस्
+                                            </button>
+                                        </div>
+                                        <div class="cell-12">
+                                            <label class="cell-6">Remarks</label>
+                                            <textarea name="remarks_petrol" cols="30" rows="5"
+                                                placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="production">
+                                <h5>स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर
+                                गईरहेको वस्तुः</h5>
+                                <div class="form-group offset-1">
+                                    <div class="row">
+                                        <div class="cell-9">
+                                            <div class="row">
+                                                <label class="cell-6">उत्पादित वस्तुको नाम</label>
+                                                <input type="text" class="cell-5 offset-1"
+                                                    placeholder="Name of Medicine (औषधी)" name="produce_name" />
+                                                <label class="cell-6">दैनिक रुपमा उत्पादन हुने परिमाण</label>
+                                                <input type="number" class="cell-5 offset-1" placeholder="प्रकार"
+                                                    name="produced_qty" />
+                                                <label class="cell-6"> परिमाणको विधि
+                                                केजी/लिटर/संख्या</label>
+                                                <input type="text" class="cell-5 offset-1" placeholder="प्रकार" name="produced_qty_type" />
+                                            </div>
+                                        </div>
+                                        <div class="cell-3">
+                                            <textarea name="petrol" readonly rows="4" id="all_production"></textarea>
+                                            <button class="button" type="button" onclick="add_production();">अन्य वस्तु
+                                                थप्नुहोस्
+                                            </button>
+                                        </div>
+                                        <div class="cell-12">
+                                            <label class="cell-6">Remarks</label>
+                                            <textarea name="remarks_petrol" cols="30" rows="5"
+                                                placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="delivery_options">
+                                <div class="form-group" style="padding-bottom: 100px;">
+                                    <button class="button success">Submit data</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="dialog" data-role="dialog" id="demoDialog1">
+        <div class="dialog-title">सहज खाद्य प्याकेज
+            <button class="button primary js-dialog-close float-right"> फर्कनुहोस <span
+                    class="mif-cross"></span></button>
+        </div>
+
+        <div class="dialog-actions">
+            <button class="button js-dialog-close float-right"> <span class="mif-cross"></span> फर्कनुहोस</button>
+        </div>
+        <div class="dialog-content">
+
+            <table class="table striped table-border cell-border compact">
+                <thead>
+                    <tr>
+                        <th class="sortable-column ">सामानको विवरण</th>
+                        <th>परिमाण</th>
+                        <th>दर</th>
+                        <th class="sortable-column ">जम्मा मूल्य</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>चामल स्टिम जिरा (राम्रो)</td>
+                    <td>२५ के.जि.</td>
+                    <td>६६।–</td>
+                    <td>१६५०।–</td>
+                </tr>
+                <tr>
+                    <td>पिठो (आँटा) चक्की</td>
+                    <td>५ के.जि.</td>
+                    <td>६०।–</td>
+                    <td>३००।–</td>
+                </tr>
+                <tr>
+                    <td>दाल (रहर, मास, मुसुरो)</td>
+                    <td>२ के.जि.</td>
+                    <td>१३०।–</td>
+                    <td>२६०।–</td>
+                </tr>
+                <tr>
+                    <td>चीनी</td>
+                    <td>१ के.जि.</td>
+                    <td>८०।–</td>
+                    <td>८०।–</td>
+                </tr>
+                <tr>
+                    <td>सनफ्लावर तेल</td>
+                    <td>२ लिटर</td>
+                    <td>१६०।–</td>
+                    <td>३२०।–</td>
+                </tr>
+                <tr>
+                    <td>सेतो केराउ</td>
+                    <td>२ के.जि.</td>
+                    <td>७५।–</td>
+                    <td>१५०।–</td>
+                </tr>
+                <tr>
+                    <td>आयो नुन</td>
+                    <td>२ के.जि.</td>
+                    <td>२०।–</td>
+                    <td>४०।–</td>
+                </tr>
+                <tr>
+                    <td>चिउरा</td>
+                    <td>२ के.जि.</td>
+                    <td>८०।–</td>
+                    <td>१६०।–</td>
+                </tr>
+                <tr>
+                    <td>चियापत्ती</td>
+                    <td>५०० ग्राम</td>
+                    <td>२००।–</td>
+                    <td>२००।–</td>
+                </tr>
+                <tr>
+                    <td>मसला</td>
+                    <td>२०० ग्राम</td>
+                    <td>१००।–</td>
+                    <td>१००।–</td>
+                </tr>
+                <tr>
+                    <td>वेसार</td>
+                    <td>१०० ग्राम</td>
+                    <td>४०।–</td>
+                    <td>४०।–</td>
+                </tr>
+                <tr>
+                    <td>चाउचाउ</td>
+                    <td>५ प्याकेट</td>
+                    <td>१६।–</td>
+                    <td>८०।–</td>
+                </tr>
+                <tr>
+                    <td>चना</td>
+                    <td>१ के.जि.</td>
+                    <td>१२०।–</td>
+                    <td>१२०।–</td>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <th colspan="3">जम्मा</th>
+                        <th>३५००।-</th>
+                    </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+    <!-- Gathering the Latitude and Longitude -->
+    <script>
+        function validate() {
+            y = document.getElementById("id_latitude");
+            if (y.value == "") {
+                alert('Location must be clicked! (ठेगानामा रहेको Click मा थिच्नुहोस्)');
+                return false;
+            }
+            add_members();
+            add_food();
+            add_meds();
+            return true;
+
+        }
+
+        var x = document.getElementById("demo");
+        var lat = document.getElementById("id_latitude");
+        var long = document.getElementById("id_longitude");
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            lat.value = position.coords.latitude;
+            long.value = position.coords.longitude;
+
+        }
+    </script>
+    <!-- Adding multiple -->
+    <script>
+        function add_members() {
+            if (document.getElementsByName('member_name')[0].value == '') {
+                return false;
+            }
+            document.getElementById("all_members").innerHTML = document.getElementById("all_members").innerHTML + "\n" +
+                document.getElementsByName('member_name')[0].value + ':' + document.getElementsByName('member_age')[0].value;
+            names = ["member_name", "member_age"];
+            for (x = 0; x < names.length; x++) {
+                document.getElementsByName(names[x])[0].value = "";
+            }
+        }
+        function add_food() {
+            if (document.getElementsByName('food_name')[0].value == '') {
+                return false;
+            }
+            document.getElementById("all_food").innerHTML = document.getElementById("all_food").innerHTML + "\n" +
+                document.getElementsByName('food_name')[0].value + ':' + document.getElementsByName('food_qty')[0].value + ':' + document.getElementsByName('food_qty_name')[0].value + ':' + document.getElementsByName('food_sufficient')[0].value;
+            names = ["food_name", "food_qty", 'food_qty_name', 'food_sufficient'];
+            for (x = 0; x < names.length; x++) {
+                document.getElementsByName(names[x])[0].value = "";
+            }
+        }
+        function add_meds() {
+            if (document.getElementsByName('med_name')[0].value == '') {
+                return false;
+            }
+            document.getElementById("all_meds").innerHTML = document.getElementById("all_meds").innerHTML + "\n" +
+                document.getElementsByName('med_name')[0].value + ':' + document.getElementsByName('med_qty')[0].value + ':' + document.getElementsByName('med_type')[0].value + ':' + document.getElementsByName('med_sufficient')[0].value;
+            names = ["med_name", "med_qty", 'med_type', 'med_sufficient'];
+            for (x = 0; x < names.length; x++) {
+                document.getElementsByName(names[x])[0].value = "";
+            }
+        }
+    </script>
+    <!-- Autocomplete the values -->
+    <script>
+        function autocomplete(inp, arr) {
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        /*An array containing all the country names in the world:*/
+        var countries = ["liter ( लि । ली )", "kilogram(kg) ( के जी )", "माना", "पाथी"];
+
+        /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+        autocomplete(document.getElementById("myInput"), countries);
+    </script>
+
+    <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
+
+
+
+</body>
+
+</html>
