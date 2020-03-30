@@ -24,4 +24,5 @@ urlpatterns = [
     # url(r'^$', generic.RedirectView.as_view(url='/workflow/', permanent=False)),
     # url(r'', include(frontend_urls)),
     path('', include('covid_gandaki.form.urls')),
+    path('users/', include('covid_gandaki.users.urls')),
 ]

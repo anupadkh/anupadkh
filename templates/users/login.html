@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <!-- <form class="register-form">
+            <input type="text" placeholder="name" />
+            <input type="password" placeholder="password" />
+            <input type="text" placeholder="email address" />
+            <button>create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
+        </form> -->
+        <form class="login-form" method="POST" action="{% url 'users:login' %}">
+            {{form}}
+            {% csrf_token %}
+            <button>Login</button>
+            <p class="message">{{message}}</p>
+        </form>
+    </div>
+    <script src="{% static 'js/login.js' %}"></script>
+</div>
+</body>
+</html>
