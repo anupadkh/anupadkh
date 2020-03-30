@@ -13,15 +13,18 @@ class Address(models.Model):
 
 
 class Person(models.Model):
-    full_name = models.CharField(max_length=300, name="Full Name")
-    age = models.IntegerField(name="Age", null=True, blank=True)
+    full_name = models.CharField(max_length=300, verbose_name="Full Name")
+    age = models.IntegerField(null=True, blank=True)
     permanent_address = models.CharField (max_length=500, null=True, blank=True)
     current_address = models.CharField(max_length=500, null=True, blank=True)
     mobile = models.CharField(max_length=300, null=True, blank=True)
     remarks = models.TextField(blank=True,null=True)
     created = models.DateField(auto_now=True)
+    location = models.CharField(max_length=300, null=True, blank=True)
     # permanent_address = models.ForeignKey(Address,on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     # current_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
+
+    
 
     def __str__(self):
         return self.full_name
@@ -35,6 +38,8 @@ class Needy (models.Model):
     name = models.ForeignKey(Person, on_delete=models.CASCADE)
     type_of_need = models.CharField(max_length=300, null=True, blank=True)
     remarks = models.TextField(blank=True, null=True)
+
+
 
 
 

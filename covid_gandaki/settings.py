@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'material.frontend',
     'viewflow',
     'viewflow.frontend',
-
+    
     'covid_gandaki.food_meds',
     'covid_gandaki.users',
     'covid_gandaki.form',
@@ -68,14 +68,15 @@ ROOT_URLCONF = 'covid_gandaki.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
+                # 'django.template.context_processors.request',
             ],
         },
     },
@@ -134,3 +135,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+TEMPLATE_DIRS = (
+    PROJECT_PATH + '/templates/',
+)
