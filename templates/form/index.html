@@ -36,7 +36,7 @@
                 </div>
                 <div class="cell-9" style="background-color: azure; padding-left:50px; ">
                     
-                    <form action="/submission" method="POST" onsubmit="return validate();" data-role="validator">
+                    <form action="/submission" method="POST" data-role="validator">
                         {% csrf_token %}
                         <div id="household" style="margin-top: 112px">
                             <div id="house">
@@ -86,7 +86,7 @@
                                         <div class="row">
                                             <small class="cell-12 text-muted" id="demo"></small>
                                             <!-- <label class="cell-3 text-center">Latitude</label> -->
-                                            <input type="hidden" id="id_latitude" class="cell-3" readonly name="lat"/>
+                                            <input type="hidden" id="id_latitude" class="cell-3" readonly name="lat" data-validate="custom=validate"/>
                                             <!-- <label class="cell-3 text-center">Longitude</label> -->
                                             <input type="hidden" class="cell-3" id="id_longitude" readonly name="long"/>
                                         </div>
@@ -108,7 +108,7 @@
                                                 <input type="text" class="cell-4 offset-1" placeholder="पुरा नाम"
                                                     name="member_name" />
                                                 <label class="cell-4 text-right">परिवार सदस्यको उमेर</label>
-                                                <input type="text" class="cell-4 offset-1" placeholder="उमेर"
+                                                <input type="number" class="cell-4 offset-1" placeholder="उमेर"
                                                     name="member_age" />
                                             </div>
                                         </div>
@@ -139,7 +139,7 @@
                                                 <input type="text" class="cell-5 offset-1" placeholder="खाद्यवस्तु"
                                                     name="food_name" />
                                                 <label class="cell-6">आवश्यक परिमाण</label>
-                                                <input type="text" class="cell-5 offset-1" placeholder="परिमाण"
+                                                <input type="number" class="cell-5 offset-1" placeholder="परिमाण"
                                                     name="food_qty" />
                                                 <label class="cell-6">परिमाणको मापन विधि (केजी, लिटर, पाथी,
                                                     माना)</label>
@@ -147,7 +147,7 @@
                                                     placeholder="परिमाण विधि" id="myInput" name="food_qty_name" />
                                                 <label class="cell-6">खरिद पश्च्यात खान पुग्ने अन्दाजी अवधि,
                                                     दिनमा</label>
-                                                <input type="text" class="cell-5 offset-1"
+                                                <input type="number" class="cell-5 offset-1"
                                                     placeholder="खान पुग्ने अन्दाजी दिन" name="food_sufficient" />
                                             </div>
                                         </div>
@@ -172,11 +172,11 @@
                                                 <input type="text" class="cell-5 offset-1" placeholder="प्रकार"
                                                     name="med_type" />
                                                 <label class="cell-6">परिमाण</label>
-                                                <input type="text" class="cell-5 offset-1" placeholder=""
+                                                <input type="number" class="cell-5 offset-1" placeholder=""
                                                     name="med_qty" />
                                                 <label class="cell-6">खरिद पश्च्यात खान पुग्ने अन्दाजी अवधि,
                                                     दिनमा</label>
-                                                <input type="text" class="cell-5 offset-1"
+                                                <input type="number" class="cell-5 offset-1"
                                                     placeholder="खान पुग्ने अन्दाजी दिन" name="med_sufficient" />
                                             </div>
                                         </div>
@@ -201,7 +201,7 @@
                                 <div class="form-group">
                                     <input type="radio" data-role="radio" data-style="2" name="delivery"><label>घरमै
                                         डेलिभरी(House Delivery) को व्यवस्था</label><br />
-                                    <input type="radio" data-role="radio" data-style="2" name="delivery"><label>नजिकको
+                                    <input type="radio" data-role="radio" data-style="2" name="delivery" checked><label>नजिकको
                                         वितरण केन्द्रमा खरिदको व्यवस्था</label>
                                 </div>
                                 <div class="form-group" style="padding-bottom: 100px;">
@@ -369,7 +369,7 @@
             add_members();
             add_food();
             add_meds();
-            setTimeout(10000);
+            return true;
             
         }
 
@@ -396,6 +396,9 @@
     <!-- Adding multiple -->
     <script>
         function add_members() {
+            if (document.getElementsByName('member_name')[0].value == ''){
+                return false;
+            }
             document.getElementById("all_members").innerHTML = document.getElementById("all_members").innerHTML + "\n" +
                 document.getElementsByName('member_name')[0].value + ':' + document.getElementsByName('member_age')[0].value;
             names = ["member_name", "member_age"];
@@ -404,6 +407,9 @@
             }
         }
         function add_food() {
+            if (document.getElementsByName('food_name')[0].value == ''){
+                return false;
+            }
             document.getElementById("all_food").innerHTML = document.getElementById("all_food").innerHTML + "\n" +
                 document.getElementsByName('food_name')[0].value + ':' + document.getElementsByName('food_qty')[0].value + ':' + document.getElementsByName('food_qty_name')[0].value + ':' + document.getElementsByName('food_sufficient')[0].value;
             names = ["food_name", "food_qty", 'food_qty_name', 'food_sufficient'];
@@ -412,6 +418,9 @@
             }
         }
         function add_meds() {
+            if (document.getElementsByName('med_name')[0].value==''){
+                return false;
+            }
             document.getElementById("all_meds").innerHTML = document.getElementById("all_meds").innerHTML + "\n" +
                 document.getElementsByName('med_name')[0].value + ':' + document.getElementsByName('med_qty')[0].value + ':' + document.getElementsByName('med_type')[0].value + ':' + document.getElementsByName('med_sufficient')[0].value;
             names = ["med_name", "med_qty", 'med_type', 'med_sufficient'];
