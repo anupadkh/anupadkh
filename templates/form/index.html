@@ -25,16 +25,13 @@
         </div>
         <div class="container-fluid grid" style="margin-top:30px;">
             <div class="row">
-                <div class="cell-3" style="background-color:chocolate;">
-                    <h3 class="remark primary">COVID-19 को घटनागत विवरणसम्बन्धी पोर्टल</h3>
-                    <p class="remark warning">विश्वभर महामारीको रुपमा फैलिएको कोरोना भाइरस ( COVID-19 ) का घटनाहरुको नियमित सुचना संकलन र विश्लेषणलाई मध्यनजर गर्दै कोरोना संक्रमणको असहज परिस्थितिमा दैनिक अत्यावश्यक उपभोग्य बस्तुको सहज आपूर्ति गुणस्तर सम्वन्धि कार्यको अनुगमन तथा सुपरिवेक्षणलाई महत्त्व दिएर यस पोर्टल निर्माण गरिएको छ । <br/><br/>यसमा उपभोक्ताहरुले आफ्नो परिवारलाई चाहिने आवश्यक खाद्यवस्तु तथा औषधीहरुको माग गर्न सक्नेछन् ।<br/><br/> साथै स्थानीय तहलाई उपलब्ध गराइएको युजरनेम र पासवर्डद्वारा प्रदेशस्तरिय कोरोना भाइरससम्बन्धी विवध विवरण घटनागत आधारमा अद्यावद्यिक गर्न सक्नेछन् ।
-                    </p>
-                    <p class="remark success">केहि प्रश्न र जिज्ञासाको लागि उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालयका प्रवक्ता (नारायण आचार्यः ९८५१०४७१७३) र सूचना अधिकारी (शिव परियारः ९८५७६२४१११) लाई सम्पर्क गर्नुपर्नेछ ।</p>
+                <div class="cell-md-3 cell-sm-12 lg-12" style="background-color:chocolate;">
+                    {% include 'users/info.html' %}
                 </div>
                 <!-- घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्नु पर्ने फारम
                 नोट: माग भएको आधारमा यो प्याकेज घर परिवारलाई सरकारद्वारा तोकिएको सहुलियत दरमा उपलब्ध गराइनेछ ।
                 स्थानिय तहले उपलब्ध गराउने विवरण -->
-                <div class="cell-9" style="background-color: azure; padding-left:50px; ">
+                <div class="cell-sm-12 cell-md-9 lg-12" style="background-color: azure; padding-left:50px; ">
                     
                     <form action="/submission" method="POST" data-role="validator" data-on-error="
               var log = arguments[0];
@@ -67,7 +64,7 @@
                                             </div>
                                             <div class="cell-3">
                                                 <label>उमेर</label>
-                                                <input type="number" placeholder="31" name="age" data-validate="required" />
+                                                <input type="number" placeholder="31" name="age" data-validate="required" data-role="keypad"/>
                                                 <small class="text-muted">घरमुलीको उमेर</small>
                                             </div>
                                             
@@ -76,7 +73,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>घरमुलीको मोबाइल नं./सम्पर्क नं.</label>
-                                        <input type="number" name="mobile" data-validate="required length=10" />
+                                        <input type="number" name="mobile" data-validate="required length=10" data-role="keypad" />
                                         <small class="text-muted">9856122222</small>
                                     </div>
                                 </div>
@@ -124,7 +121,7 @@
                                                 <input type="text" class="cell-4 offset-1" placeholder="पुरा नाम"
                                                     name="member_name" />
                                                 <label class="cell-4 text-right">परिवार सदस्यको उमेर</label>
-                                                <input type="number" class="cell-4 offset-1" placeholder="उमेर"
+                                                <input type="number" class="cell-4 offset-1" placeholder="उमेर" data-role="keypad"
                                                     name="member_age" />
                                             </div>
                                         </div>
@@ -155,7 +152,7 @@
                                                 <input type="text" class="cell-5 offset-1" placeholder="खाद्यवस्तु"
                                                     name="food_name" />
                                                 <label class="cell-6">आवश्यक परिमाण</label>
-                                                <input type="number" class="cell-5 offset-1" placeholder="परिमाण"
+                                                <input type="number" class="cell-5 offset-1" placeholder="परिमाण" data-role="keypad"
                                                     name="food_qty" />
                                                 <label class="cell-6">परिमाणको मापन विधि (केजी, लिटर)</label>
                                                 <input type="text" class="cell-5 offset-1 autocomplete"
@@ -163,7 +160,7 @@
                                                 <label class="cell-6">खरिद पस्च्यात खान पुग्ने अन्दाजी अवधि,
                                                     दिनमा</label>
                                                 <input type="number" class="cell-5 offset-1"
-                                                    placeholder="खान पुग्ने अन्दाजी दिन" name="food_sufficient" />
+                                                    placeholder="खान पुग्ने अन्दाजी दिन" data-role="keypad"name="food_sufficient" />
                                             </div>
                                         </div>
                                         <div class="cell-3">
@@ -187,11 +184,11 @@
                                                 <input type="text" class="cell-5 offset-1" placeholder="प्रकार"
                                                     name="med_type" />
                                                 <label class="cell-6">परिमाण</label>
-                                                <input type="number" class="cell-5 offset-1" placeholder=""
+                                                <input type="number" class="cell-5 offset-1" placeholder="" data-role="keypad"
                                                     name="med_qty" />
                                                 <label class="cell-6">खरिद पश्च्यात खान पुग्ने अन्दाजी अवधि,
                                                     दिनमा</label>
-                                                <input type="number" class="cell-5 offset-1"
+                                                <input type="number" class="cell-5 offset-1" data-role="keypad"
                                                     placeholder="खान पुग्ने अन्दाजी दिन" name="med_sufficient" />
                                             </div>
                                         </div>

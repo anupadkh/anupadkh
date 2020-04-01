@@ -3,10 +3,10 @@
 {% block body %}
 <div class="container-fluid grid" style="margin-top:30px;">
     <div class="row text-center">
-        <div class="cell-3" style="background-color:chocolate;">
+        <div class="cell-md-3" style="background-color:chocolate;">
             {% include 'users/info.html' %}
         </div>
-        <div class="cell-9" style="background-color: azure; padding-left:50px; ">
+        <div class="cell-md-9" style="background-color: azure; padding-left:50px; ">
             <div class="row">
                 <div class="cell-3 offset-9 " style="font-family:Cambay;">
                     
@@ -14,7 +14,7 @@
                         
                 </div>
                 <div class="row">
-                    <div class="card cell-3 ">
+                    <div class="card cell-sm-3 ">
                         <div class="card-header">
                             <h5>प्रदेश सरकारले सहुलियत मुल्यमा उपभोक्तालाई प्रदान गर्ने खाद्यान्न प्याकेज सम्बन्धी
                             जानकारी</h5>
@@ -23,12 +23,11 @@
                             <img src="http://lorempixel.com/1000/600/" style="width: 100%">
                         </div> -->
                         <div class="card-footer">
-                            <button class="button primary va-text-bottom float-right" type="button"
-                                onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज
-                                जानकारी</button>
+                            <!-- <button class="button primary va-text-bottom float-right" type="button" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज जानकारी</button> -->
+                            <a href="{% url 'lb:khadya' %}" class="button primary va-text-bottom float-right">खाद्यान्न प्याकेज जानकारी</a>
                         </div>
                     </div>
-                    <div class="card cell-3 offset-1">
+                    <div class="card cell-sm-3 offset-1">
                         <div class="card-header fg-back" >
                             <h5>घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्नु पर्ने फारम</h5>
                         </div>
@@ -43,7 +42,7 @@
                         </div>
                     </div>
                 
-                    <div class="card cell-3 offset-1">
+                    <div class="card cell-sm-3 offset-1">
                         <div class="card-header fg-back">
                             <h5>स्थानिय तहले भर्नु पर्ने फारम</h5>
                         </div>

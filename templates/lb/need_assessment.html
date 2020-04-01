@@ -1,39 +1,10 @@
+{% extends 'base/head.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Emergency Backups</title>
-    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Cambay|Noto+Sans&display=swap" rel="stylesheet">
-</head>
-
-<body>
-    <div class="container-fluid">
-        <div class="grid">
-            <div class="row" style="background-color:#00cc66">
-                <div class="cell-3 img-container" style="max-width: 15%; height:auto;"> <img
-                        src={% static "Emblem_of_Nepal.svg" %} alt="Nepal Logo" /> </div>
-                <div class="cell-6 text-center" style="font-family: Noto Sans;">
-                    <h4>प्रदेश सरकार</h4>
-                    <h3>मुख्यमन्त्री तथा मन्त्रिपरिषद्को कार्यालय</h3>
-                    <h5>गण्डकी प्रदेश, पोखरा, नेपाल</h5>
-                </div>
-                <div class="cell-3  " style="font-family:Cambay;">
-                    <h4 class="text-center va-bottom">COVID-19 को महामारीमा आपुर्ती व्यवस्थापन </h4>
-
-
-                    <button class="button primary" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज
-                        जानकारी</button>
-                </div>
-            </div>
-        </div>
+{% block body %}
         <div class="container-fluid grid" style="margin-top:30px;">
             <div class="row">
                 <div class="cell-3" style="background-color:chocolate;">
-
+                    {% include 'users/info.html' %}
                 </div>
                 <div class="cell-9" style="background-color: azure; padding-left:50px; ">
 
@@ -164,6 +135,7 @@
         </div>
     </div>
     </div>
+{% endblock %}
     <div class="dialog" data-role="dialog" id="demoDialog1">
         <div class="dialog-title">सहज खाद्य प्याकेज
             <button class="button primary js-dialog-close float-right"> फर्कनुहोस <span
