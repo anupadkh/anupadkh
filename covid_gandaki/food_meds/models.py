@@ -16,6 +16,7 @@ class Food(models.Model):
     sufficiency = models.IntegerField(default=1)
     ordered_by = models.IntegerField()
     order_type = models.IntegerField(default=1) # 1=Person, 2=LB
+    remarks = models.TextField(blank=True, null=True)
 
 class Medicine(models.Model):
     name = models.CharField(max_length=150)
@@ -24,6 +25,7 @@ class Medicine(models.Model):
     sufficiency = models.IntegerField(default=1)
     ordered_by = models.IntegerField()
     order_type = models.IntegerField(default=1)  # 1=Person, 2=LB
+    remarks = models.TextField(blank=True, null=True)
 
 class Delivery(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
