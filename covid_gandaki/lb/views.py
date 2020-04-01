@@ -9,3 +9,8 @@ def index(request):
 
 def submit(request):
     return "Hello"
+
+
+def index_dtable(request):
+    context = {}
+    return render(request, 'base/data_tables.html', context=context)

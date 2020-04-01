@@ -25,7 +25,7 @@ SECRET_KEY = '-3+wwibqm2o32pp*r(g$#t&m178-rkvwsn)3bd!ornojfcmb*q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
     'material',
     'material.frontend',
     'viewflow',
@@ -47,7 +48,8 @@ INSTALLED_APPS = [
     'covid_gandaki.users',
     'covid_gandaki.form',
     'covid_gandaki.public',
-    'covid_gandaki.lb'
+    'covid_gandaki.lb',
+    'covid_gandaki.snippets',
 
     
 
@@ -144,3 +146,13 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 TEMPLATE_DIRS = (
     PROJECT_PATH + '/templates/',
 )
+
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static')
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

@@ -16,28 +16,44 @@
             <div class="row" style="background-color:#00cc66">
                 <div class="cell-3 img-container" style="max-width: 15%; height:auto;"> <img src={% static "Emblem_of_Nepal.svg" %}
                         alt="Nepal Logo" /> </div>
-                <div class="cell-6 text-center" style="font-family: Noto Sans;">
+                <div class="cell-9 text-center" style="font-family: Noto Sans;">
                     <h4>प्रदेश सरकार</h4>
-                    <h3>मुख्यमन्त्री तथा मन्त्रिपरिषद्को कार्यालय</h3>
+                    <h3>उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालय</h3>
                     <h5>गण्डकी प्रदेश, पोखरा, नेपाल</h5>
-                </div>
-                <div class="cell-3  " style="font-family:Cambay;">
-                    <h4 class="text-center va-bottom">COVID-19 को महामारीमा आपुर्ती व्यवस्थापन </h4>
-
-                    
-                    <button class="button primary" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज जानकारी</button>
                 </div>
             </div>
         </div>
         <div class="container-fluid grid" style="margin-top:30px;">
             <div class="row">
                 <div class="cell-3" style="background-color:chocolate;">
-
+                    <h3 class="remark primary">COVID-19 को घटनागत विवरणसम्बन्धी पोर्टल</h3>
+                    <p class="remark warning">विश्वभर महामारीको रुपमा फैलिएको कोरोना भाइरस ( COVID-19 ) का घटनाहरुको नियमित सुचना संकलन र विश्लेषणलाई मध्यनजर गर्दै कोरोना संक्रमणको असहज परिस्थितिमा दैनिक अत्यावश्यक उपभोग्य बस्तुको सहज आपूर्ति गुणस्तर सम्वन्धि कार्यको अनुगमन तथा सुपरिवेक्षणलाई महत्त्व दिएर यस पोर्टल निर्माण गरिएको छ । <br/><br/>यसमा उपभोक्ताहरुले आफ्नो परिवारलाई चाहिने आवश्यक खाद्यवस्तु तथा औषधीहरुको माग गर्न सक्नेछन् ।<br/><br/> साथै स्थानीय तहलाई उपलब्ध गराइएको युजरनेम र पासवर्डद्वारा प्रदेशस्तरिय कोरोना भाइरससम्बन्धी विवध विवरण घटनागत आधारमा अद्यावद्यिक गर्न सक्नेछन् ।
+                    </p>
+                    <p class="remark success">केहि प्रश्न र जिज्ञासाको लागि उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालयका प्रवक्ता (नारायण आचार्यः ९८५१०४७१७३) र सूचना अधिकारी (शिव परियारः ९८५७६२४१११) लाई सम्पर्क गर्नुपर्नेछ ।</p>
                 </div>
+                <!-- घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्नु पर्ने फारम
+                नोट: माग भएको आधारमा यो प्याकेज घर परिवारलाई सरकारद्वारा तोकिएको सहुलियत दरमा उपलब्ध गराइनेछ ।
+                स्थानिय तहले उपलब्ध गराउने विवरण -->
                 <div class="cell-9" style="background-color: azure; padding-left:50px; ">
                     
-                    <form action="/submission" method="POST" data-role="validator">
+                    <form action="/submission" method="POST" data-role="validator" data-on-error="
+              var log = arguments[0];
+              var res = $('#handling-errors-onErrorForm');
+              res.html('');
+              $.each(log, function(){
+                    res.append(this.name + ': ' + this.errors.join(',') + '')
+              })
+              "
+              data-interactive-check="true">
                         {% csrf_token %}
+                        <h4 class=" va-bottom">घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्नु पर्ने फारम </h4>
+                                        <div class="cell-3 offset-9 " style="font-family:Cambay;">
+                                            <button class="button primary va-text-bottom float-right" type="button"
+                                                onclick="Metro.dialog.open('#demoDialog1')">प्रदेश सरकारले तोकेको खाद्यान्न प्याकेज जानकारी</button>
+                                        
+                                        
+                                        </div>
+
                         <div id="household" style="margin-top: 112px">
                             <div id="house">
                                 <h5>घरमुलीको विवरण</h5>
@@ -60,7 +76,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>घरमुलीको मोबाइल नं./सम्पर्क नं.</label>
-                                        <input type="number" name="mobile" data-validate="required"/>
+                                        <input type="number" name="mobile" data-validate="required length=10" />
                                         <small class="text-muted">9856122222</small>
                                     </div>
                                 </div>
@@ -135,17 +151,16 @@
                                     <div class="row">
                                         <div class="cell-9">
                                             <div class="row">
-                                                <label class="cell-6">खाद्यवस्तु (धान, कोदो, मकै)</label>
+                                                <label class="cell-6">खाद्यवस्तु (चामल, दाल र अन्न)</label>
                                                 <input type="text" class="cell-5 offset-1" placeholder="खाद्यवस्तु"
                                                     name="food_name" />
                                                 <label class="cell-6">आवश्यक परिमाण</label>
                                                 <input type="number" class="cell-5 offset-1" placeholder="परिमाण"
                                                     name="food_qty" />
-                                                <label class="cell-6">परिमाणको मापन विधि (केजी, लिटर, पाथी,
-                                                    माना)</label>
+                                                <label class="cell-6">परिमाणको मापन विधि (केजी, लिटर)</label>
                                                 <input type="text" class="cell-5 offset-1 autocomplete"
                                                     placeholder="परिमाण विधि" id="myInput" name="food_qty_name" />
-                                                <label class="cell-6">खरिद पश्च्यात खान पुग्ने अन्दाजी अवधि,
+                                                <label class="cell-6">खरिद पस्च्यात खान पुग्ने अन्दाजी अवधि,
                                                     दिनमा</label>
                                                 <input type="number" class="cell-5 offset-1"
                                                     placeholder="खान पुग्ने अन्दाजी दिन" name="food_sufficient" />
@@ -199,9 +214,9 @@
                             <div id="delivery_options">
                                 <h5>तपाईँलाई यी दुई तरिकामध्ये कुन चाहिँ सहज हुन्छ ?</h5>
                                 <div class="form-group">
-                                    <input type="radio" data-role="radio" data-style="2" name="delivery"><label>घरमै
-                                        डेलिभरी(House Delivery) को व्यवस्था</label><br />
-                                    <input type="radio" data-role="radio" data-style="2" name="delivery" checked><label>नजिकको
+                                    <input type="radio" data-role="radio" data-style="2" name="delivery" value='1'><label>घरमै
+                                        डेलिभरी(Home Delivery) को व्यवस्था</label><br />
+                                    <input type="radio" data-role="radio" data-style="2" name="delivery" checked value='0'><label>नजिकको
                                         वितरण केन्द्रमा खरिदको व्यवस्था</label>
                                 </div>
                                 <div class="form-group" style="padding-bottom: 100px;">
@@ -256,6 +271,7 @@
         </div>
 
         <div class="dialog-actions">
+                नोट: माग भएको आधारमा यो प्याकेज घर परिवारलाई सरकारद्वारा तोकिएको सहुलियत दरमा उपलब्ध गराइनेछ ।
             <button class="button js-dialog-close float-right"> <span class="mif-cross"></span> फर्कनुहोस</button>
         </div>
         <div class="dialog-content">
@@ -356,6 +372,9 @@
             </table>
 
         </div>
+        
+        
+        
         
     </div>
     <!-- Gathering the Latitude and Longitude -->

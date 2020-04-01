@@ -16,19 +16,15 @@
             <div class="row" style="background-color:#00cc66">
                 <div class="cell-3 img-container" style="max-width: 15%; height:auto;"> <img
                         src={% static "Emblem_of_Nepal.svg" %} alt="Nepal Logo" /> </div>
-                <div class="cell-6 text-center" style="font-family: Noto Sans;">
+                <div class="cell-9 text-center" style="font-family: Noto Sans;">
                     <h4>प्रदेश सरकार</h4>
-                    <h3>मुख्यमन्त्री तथा मन्त्रिपरिषद्को कार्यालय</h3>
+                    <h3>उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालय</h3>
                     <h5>गण्डकी प्रदेश, पोखरा, नेपाल</h5>
-                </div>
-                <div class="cell-3  " style="font-family:Cambay;">
-                    <h4 class="text-center va-bottom">COVID-19 को महामारीमा आपुर्ती व्यवस्थापन </h4>
-
-
-                    <button class="button primary" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज
-                        जानकारी</button>
                 </div>
             </div>
         </div>
-        {% block body %}{% endblock %}
+        {% block body %}
+        
+        {% endblock %}
         {% block footer-scripts %}{% endblock %}
+{% include 'base/footer.html' %}

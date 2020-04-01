@@ -1,7 +1,7 @@
 {% load static %}
 {% extends 'base/body.html' %}
 {% block body %}
-<form action="{% url 'lb:submit' %}" method="POST" data-role="validator">
+<form action="{% url 'lb:submit_general' %}" method="POST" data-role="validator">
     {% csrf_token %}
     <h5>स्थानिय तह विवरण</h5>
     <div class="form-group offset-1">

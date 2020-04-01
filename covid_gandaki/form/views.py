@@ -25,16 +25,17 @@ def index(request):
 
 @transaction.atomic
 def submit_general(request):
+    mydict = {
+        'person_name':'full_name',
+        'mobile':'mobile',
+        'perm_address':'permanent_address',
+        'age':'age'
+
+    }
     theerrors = []
     values = request.POST
     try:
-        make_call = Person.objects.get(full_name=values['person_name'],
-                           mobile=values['mobile'],
-                           location=str("%s,%s" %
-                                        (values['long'], values['lat'])),
-                           permanent_address=values['perm_address'],
-                           current_address=values['temp_address'],
-                           age=values['age'])
+        make_call = Person.objects.get(mobile=values['mobile'])
 
         return render(request, 'base/body.html', context={'message': "Submission Already Registered!  However it was already entered. Please contact us for making changes."})
     except:
@@ -90,6 +91,11 @@ def submit_general(request):
 
             except:
                 theerrors.append('Error saving '+ medicine[0])
+
+        
+        y = Delivery(person=person, mode_delivery=values['delivery'])
+        y.save()
+            
         if len(theerrors) == 0:
             return render(request, 'base/body.html', context={'message': "Submit Successful! तपाईँको माग दर्ता भएको छ ।  हामी तपाईँलाई मोबाइलमा सम्पर्क गर्नेछौँ । धन्यवाद "})
         else:

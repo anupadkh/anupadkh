@@ -5,6 +5,10 @@ from django.contrib.auth import login, logout
 
 # Create your views here.
 
+def landing(request):
+    context = {}
+    return render(request, 'users/landing.html', context)
+
 def index(request):
     
     form = AuthenticationForm()

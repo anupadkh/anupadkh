@@ -17,7 +17,8 @@ class Person(models.Model):
     age = models.IntegerField(null=True, blank=True)
     permanent_address = models.CharField (max_length=500, null=True, blank=True)
     current_address = models.CharField(max_length=500, null=True, blank=True)
-    mobile = models.CharField(max_length=300, null=True, blank=True)
+    mobile = models.CharField(
+        max_length=300, null=True, blank=True, unique=True)
     remarks = models.TextField(blank=True,null=True)
     created = models.DateField(auto_now=True)
     location = models.CharField(max_length=300, null=True, blank=True)
