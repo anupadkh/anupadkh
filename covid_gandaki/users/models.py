@@ -7,6 +7,10 @@ class User(AbstractUser):
     municipality = models.ForeignKey(Municipality,blank=True, null=True, on_delete=models.CASCADE)
     birth_date = models.DateField(null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        super(User, self).save(*args, **kwargs)
+        self.set_password(self.password)
+
 class Nepali(models.Model):
     appname = models.CharField(max_length=100)
     fieldname = models.CharField(max_length=100)

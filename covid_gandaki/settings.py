@@ -25,7 +25,7 @@ SECRET_KEY = '-3+wwibqm2o32pp*r(g$#t&m178-rkvwsn)3bd!ornojfcmb*q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '10.20.21.144']
+ALLOWED_HOSTS = ['0.0.0.0', '10.20.21.144', 'localhost']
 
 
 # Application definition
@@ -156,3 +156,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by custom User model, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
