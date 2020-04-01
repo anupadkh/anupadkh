@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'covid_gandaki.production')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'covid_gandaki.settings')
 
 application = get_wsgi_application()
