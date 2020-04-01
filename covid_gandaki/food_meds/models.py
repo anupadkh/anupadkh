@@ -17,6 +17,7 @@ class Food(models.Model):
     ordered_by = models.IntegerField()
     order_type = models.IntegerField(default=1) # 1=Person, 2=LB
     remarks = models.TextField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 class Medicine(models.Model):
     name = models.CharField(max_length=150)
@@ -26,6 +27,7 @@ class Medicine(models.Model):
     ordered_by = models.IntegerField()
     order_type = models.IntegerField(default=1)  # 1=Person, 2=LB
     remarks = models.TextField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
 class Delivery(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
@@ -37,6 +39,7 @@ class Petroleum(models.Model):
     sufficiency = models.IntegerField(default=1)
     remarks = models.TextField(null=True, blank=True)
     demand_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Production(models.Model):
@@ -45,6 +48,7 @@ class Production(models.Model):
     qty = models.CharField(max_length=50)
     remarks = models.TextField()
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
 
 class Medical(models.Model):
     # (च) तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण
@@ -53,4 +57,10 @@ class Medical(models.Model):
     remarks = models.TextField()
     available = models.CharField(max_length=50)
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+class Fulfilled(models.Model):
+    name = models.CharField(max_length=50)
+    obj_id = models.IntegerField()
+    fulfilled_date = models.DateTimeField(auto_now_add=True)
 
