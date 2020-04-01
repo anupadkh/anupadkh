@@ -20,7 +20,7 @@ class Person(models.Model):
     mobile = models.CharField(
         max_length=300, null=True, blank=True, unique=True)
     remarks = models.TextField(blank=True,null=True)
-    created = models.DateField(auto_now=True)
+    created = models.DateField(auto_now=True, auto_now_add=True)
     location = models.CharField(max_length=300, null=True, blank=True)
     permanent_full_address = models.ForeignKey(Address,on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     current_full_address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
