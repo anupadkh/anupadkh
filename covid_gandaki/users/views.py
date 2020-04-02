@@ -18,6 +18,8 @@ def index(request):
 
 def login_view(request):
     #Loggin in the UsersConfig
+    if request.user.is_authenticated:
+        return redirect('lb:dashboard')
     if request.method == 'POST':
         #Do sth
         form = AuthenticationForm(data=request.POST)
