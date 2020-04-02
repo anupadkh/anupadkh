@@ -1,21 +1,21 @@
 {% extends 'base/data_tables.html' %}
 {% block table-script %}
 <script>
-    // (ङ) स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः
+    // (ग) COVID 19 टेस्ट सम्वन्धि विवरण
     // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
     var tableData = [];
     var table = new Tabulator("#example-table", {
         data: tableData, //set initial table data
-        ajaxURL: "{% url 'snippets:sell_items' %}",
+        ajaxURL: "{% url 'snippets:need_people' %}",
         height: "500px",
         layout: "fitColumns",
         history: true,
         columns: [
             // 							
-            { title: "उत्पादित वस्तुको नाम", field: "full_name", width: 200, editor: "input" },
-            { title: "दैनिक रुपमा उत्पादन हुने परिमाण", field: "qty", hozAlign: "right", editor: "input" },
-            { title: "फेरि उत्पादन हुन लाग्ने समय", field: "qty_unit" },
-            { title: "अन्य विवरण", field: "remarks" },
+            { title: "नाम", field: "full_name", width: 200, editor: "input" },
+            { title: "उमेर", field: "age", hozAlign: "right", editor: "input" },
+            { title: "सडक वालवालिका, दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका वा अन्य के हो?", field: "type_of_need", editor:"input" },
+            { title: "अन्य विवरण", field: "remarks", editor:"input" },
 
 
         ],

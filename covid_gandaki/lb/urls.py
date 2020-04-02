@@ -8,6 +8,7 @@ urlpatterns = [
     path('submission', views.submit, name='submit'),
     path('dtable', views.index_dtable, name='dashboard'),
     path('food_info', pv.index, name='khadya' ),
+    path('<int:id>/dtable', views.list_dtable, name='table_view'),
 ]
 
 app_name = "lb"

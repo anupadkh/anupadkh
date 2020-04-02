@@ -1,36 +1,69 @@
 {% extends 'base/data_tables.html' %}
+
 {% block table-script %}
+{% block table2 %}
+{% if table2_set %}
+<div class="cell-md-3 offset-md-9"><button id="add2-row" class="button" type="button">नयाँ थपौँ</button></div>
+<div id="example-table2" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
+{% endif %}
+
+{% endblock table2 %}
+
 <script>
      // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
         var tableData = [];
         var table = new Tabulator("#example-table", {
             data: tableData, //set initial table data
-            ajaxURL: "{% url 'snippets:hospitals' %}",
+            ajaxURL: "{% url 'snippets:hospital' %}",
             height: "500px",
             layout: "fitColumns",
             history: true,
             columns: [
                 // 							
-                { title: "स्थानीय तहले तयार गरेको क्वारेन्टाईनको नाम", field: "name", width: 200, editor: "input" },
+                { title: "स्थानीय तहले तयार गरेको आइसोलेसनको नाम", field: "name", width: 200, editor: "input" },
                 { title: "बेड संख्या", field: "total_beds", hozAlign: "right", editor: "input" },
-                { title: "हाल क्वारेन्टाइनमा बसेकाहरुको संख्या", field: "currently_quarantined"},
+                { title: "हाल आइसोलेसनमा बसेकाहरुको संख्या", field: "currently_quarantined", editor: "input" },
                 
             ],
         });
-        //undo button
-        document.getElementById("history-undo").addEventListener("click", function () {
-            table.undo();
-        });
+        {% if table2_set %}
+        var table2 = new Tabulator("#example-table2", {
+                data: tableData, //set initial table data
+                ajaxURL: "{% url 'snippets:hospital' %}",
+                height: "500px",
+                layout: "fitColumns",
+                history: true,
+                columns: [
+                    // 							
+                    { title: "स्थानीय तहले तयार गरेको क्वारेन्टाईनको नाम", field: "name", width: 200, editor: "input" },
+                    { title: "बेड संख्या", field: "total_beds", hozAlign: "right", editor: "input" },
+                    { title: "हाल क्वारेन्टाइनमा बसेकाहरुको संख्या", field: "currently_quarantined", editor: "input" },
+                    // { title: "हस्पीटलको किसिम", field: "is_quarantine"}
 
+                ],
+            });
+        //undo button
+        
+        table2.setFilter("is_quarantine", "=", "2");
+        document.getElementById("add2-row").addEventListener("click", function () {
+                table2.addRow({});
+            });
+        {% endif %}
+        table.setFilter("is_quarantine", "=", "1");
+            document.getElementById("history-undo").addEventListener("click", function () {
+                table.undo();
+            });
         //redo button
         document.getElementById("history-redo").addEventListener("click", function () {
             table.redo();
         });
+        
         document.getElementById("add-row").addEventListener("click", function () {
             table.addRow({});
         });
-        document.getElementById("del-row").addEventListener("click", function () {
-            table.deleteRow(document.getElementById("active_component").value);
-        });
+        
+        // document.getElementById("del-row").addEventListener("click", function () {
+        //     table.deleteRow(document.getElementById("active_component").value);
+        // });
 </script>
 {% endblock %}

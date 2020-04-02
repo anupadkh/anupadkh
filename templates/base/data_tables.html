@@ -23,12 +23,13 @@
         <ul class="sidebar-menu">
             <li><a href='/'><span class="mif-home icon"></span>गृहपृष्ठ</a></li>
             <li><a><span class="mif-books icon"></span>स्थानिय निकाय बारे</a></li>
-            <li><a><span class="mif-files-empty icon"></span>क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
-            <li><a><span class="mif-files-empty icon"></span>COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
-            <li><a><span class="mif-files-empty icon"></span>स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
-            <li><a><span class="mif-files-empty icon"></span>स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः</a></li>
-            <li><a><span class="mif-files-empty icon"></span>तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
-            <li><a><span class="mif-files-empty icon"></span>आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण</a></li>
+            <li><a href="{% url 'lb:table_view' id=0 %}"><span class="mif-books icon"></span>विदेशवाट आएकाहरुको विवरण</a></li>
+            <li><a href="{% url 'lb:table_view' id=1 %}"><span class="mif-files-empty icon"></span>क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
+            <li><a href="{% url 'lb:table_view' id=2 %}"><span class="mif-files-empty icon"></span>COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
+            <li><a href="{% url 'lb:table_view' id=3 %}"><span class="mif-files-empty icon"></span>स्थानिय तहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
+            <li><a href="{% url 'lb:table_view' id=4 %}"><span class="mif-files-empty icon"></span>स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः</a></li>
+            <li><a href="{% url 'lb:table_view' id=5 %}"><span class="mif-files-empty icon"></span>तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
+            <li><a href="{% url 'lb:table_view' id=6 %}"><span class="mif-files-empty icon"></span>आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण</a></li>
             
             
             <li class="divider"></li>
@@ -48,7 +49,7 @@
 
             <div class="row">
                 <div class="cell-12">
-                    <h3>विदेशवाट {{user.municipality}}मा आएकाहरुको विवरण</h3>
+                    <h3>{{heading}}</h3>
                 </div>
                 <div class="cell-3">
                     <button type="button" class="button">Save</button>
@@ -67,9 +68,10 @@
                     </button>
                 </div>
                 <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
-            
+                {% block table2 %}
+                {% endblock table2 %}
             </div>
-
+            
             
         </div>
     </div>
