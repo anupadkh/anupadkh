@@ -73,7 +73,7 @@
             
         </div>
     </div>
-
+{% block table-script %}
     <script>
         // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
         var tableData=[];
@@ -119,4 +119,5 @@
                 table.deleteRow(document.getElementById("active_component").value);
             });
     </script>
+{% endblock %}
     {% endblock body %}

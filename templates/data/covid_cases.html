@@ -1,0 +1,41 @@
+{% extends 'base/data_tables.html' %}
+{% block table-script %}
+<script>
+    // (ग) COVID 19 टेस्ट सम्वन्धि विवरण
+    // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
+    var tableData = [];
+    var table = new Tabulator("#example-table", {
+        data: tableData, //set initial table data
+        ajaxURL: "{% url 'snippets:covids' %}",
+        height: "500px",
+        layout: "fitColumns",
+        history: true,
+        columns: [
+            // 							
+            { title: "COVID 19 टेस्ट गरेको व्यक्तिको नाम", field: "full_name", width: 200, editor: "input" },
+            { title: "उमेर", field: "age", hozAlign: "right", editor: "input" },
+            { title: "वडा", field: "ward" },
+            { title: "COVID 19 टेस्ट (+/-)", field: "is_positive" },
+            { title: "संक्रमित भए उपचार भैरहेको अस्पताल", field: "hospital_name" },
+            { title: "अन्य विवरण", field: "remarks" },
+
+
+        ],
+    });
+    //undo button
+    document.getElementById("history-undo").addEventListener("click", function () {
+        table.undo();
+    });
+
+    //redo button
+    document.getElementById("history-redo").addEventListener("click", function () {
+        table.redo();
+    });
+    document.getElementById("add-row").addEventListener("click", function () {
+        table.addRow({});
+    });
+    document.getElementById("del-row").addEventListener("click", function () {
+        table.deleteRow(document.getElementById("active_component").value);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base/data_tables.html' %}
+{% block table-script %}
+<script>
+    // (ङ) स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः
+    // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
+    var tableData = [];
+    var table = new Tabulator("#example-table", {
+        data: tableData, //set initial table data
+        ajaxURL: "{% url 'snippets:sell' %}",
+        height: "500px",
+        layout: "fitColumns",
+        history: true,
+        columns: [
+            // 							
+            { title: "उत्पादित वस्तुको नाम", field: "full_name", width: 200, editor: "input" },
+            { title: "दैनिक रुपमा उत्पादन हुने परिमाण", field: "qty", hozAlign: "right", editor: "input" },
+            { title: "फेरि उत्पादन हुन लाग्ने समय", field: "qty_unit" },
+            { title: "अन्य विवरण", field: "remarks" },
+
+
+        ],
+    });
+    //undo button
+    document.getElementById("history-undo").addEventListener("click", function () {
+        table.undo();
+    });
+
+    //redo button
+    document.getElementById("history-redo").addEventListener("click", function () {
+        table.redo();
+    });
+    document.getElementById("add-row").addEventListener("click", function () {
+        table.addRow({});
+    });
+    document.getElementById("del-row").addEventListener("click", function () {
+        table.deleteRow(document.getElementById("active_component").value);
+    });
+</script>
+{% endblock %}

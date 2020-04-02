@@ -1,0 +1,40 @@
+{% extends 'base/data_tables.html' %}
+{% block table-script %}
+<script>
+    // (घ) स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु(खाद्यान्न, तरकारी, दुध, अण्डा, मासु) र पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम पदार्थ
+    // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
+    var tableData = [];
+    var table = new Tabulator("#example-table", {
+        data: tableData, //set initial table data
+        ajaxURL: "{% url 'snippets:petrol_list' %}",
+        height: "500px",
+        layout: "fitColumns",
+        history: true,
+        columns: [
+            // 							
+            { title: "आवश्यक वस्तुको नाम", field: "name", width: 200, editor: "input" },
+            { title: "परिमाण मापन विधि केजी/ लिटर / संख्या", field: "qty", hozAlign: "right", editor: "input" },
+            { title: "परिमाण", field: "qty", hozAlign: "right", editor: "input" },
+            { title: "माग गरिएको बस्तुले पुग्ने अवधि", field: "sufficiency" },
+            { title: "अन्य विवरण", field: "remarks" },
+
+
+        ],
+    });
+    //undo button
+    document.getElementById("history-undo").addEventListener("click", function () {
+        table.undo();
+    });
+
+    //redo button
+    document.getElementById("history-redo").addEventListener("click", function () {
+        table.redo();
+    });
+    document.getElementById("add-row").addEventListener("click", function () {
+        table.addRow({});
+    });
+    document.getElementById("del-row").addEventListener("click", function () {
+        table.deleteRow(document.getElementById("active_component").value);
+    });
+</script>
+{% endblock %}
