@@ -3,7 +3,11 @@ from rest_framework import serializers
 
 
 class Lb_Travel_Serializer(serializers.ModelSerializer):
-    # user =
+    full_name = serializers.RelatedField('traveller.full_name')
+    age = serializers.RelatedField('traveller.age')
+    mun = serializers.RelatedField('traveller.mun')
+    ward = serializers.RelatedField('traveller.ward')
+    
     class Meta:
         model = Travel
         exclude = ['created_date']
