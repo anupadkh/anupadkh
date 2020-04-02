@@ -35,6 +35,7 @@ class Delivery(models.Model):
 
 class Petroleum(models.Model):
     name = models.CharField(max_length=300)
+    qty_unit = models.CharField(max_length=160, default='वटा')
     qty = models.CharField(max_length=400)
     sufficiency = models.IntegerField(default=1)
     remarks = models.TextField(null=True, blank=True)
@@ -46,6 +47,7 @@ class Production(models.Model):
     # स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः
     name = models.CharField(max_length=300)
     qty = models.CharField(max_length=50)
+    produce_freq = models.CharField(max_length=50, default='daily')
     remarks = models.TextField()
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

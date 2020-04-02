@@ -60,7 +60,7 @@ class Address(models.Model):
     house_no = models.CharField(null=True, blank=True, max_length=50)
 
     def __str__(self):
-        return("%s - %s, %s - %s, %s" % (self.street, self.house_no, self.mun, self.ward, self.district))
+        return("%s - %s, %s - %s, %s" % (self.street, self.house_no, self.mun, self.ward, self.mun.district))
     
     class Meta:
         db_table = "address2"
@@ -84,7 +84,8 @@ class Hospital(models.Model):
 
 class CovidCases(models.Model):
     mun = models.ForeignKey(Municipality, on_delete=models.CASCADE)
-    positive_cases = models.IntegerField(default=0)  # 1 for positive
+    positive_cases = models.IntegerField(default=0)  # 1 for positive 0 for Quarantine 2 for Others
     hospital = models.ForeignKey(
         Hospital, on_delete=models.SET_NULL, blank=True, null=True)
+    remarks = models.TextField(blank=True,null=True)
 

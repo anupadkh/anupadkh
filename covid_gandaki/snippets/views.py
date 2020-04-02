@@ -1,10 +1,60 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from covid_gandaki.snippets.modal_serializers.form import *
+from covid_gandaki.snippets.modal_serializers import lb, food_meds, public as pc,form, users
 from covid_gandaki.snippets.models import Snippet
 from covid_gandaki.snippets.serializer import SnippetSerializer
 
-        
+def petrol_list(request):
+    if request.method == 'GET':
+        snippets = food_meds.Petroleum.objects.all()
+        serializer = food_meds.Lb_Petroleum_Serializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+
+def sell_list(request):
+    if request.method == 'GET':
+        snippets = food_meds.Production.objects.all()
+        serializer = food_meds.Lb_Production_Serializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+
+def need_list(request):
+    if request.method == 'GET':
+        snippets = pc.Needy.objects.all()
+        serializer = pc.NeedySerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+  
+
+def medical_list(request):
+    if request.method == 'GET':
+        snippets = food_meds.Medical.objects.all()
+        serializer = food_meds.Lb_Medical_Serializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+
+@csrf_exempt
+def hospital_list(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        snippets = lb.Hospital.objects.all()
+        serializer = lb.HospitalSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+@csrf_exempt
+def covid_list(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        snippets = pc.QTPerson.objects.all()
+        serializer = pc.QTPersonSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
 
 @csrf_exempt
 def snippet_list(request):
@@ -12,8 +62,8 @@ def snippet_list(request):
     List all code snippets, or create a new snippet.
     """
     if request.method == 'GET':
-        snippets = Snippet.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
+        snippets = Travel.objects.all()
+        serializer = Lb_Travel_Serializer(snippets, many=True)
         return JsonResponse(serializer.data, safe=False)
 
     elif request.method == 'POST':
@@ -23,6 +73,8 @@ def snippet_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
 
 
 @csrf_exempt
