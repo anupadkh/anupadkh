@@ -89,3 +89,7 @@ class CovidCases(models.Model):
         Hospital, on_delete=models.SET_NULL, blank=True, null=True)
     remarks = models.TextField(blank=True,null=True)
 
+class Office(models.Model):
+    name = models.CharField(verbose_name='Name of Office', max_length=300)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE)
+    description = models.TextField(blank=True, null=True)

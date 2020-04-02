@@ -38,3 +38,12 @@ class CovidCasesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CovidCases
         fields = '__all__'
+
+from covid_gandaki.lb.sub_models.rahat import ReliefFund
+
+
+class ReliefFundSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReliefFund
+        fields = '__all__'

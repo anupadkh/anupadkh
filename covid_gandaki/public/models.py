@@ -32,6 +32,7 @@ class Family(models.Model):
     head = models.ForeignKey(Person, on_delete=models.CASCADE)
     member = models.ForeignKey(
         Person, related_name="member", blank=True, null=True, on_delete=models.SET_NULL)
+    relation_type=models.IntegerField(default=0)
 
 
 class Needy (models.Model):
