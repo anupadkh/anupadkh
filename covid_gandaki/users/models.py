@@ -7,6 +7,9 @@ class User(AbstractUser):
     municipality = models.ForeignKey(Municipality,blank=True, null=True, on_delete=models.CASCADE)
     birth_date = models.DateField(null=True, blank=True)
 
+    def full_name(self):
+        return self.first_name + self.last_name
+
     # def save(self, *args, **kwargs):
     #     new_user = super(User, self).save(*args, commit=False)
     #     self.set_password(self.password)

@@ -12,5 +12,5 @@ def submit(request):
 
 
 def index_dtable(request):
-    context = {}
+    context = {'user':request.user}
     return render(request, 'base/data_tables.html', context=context)

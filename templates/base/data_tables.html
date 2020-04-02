@@ -17,11 +17,11 @@
             <div class="avatar">
                 <img data-role="gravatar" data-email="sergey@pimenov.com.ua">
             </div>
-            <span class="title fg-white">Metro 4 Components Library</span>
-            <span class="subtitle fg-white"> 2018 © Sergey Pimenov</span>
+            <span class="title ">{{user.municipality}}</span>
+            <span class="subtitle fg-white">{{user.full_name}}</span>
         </div>
         <ul class="sidebar-menu">
-            <li><a><span class="mif-home icon"></span>गृहपृष्ठ</a></li>
+            <li><a href='/'><span class="mif-home icon"></span>गृहपृष्ठ</a></li>
             <li><a><span class="mif-books icon"></span>स्थानिय निकाय बारे</a></li>
             <li><a><span class="mif-files-empty icon"></span>क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
             <li><a><span class="mif-files-empty icon"></span>COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
@@ -48,49 +48,52 @@
 
             <div class="row">
                 <div class="cell-12">
-                    <h3>विदेशवाट पोखरा महानगरपालिकामा आएकाहरुको विवरण</h3>
+                    <h3>विदेशवाट {{user.municipality}}मा आएकाहरुको विवरण</h3>
                 </div>
                 <div class="cell-3">
                     <button type="button" class="button">Save</button>
                 </div>
-                <div class="cell-3 offset-3">
+                <div class="cell-3">
                     <button type="button" id="history-undo" class="button">
                         Undo
                     </button>
+                </div>
+                <div class="cell-3">
+                    <button type="button" id="add-row" class="button primary">नयाँ थप्नुहोस् </button>
                 </div>
                 <div class="cell-3">
                     <button type="button" id="history-redo" class="button">
                         Redo
                     </button>
                 </div>
+                <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
+            
             </div>
 
-            <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; margin-right: 10px;"></div>
+            
         </div>
     </div>
 
     <script>
-        var tableData = [
-            { id: 1, name: "Billy Bob", age: "12", gender: "male", height: 1, col: "red", dob: "", cheese: 1 },
-            { id: 2, name: "Mary May", age: "1", gender: "female", height: 2, col: "blue", dob: "14/05/1982", cheese: true },
-        ]
-
+        // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
+        var tableData=[];
         var table = new Tabulator("#example-table", {
             data: tableData, //set initial table data
+            ajaxURL: "{% url 'snippets:travellers' %}",
             height: "500px",
             layout: "fitColumns",
             history: true,
             columns: [
                 // 							
-                { title: "नाम", field: "name", width: 200, editor: "input" },
-                { title: "उमेर", field: "progress", hozAlign: "right", editor: "input" },
-                { title: "लिङ्ग", field: "gender", editor: "input" },
-                { title: "वडा", field: "ward", editor: "ward" },
-                { title: "बाहिर रहेको देश", field: "country", editor: "input" },
+                { title: "नाम", field: "traveller_name", width: 200, editor: "input" },
+                { title: "उमेर", field: "traveller_age", hozAlign: "right", editor: "input" },
+                { title: "लिङ्ग", field: "Gender", editor: "input" },
+                { title: "वडा", field: "ward", editor: "input" },
+                { title: "बाहिर रहेको देश", field: "Foreign Country", editor: "input" },
                 { title: "विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन	काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन", field: "rating", hozAlign: "center", width: 100, variableHeight: true },
                 // { title: "Favourite Color", field: "col" },
-                { title: "नेपाल प्रवेश मिति", field: "dob", sorter: "date", hozAlign: "center" },
-                { title: "अन्य विवरण", field: "col", hozAlign: "center", sorter: "boolean" },
+                { title: "नेपाल प्रवेश मिति", field: "Arrival Date", sorter: "date", hozAlign: "center" },
+                { title: "अन्य विवरण", field: "remarks", hozAlign: "center", sorter: "boolean" },
                 // { title: "Name", field: "name", width: 200 },
                 // { title: "Progress", field: "progress", hozAlign: "right", sorter: "number" },
                 // { title: "Gender", field: "gender", widthGrow: 2 },
@@ -109,5 +112,11 @@
         document.getElementById("history-redo").addEventListener("click", function () {
             table.redo();
         });
+        document.getElementById("add-row").addEventListener("click", function () {
+                table.addRow({});
+            });
+        document.getElementById("del-row").addEventListener("click", function () {
+                table.deleteRow(document.getElementById("active_component").value);
+            });
     </script>
     {% endblock body %}

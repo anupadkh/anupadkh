@@ -17,4 +17,5 @@ class Travel(models.Model):
     created_date = models.DateTimeField(
         auto_now=True
     )
+    remarks = models.TextField(blank=True,null=True)
 

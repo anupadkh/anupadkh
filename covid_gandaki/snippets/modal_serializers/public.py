@@ -40,7 +40,7 @@ class QTPersonSerializer(serializers.ModelSerializer):
         data['age'] = obj.person.age
 
         try:
-            data['ward'] = obj.current_full_address.ward
+            data['ward'] = obj.person.current_full_address.ward
         except:
             data['ward'] = ''
 

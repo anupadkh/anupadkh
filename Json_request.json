@@ -1,0 +1,34 @@
+http://localhost:8000/snip/covids
+[{"id": 1, "is_postive": true, "remarks": "Very Difficult to live", "person": 1, "quarantined_zone": 1, "full_name": "Anup Adhikari", "age": 1, "ward": 1, "hospital_name": "Lakecity"}]
+
+http://localhost:8000/snip/sell/
+[{"id": 1, "name": "Dhan", "qty": "100", "produce_freq": "daily", "remarks": "100 Kgs", "produced_by": 173}]
+
+http://localhost:8000/snip/petrol
+[{"id": 1, "name": "Rice", "qty_unit": "\u0935\u091f\u093e", "qty": "3", "sufficiency": 10, "remarks": "Days", "demand_by": 173}]
+
+http://localhost:8000/snip/needy/
+[{"id": 1, "type_of_need": "Child", "remarks": "Very poor", "name": 1, "full_name": "Anup Adhikari", "age": 1}]
+
+http://localhost:8000/snip/medical/
+[{"id": 1, "name": "mask", "required_qty": "10", "remarks": "very necessary", "available": "100", "produced_by": 173}]
+
+http://localhost:8000/snip/hospitals/
+[{"id": 1, "name": "Lakecity", "total_beds": 1, "ward": 1, "is_quarantine": 1, "currently_quarantined": 0, "mun": 173, "quarantine_count": 1, "covid_count": 0}]
+
+http: //localhost:8000/snip/snippets/
+[
+    {
+        "id": 1,
+        "traveller_name": "Anup Adhikari",
+        "traveller_age": "1",
+        "Arrival Date": "2020-04-02",
+        "Foreign Country": "Nepal",
+        "mode_of_transport_international": "Plane",
+        "mode_of_transport_national": "Bus",
+        "traveller": 1,
+        "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e",
+        "ward": 1,
+        "district": "\u0915\u093e\u0938\u094d\u0915\u0940"
+    }
+]
