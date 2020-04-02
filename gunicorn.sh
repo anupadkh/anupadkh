@@ -6,7 +6,7 @@ SOCKFILE=/home/covid/deploy/run/gunicorn.sock        # we will communicate using
 USER=covid                                        # the user to run as (*)
 GROUP=covid                                     # the group to run as (*)
 NUM_WORKERS=1                                     # how many worker processes should Gunicorn spawn (*)
-DJANGO_SETTINGS_MODULE=covid_gandaki.settings             # which settings file should Django use (*)
+DJANGO_SETTINGS_MODULE=covid_gandaki.production             # which settings file should Django use (*)
 DJANGO_WSGI_MODULE=covid_gandaki.wsgi                     # WSGI module name (*)
 VENV_DIR=/home/covid/deployment_venv                      #VirtualEnv directory
 
