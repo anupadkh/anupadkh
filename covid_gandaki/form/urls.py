@@ -7,7 +7,7 @@ urlpatterns=[
     path('', uv.landing, name='landing' ),
     path('myindex', fv.index, name='index'),
     path('submission', fv.submit_general, name='submit'),
-    
+    path('muns/', fv.mun_list, name="muns")
 ]
 
 app_name = "form"

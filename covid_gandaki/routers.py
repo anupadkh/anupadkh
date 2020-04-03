@@ -15,8 +15,13 @@ class ReliefViewSet(viewsets.ModelViewSet):
     queryset = lb.ReliefFund.objects.all()
     serializer_class = lb.ReliefFundSerializer
 
+class HospitalViewSet(viewsets.ModelViewSet):
+    queryset = lb.Hospital.objects.all()
+    serializer_class = lb.HospitalSerializer
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'relief',ReliefViewSet )
+router.register(r'quarantines', HospitalViewSet)

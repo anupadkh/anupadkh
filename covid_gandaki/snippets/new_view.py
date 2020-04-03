@@ -1,6 +1,8 @@
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
+from covid_gandaki.users.models import Employee
 from covid_gandaki.snippets.modal_serializers.form import *
 from covid_gandaki.snippets.modal_serializers import lb, food_meds, public as pc,form, users
 from covid_gandaki.snippets.models import Snippet
@@ -25,7 +27,25 @@ def relief_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
-
+@csrf_exempt
+@transaction.atomic
+def user(request):
+    if request.method =='POST':
+        data = request.POST
+        serializer = users.CreateUserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            mun = data['municipality']
+            emp = Employee(user = serializer, municipality = mun)
+            emp.save()
+            request.session['message'] = "You have been registered. Please contact MOITFE to activate."
+            return redirect('users:login')
+        request.session['message'] = "You couldn't be registered. Error with " + str(serializer.errors)
+        return redirect('users:login')
+    
+    return redirect('users:login')
+    
+    # if request.method = 'GET':
 
 
 

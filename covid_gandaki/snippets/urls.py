@@ -14,5 +14,7 @@ urlpatterns = [
     path('relief/', views.relief_list, name='relief'),
     path('snippets/<int:pk>/', views.snippet_detail),
     path('create_relief', new_view.relief_list, name='create_relief'),
+
+    path('users', new_view.user,name="create_user")
 ]
 app_name = "snippets"

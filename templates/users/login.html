@@ -6,25 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
 <body>
 <div class="login-page">
     <div class="form">
-        <!-- <form class="register-form">
-            <input type="text" placeholder="name" />
-            <input type="password" placeholder="password" />
-            <input type="text" placeholder="email address" />
-            <button>create</button>
-            <p class="message">Already registered? <a href="#">Sign In</a></p>
-        </form> -->
+        <form class="register-form" action="{% url 'snippets:create_user' %}" method="POST">
+            <input type="text" placeholder="First Name" name="first_name" />
+            <input type="text" placeholder="Last Name" name="last_name" />
+            <br/>
+            <input type="text" placeholder="username" name="username" />
+            <input type="password" placeholder="password" name="password" />
+            <br/>
+            <input type="text" placeholder="email address" name="email"/>
+            <!-- <input type="text" placeholder="email address" name="email" /> -->
+            
+            <select id="municipality" name="municipality">
+                <option value="-" id="loading">Loading</option>
+            </select>
+            <button type="Submit" name="submit">Create</button>
+            <p class="message"> {{message}} <a href="#">Sign In</a></p>
+        </form>
         <form class="login-form" method="POST" action="{% url 'users:login' %}">
             {{form}}
             {% csrf_token %}
             <button>Login</button>
-            <p class="message">{{message}}</p>
+            <p class="message">{{message}}<a href="#">Create an Account </a></p>
         </form>
     </div>
+    
     <script src="{% static 'js/login.js' %}"></script>
+    <script>
+        let dropdown = $('#municipality');
+
+            dropdown.empty();
+
+            dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+            dropdown.prop('selectedIndex', 0);
+
+            const url = '{% url 'form:muns' %}';
+
+            // Populate dropdown with list of provinces
+            $.getJSON(url, function (data) {
+                console.log(data);
+                $.each(data, function (key, entry) {
+                    dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
+                })
+            });
+    </script>
 </div>
 </body>
 </html>

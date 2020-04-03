@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee
+from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee, Office
 from covid_gandaki.public.models import Person, Family
 from django.db import transaction
 
@@ -16,6 +16,7 @@ class MunicipalitySerializer(serializers.ModelSerializer):
 
 
 class HospitalSerializer(serializers.ModelSerializer):
+
 
     def to_representation(self, obj):
         data = super().to_representation(obj)
@@ -35,6 +36,20 @@ class HospitalSerializer(serializers.ModelSerializer):
 class CovidCasesSerializer(serializers.ModelSerializer):
     
     
+    class Meta:
+        model = CovidCases
+        fields = '__all__'
+
+
+class OfficeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Office
+        fields = '__all__'
+
+
+class OfficeEmployeeSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CovidCases
         fields = '__all__'
@@ -63,7 +78,7 @@ class ReliefFundSerializer(serializers.ModelSerializer):
         data['office_name'] = obj.office.name
         data['office_mun'] = obj.office.address.mun.nep_name
         data['office_ward'] = obj.office.address.ward
-        data['receiver_mobile'] = obj.receiver.mobile
+        data['mobile'] = obj.receiver.mobile
         family = Family.objects.filter(head=obj.receiver)
         try:
             father = family.get(relation_type=1).member
@@ -85,6 +100,10 @@ class ReliefFundSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
+        # session 
+        #  request.session['has_commented']
+        # request = self.context['request']
+        # request.session.get('post_user',False)
         # print('We Entered Here')
         # if self.initial_data.get('id',False):
         #     return self.update(instance=self, validated_data=validated_data)

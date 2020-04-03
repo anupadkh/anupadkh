@@ -1,9 +1,10 @@
 from django.shortcuts import render
-
+from rest_framework.parsers import JSONParser
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from covid_gandaki.food_meds.models import *
 from covid_gandaki.form.models import *
@@ -11,6 +12,7 @@ from covid_gandaki.lb.models import *
 from covid_gandaki.public.models import *
 from covid_gandaki.users.models import *
 from pprint import pprint
+from covid_gandaki.snippets.modal_serializers import lb
 
 # Create your views here.
 # @login_required(login_url='users:login')
@@ -104,6 +106,15 @@ def submit_general(request):
         print(values[x])
     return HttpResponse(values)
 
+
+@csrf_exempt
+def mun_list(request):
+    if request.method == 'GET':
+        snippets = Office.objects.all()
+        serializer = lb.OfficeSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+    
+    
 
 food_package = [
     {"सामानको विवरण": "चामल स्टिम जिरा (राम्रो)", "परिमाण": "२५ के.जि.",
