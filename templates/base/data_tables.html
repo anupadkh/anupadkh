@@ -4,79 +4,142 @@
 {% block header-scripts %}
 <link href="{% static 'dist/css/tabulator.min.css' %}" rel="stylesheet">
 <script type="text/javascript" src="{% static 'dist/js/tabulator.min.js' %}"></script>
+<style>
+    a{
+        color: #222;
+    }
+    .active{
+        color: blue;
+    }
+</style>
 {% endblock %}
 {% block footer-scripts %}
 
 {% endblock %}
 {% block body %}
-<div class="row">
+<nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+    <div class="col-md-1"><img data-role="gravatar" data-email="sergey@pimenov.com.ua" height="50" width="50"></div>
+    <div class="navbar-brand col-md-1 title ">{{user.municipality}}</div>
+    <div class="col-md-1 subtitle fg-white">{{user.full_name}}</div>
+    <div class="col-md-9"></div>
+  </nav>
+<div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky pt-4">
+          <ul class="nav flex-column">
 
-    <aside class="sidebar pos-absolute z-2" data-role="sidebar" data-toggle="#sidebar-toggle-3" id="sb3"
-        data-shift=".shifted-content" style="background-color: antiquewhite;">
-        <div class="sidebar-header" data-image="images/sb-bg-1.jpg">
-            <div class="avatar">
-                <img data-role="gravatar" data-email="sergey@pimenov.com.ua">
-            </div>
-            <span class="title ">{{user.municipality}}</span>
-            <span class="subtitle fg-white">{{user.full_name}}</span>
+            <li class="nav-item"><a class="nav-link" href='/'><i class="fas fa-home"></i> गृहपृष्ठ</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sitemap"></i> स्थानिय निकाय बारे</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'lb:table_view' id=0 %}"><i class="far fa-address-card"></i> विदेशवाट आएकाहरुको विवरण</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=1 %}"><i class="fas fa-head-side-mask"></i> क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=2 %}"><i class="fas fa-hospital-user"></i> COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=3 %}"><i class="fas fa-seedling"></i> स्थानिय तहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=4 %}"><i class="fas fa-cloud-meatball"></i> स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=5 %}"><i class="fas fa-capsules"></i> तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=6 %}"><i class="fas fa-portrait"></i> आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण</a></li>
+            <li class="nav-item" class="divider"></li>
+          </ul>
         </div>
-        <ul class="sidebar-menu">
-            <li><a href='/'><span class="mif-home icon"></span>गृहपृष्ठ</a></li>
-            <li><a><span class="mif-books icon"></span>स्थानिय निकाय बारे</a></li>
-            <li><a href="{% url 'lb:table_view' id=0 %}"><span class="mif-books icon"></span>विदेशवाट आएकाहरुको विवरण</a></li>
-            <li><a href="{% url 'lb:table_view' id=1 %}"><span class="mif-files-empty icon"></span>क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
-            <li><a href="{% url 'lb:table_view' id=2 %}"><span class="mif-files-empty icon"></span>COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
-            <li><a href="{% url 'lb:table_view' id=3 %}"><span class="mif-files-empty icon"></span>स्थानिय तहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
-            <li><a href="{% url 'lb:table_view' id=4 %}"><span class="mif-files-empty icon"></span>स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः</a></li>
-            <li><a href="{% url 'lb:table_view' id=5 %}"><span class="mif-files-empty icon"></span>तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
-            <li><a href="{% url 'lb:table_view' id=6 %}"><span class="mif-files-empty icon"></span>आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण</a></li>
-            
-            
-            <li class="divider"></li>
-            <!-- <li><a><span class="mif-images icon"></span>Icons</a></li> -->
-        </ul>
-    </aside>
+      </nav>
+  
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h1 class="h2">{{heading}}</h1>
+          <!-- <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
 
-    <div class="shifted-content h-100 p-ab" style="background-color: rgba(192, 215, 247, 0.596)">
-        <div class="app-bar pos-absolute bg-red z-1" data-role="appbar">
-            <button class="app-bar-item c-pointer" id="sidebar-toggle-3">
-                <span class="mif-menu fg-white"></span>
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <span data-feather="calendar"></span>
+              This week
             </button>
+          </div> -->
         </div>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
 
-        <div class="h-100 p-4">
+                <div class="modal-header">
+                    <div class=" h5 modal-title" id="exampleModalLabel">Modal title</div>
 
-
-            <div class="row">
-                <div class="cell-12">
-                    <h3>{{heading}}</h3>
-                </div>
-                <div class="cell-3">
-                    <button type="button" class="button">Save</button>
-                </div>
-                <div class="cell-3">
-                    <button type="button" id="history-undo" class="button">
-                        Undo
+                    <div class="m-auto">
+                        <button type="button" id="add-row" class="btn btn-primary">नयाँ थप्नुहोस् </button>
+                        <button type="button" id="history-undo" class="btn btn-secondary ml-2"><i class="fas fa-undo"></i> Undo</button>
+                        <button type="button" id="history-redo" class="btn btn-secondary ml-2"><i class="fas fa-redo"></i> Redo</button>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="cell-3">
-                    <button type="button" id="add-row" class="button primary">नयाँ थप्नुहोस् </button>
+
+                <div class="modal-body">
+                    <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
                 </div>
-                <div class="cell-3">
-                    <button type="button" id="history-redo" class="button">
-                        Redo
-                    </button>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Save changes</button>
                 </div>
-                <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
-                {% block table2 %}
-                {% endblock table2 %}
+                
+              </div>
             </div>
+          </div>
+
+
+        <div class="row">
             
-            
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg">नयाँ थप्नुहोस् </button>
+            </div>
+            <br>
+
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>नाम</th>
+                        <th>उमेर</th>
+                        <th>लिङ्ग</th>
+                        <th>वडा</th>
+                        <th>बाहिर रहेको देश</th>
+                        <th>विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन</th>
+                        <th>नेपाल प्रवेश मिति</th>
+                        <th>अन्य विवरण</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% block table2 %}
+            {% endblock table2 %}
         </div>
+
+         
+        </div>
+      </main>
     </div>
+  </div>
+
 {% block table-script %}
     <script>
+
+        // Initialize datatable
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+
         // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
         var tableData=[];
         var table = new Tabulator("#example-table", {
@@ -85,24 +148,20 @@
             height: "500px",
             layout: "fitColumns",
             history: true,
-            columns: [
-                // 							
+            addRowPos:"top",          //when adding a new row, add it to the top of the table
+            pagination:"local",       //paginate the data
+            paginationSize:15,         //allow 7 rows per page of data
+            resizableRows:true,       //allow row order to be changed
+
+            columns: [					
                 { title: "नाम", field: "traveller_name", width: 200, editor: "input" },
                 { title: "उमेर", field: "traveller_age", hozAlign: "right", editor: "input" },
                 { title: "लिङ्ग", field: "Gender", editor: "input" },
                 { title: "वडा", field: "ward", editor: "input" },
                 { title: "बाहिर रहेको देश", field: "Foreign Country", editor: "input" },
                 { title: "विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन	काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन", field: "rating", hozAlign: "center", width: 100, variableHeight: true },
-                // { title: "Favourite Color", field: "col" },
                 { title: "नेपाल प्रवेश मिति", field: "Arrival Date", sorter: "date", hozAlign: "center" },
                 { title: "अन्य विवरण", field: "remarks", hozAlign: "center", sorter: "boolean" },
-                // { title: "Name", field: "name", width: 200 },
-                // { title: "Progress", field: "progress", hozAlign: "right", sorter: "number" },
-                // { title: "Gender", field: "gender", widthGrow: 2 },
-                // { title: "Rating", field: "rating", hozAlign: "center" },
-                // { title: "Favourite Color", field: "col", widthGrow: 3 },
-                // { title: "Date Of Birth", field: "dob", hozAlign: "center", sorter: "date", widthGrow: 2 },
-                // { title: "Driver", field: "car", hozAlign: "center" },
             ],
         });
         //undo button
@@ -122,4 +181,4 @@
             });
     </script>
 {% endblock %}
-    {% endblock body %}
+{% endblock body %}
