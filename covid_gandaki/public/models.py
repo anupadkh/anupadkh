@@ -17,9 +17,12 @@ class Person(models.Model):
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     current_full_address = models.ForeignKey(
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
+    belong_to_form = models.IntegerField(default=1)
 
     def __str__(self):
         return self.full_name
+    class Meta:
+        unique_together = ('mobile', 'belong_to_form',)
 
     def municipality(self):
         return self.current_full_address.mun

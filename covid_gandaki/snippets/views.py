@@ -34,7 +34,7 @@ def medical_list(request):
         return JsonResponse(serializer.data, safe=False)
     
 
-@csrf_exempt
+
 def hospital_list(request):
     """
     List all code snippets, or create a new snippet.
@@ -45,7 +45,17 @@ def hospital_list(request):
         return JsonResponse(serializer.data, safe=False)
 
 
-@csrf_exempt
+def relief_list(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        snippets = lb.ReliefFund.objects.all()
+        serializer = lb.ReliefFundSerializer(snippets, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+
+
 def covid_list(request):
     """
     List all code snippets, or create a new snippet.
@@ -56,7 +66,7 @@ def covid_list(request):
         return JsonResponse(serializer.data, safe=False)
 
 
-@csrf_exempt
+
 def snippet_list(request):
     """
     List all code snippets, or create a new snippet.
@@ -77,7 +87,7 @@ def snippet_list(request):
 
 
 
-@csrf_exempt
+
 def snippet_detail(request, pk):
     """
     Retrieve, update or delete a code snippet.

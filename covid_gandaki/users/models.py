@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from covid_gandaki.lb.models import Municipality
+from covid_gandaki.lb.models import Municipality, Office
 
 class User(AbstractUser):
     bio = models.TextField(max_length=500, blank=True)
@@ -15,7 +15,7 @@ class User(AbstractUser):
 
 class Employee(models.Model):
     municipality = models.ForeignKey(
-        Municipality, blank=True, null=True, on_delete=models.CASCADE)
+        Office, blank=True, null=True, on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class Nepali(models.Model):

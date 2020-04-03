@@ -9,5 +9,5 @@ class ReliefFund(models.Model):
     submitter = models.ForeignKey(
         Person2, on_delete=models.SET_NULL, null=True, blank=True, 
         related_name='submittor')
-    office = models.OneToOneField(Office, on_delete=models.SET_NULL, null=True, blank=True)
+    office = models.ForeignKey(Office, on_delete=models.SET_NULL, null=True, blank=True)
     relief_details = models.TextField()

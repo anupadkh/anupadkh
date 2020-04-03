@@ -93,3 +93,7 @@ class Office(models.Model):
     name = models.CharField(verbose_name='Name of Office', max_length=300)
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
+
+class OfficeEmployee(models.Model):
+    office = models.ForeignKey(Office,on_delete=models.CASCADE)
+    employee = models.ForeignKey(Person2, on_delete=models.CASCADE)

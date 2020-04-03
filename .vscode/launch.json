@@ -9,8 +9,13 @@
             "envFile": "/anup_files/FILES/venv/webserver",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/manage.py",
+            "console": "integratedTerminal",
+            "pythonPath": "/anup_files/FILES/venv/webserver/bin/python3"
+            "args": [
+                "runserver",
+                "0.0.0.0:8000"
+            ]
         },
     ]
 }
