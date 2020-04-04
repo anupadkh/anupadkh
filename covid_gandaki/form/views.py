@@ -24,6 +24,8 @@ def index(request):
     return render(request, 'form/index.html', context={})
     return HttpResponse('Hello')
 
+def test(request):
+    return render(request,'dtables/data_good.html')
 
 @transaction.atomic
 def submit_general(request):

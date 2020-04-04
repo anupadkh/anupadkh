@@ -1,3 +1,4 @@
+from covid_gandaki.lb.models import District, Municipality
 all_dists=District.objects.all()
 m = [
     {"क्र.स.": "1", "mun": "गोरखा नगरपालिका", "district": "गोरखा", "type": "नगरपालिका", "प्रदेश": "गण्डकी प्रदेश", "वेवसाईट": ""},
@@ -255,13 +256,41 @@ m = [
     {"क्र.स.": "85", "mun": "हुप्सेकोट गाउँपालिका", "district": "नवलपरासी (बर्दघाट सुस्ता पूर्व)", "type": "गाउँपालिका", "प्रदेश": "गण्डकी प्रदेश", "वेवसाईट": ""},
     {"क्र.स.": "hupsekotmun.gov.np"},
     {"क्र.स.": "तयार"}
-];
+]
+if len(all_dists) == 0:
+    r = []
+    for x in m:
+        try:
+            r.append( x['district'])
+        except:
+            pass
+    for x in list(set(r)):
+        try:
+            dist=x
+            mydist = District(district_name=dist,nep_name=dist)
+            mydist.save()
+        except:
+            pass
+    all_dists = District.objects.all()
+
+for x in m:
+    try:
+        dist = all_dists.get(nep_name=x['district'])
+        print(dist.nep_name)
+        y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist)
+        y.save()
+    except:
+        print('error here')
+        pass
+
+count=0
 for x in m: 
-         try: 
-             #print(x['district']) 
-             dist = all_dists.get(nep_name=x['district']) 
-             print( dist.nep_name) 
-             y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist) 
-             y.save() 
-         except: 
-             pass 
+    try:              
+        dist = all_dists.get(nep_name=x['district']) 
+        y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist) 
+        y.save() 
+    except: 
+        count += 1
+        print('error here')
+        # print(str(x))
+        pass 

@@ -94,6 +94,9 @@ class Office(models.Model):
     address = models.OneToOneField(Address, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 class OfficeEmployee(models.Model):
     office = models.ForeignKey(Office,on_delete=models.CASCADE)
     employee = models.ForeignKey(Person2, on_delete=models.CASCADE)

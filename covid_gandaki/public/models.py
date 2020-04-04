@@ -18,6 +18,7 @@ class Person(models.Model):
     current_full_address = models.ForeignKey(
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
     belong_to_form = models.IntegerField(default=1)
+    gender = models.IntegerField(default=1, verbose_name='लिङ्ग')
 
     def __str__(self):
         return self.full_name
