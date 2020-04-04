@@ -27,6 +27,9 @@ def index(request):
 def test(request):
     return render(request,'jdata/travel.html')
 
+def datatable(request):
+    return render(request, 'dtables/drf_datatable.html' )
+
 @transaction.atomic
 def submit_general(request):
     mydict = {

@@ -9,6 +9,7 @@ urlpatterns=[
     path('submission', fv.submit_general, name='submit'),
     path('muns/', fv.mun_list, name="muns"),
     path('test/', fv.test, name="test"),
+    path('dtable/', fv.datatable, name="datatable"),
 ]
 
 app_name = "form"

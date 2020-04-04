@@ -41,14 +41,14 @@
 
             dropdown.empty();
 
-            dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+            dropdown.append('<option selected="true" disabled>आफ्नो कार्यालय रोज्नुहोस्</option>');
             dropdown.prop('selectedIndex', 0);
 
             const url = '{% url 'form:muns' %}';
 
             // Populate dropdown with list of provinces
             $.getJSON(url, function (data) {
-                console.log(data);
+                // console.log(data);
                 $.each(data, function (key, entry) {
                     dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
                 })
