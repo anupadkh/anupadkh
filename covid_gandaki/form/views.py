@@ -25,7 +25,7 @@ def index(request):
     return HttpResponse('Hello')
 
 def test(request):
-    return render(request,'jdata/covid.html')
+    return render(request,'jdata/travel.html')
 
 @transaction.atomic
 def submit_general(request):

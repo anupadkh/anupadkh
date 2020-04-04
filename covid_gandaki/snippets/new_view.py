@@ -34,9 +34,9 @@ def user(request):
         data = request.POST
         serializer = users.CreateUserSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
-            mun = data['municipality']
-            emp = Employee(user = serializer, municipality = mun)
+            user_instance = serializer.save()
+            mun = lb.Office.objects.get(id=data['municipality'])
+            emp = Employee(user = user_instance, municipality = mun)
             emp.save()
             request.session['message'] = "You have been registered. Please contact MOITFE to activate."
             return redirect('users:login')

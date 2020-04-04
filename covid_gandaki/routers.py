@@ -32,6 +32,18 @@ class NeedyViewSet(viewsets.ModelViewSet):
     queryset = public.Needy.objects.all()
     serializer_class = public.NeedySerializer
 
+class PetroleumViewSet(viewsets.ModelViewSet):
+    queryset = food_meds.Petroleum.objects.all()
+    serializer_class = food_meds.Lb_Petroleum_Serializer
+
+class ProductionViewSet(viewsets.ModelViewSet):
+    queryset = food_meds.Production.objects.all()
+    serializer_class = food_meds.Lb_Production_Serializer
+
+class MedicalViewSet(viewsets.ModelViewSet):
+    queryset = food_meds.Medical.objects.all()
+    serializer_class = food_meds.Lb_Medical_Serializer
+
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
@@ -41,3 +53,6 @@ router.register(r'quarantines', HospitalViewSet)
 router.register(r'travel', TravelViewSet)
 router.register(r'covid', CovidViewSet)
 router.register(r'needy', NeedyViewSet)
+router.register(r'medical', MedicalViewSet)
+router.register(r'sell', ProductionViewSet)
+router.register(r'supplies', PetroleumViewSet)
