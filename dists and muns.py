@@ -272,25 +272,17 @@ if len(all_dists) == 0:
         except:
             pass
     all_dists = District.objects.all()
-
-for x in m:
-    try:
-        dist = all_dists.get(nep_name=x['district'])
-        print(dist.nep_name)
-        y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist)
-        y.save()
-    except:
-        print('error here')
-        pass
-
-count=0
-for x in m: 
-    try:              
-        dist = all_dists.get(nep_name=x['district']) 
-        y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist) 
-        y.save() 
-    except: 
-        count += 1
-        print('error here')
-        # print(str(x))
-        pass 
+all_muns = Municipality.objects.all()
+if len(all_muns==0):
+    count=0
+    for x in m: 
+        try:              
+            dist = all_dists.get(nep_name=x['district']) 
+            y = Municipality(mun_name=x['mun'], nep_name=x['type'], district=dist) 
+            y.save() 
+        except: 
+            count += 1
+            print('error here')
+            # print(str(x))
+            pass 
+    print count

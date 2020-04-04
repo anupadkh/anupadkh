@@ -1,5 +1,6 @@
 from django.db import models
-from covid_gandaki.lb.models import Address, Hospital
+from covid_gandaki.lb.models import Address, Hospital, Municipality
+from covid_gandaki.users.models import User
 
 
 
@@ -41,9 +42,12 @@ class Family(models.Model):
 
 class Needy (models.Model):
     # (छ) सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण
-    name = models.ForeignKey(Person, on_delete=models.CASCADE)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     type_of_need = models.CharField(max_length=300, null=True, blank=True)
     remarks = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    create_date = models.DateTimeField(auto_now=True)
+    municipality = models.ForeignKey(Municipality, blank=True, null=True, on_delete=models.CASCADE)
 
 
 class QTPerson(models.Model):
@@ -55,4 +59,5 @@ class QTPerson(models.Model):
     is_postive = models.BooleanField(default=False)
     remarks = models.TextField(
         verbose_name="Remarks", null=True, blank=True, max_length=300)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 

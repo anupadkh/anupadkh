@@ -2,6 +2,7 @@ from django.db import models
 from viewflow.models import Process
 from covid_gandaki.public.models import Person
 from covid_gandaki.lb.models import Municipality
+from covid_gandaki.users.models import User
 
 
 class HelloWorldProcess(Process):
@@ -41,6 +42,7 @@ class Petroleum(models.Model):
     remarks = models.TextField(null=True, blank=True)
     demand_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Production(models.Model):
@@ -51,6 +53,7 @@ class Production(models.Model):
     remarks = models.TextField()
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Medical(models.Model):
     # (च) तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण
@@ -60,6 +63,7 @@ class Medical(models.Model):
     available = models.CharField(max_length=50)
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
 class Fulfilled(models.Model):
     name = models.CharField(max_length=50)

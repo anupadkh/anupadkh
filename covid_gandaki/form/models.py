@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 from covid_gandaki.public.models import Person,Address
+from covid_gandaki.users.models import User
 
 class Travel(models.Model):
     traveller = models.ForeignKey(Person, on_delete=models.CASCADE)
@@ -17,5 +18,6 @@ class Travel(models.Model):
     created_date = models.DateTimeField(
         auto_now=True
     )
+    created_by = models.ForeignKey(User,blank=True, null=True, on_delete=models.SET_NULL)
     remarks = models.TextField(blank=True,null=True)
 

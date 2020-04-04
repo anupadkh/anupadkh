@@ -5,17 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
-            "envFile": "/anup_files/FILES/venv/webserver",
+            "name": "Python: Django",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/manage.py",
-            "console": "integratedTerminal",
-            "pythonPath": "/anup_files/FILES/venv/webserver/bin/python3"
             "args": [
                 "runserver",
-                "0.0.0.0:8000"
-            ]
-        },
+                "--noreload"
+            ],
+            "django": true
+        }
     ]
 }
