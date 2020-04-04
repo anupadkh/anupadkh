@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
+import requests
 
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 # Create your views here.
@@ -17,14 +18,19 @@ def lbody(request):
     context={'user':request.user}
 
 
-# @login_required(login_url='users:login')
-# def index_dtable(request):
-#     context = {'user':request.user, 'login':True}
-#     return render(request, 'base/data_tables.html', context=context)
+@login_required(login_url='users:login')
+def index_dtable(request):
+    # response = requests.get('http://localhost:8000/router/users/')
+    # obj = response.json()
 
-class index_dtable(ListView):
-    model = Person2
-    template_name = 'base/data_tables.html'
+    # Dummy data 
+    obj = {'name':1,'age':90} 
+    context = {'user':request.user, 'login':True, 'object_list':obj}
+    return render(request, 'base/data_tables.html', context=context)
+
+# class index_dtable(ListView):
+#     model = Person2
+#     template_name = 'base/data_tables.html'
 
 
 @login_required(login_url='users:login')

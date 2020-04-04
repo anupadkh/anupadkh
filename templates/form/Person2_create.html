@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container-fluid">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'lb:add_person2' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
             <input type="hidden" name="reg_agent" value="{{ user.id }}">

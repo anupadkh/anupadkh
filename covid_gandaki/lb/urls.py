@@ -6,7 +6,7 @@ from covid_gandaki.public import views as pv
 urlpatterns = [
     path('', views.index, name='dashboard'),
     path('submission', views.submit, name='submit'),
-    path('dtable', views.index_dtable.as_view(), name='dashboard'),
+    path('dtable', views.index_dtable, name='dtable'),
     path('food_info', pv.index, name='khadya' ),
     path('<int:id>/dtable', views.list_dtable, name='table_view'),
 

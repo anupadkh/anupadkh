@@ -120,10 +120,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                          {{ objects_list }}
-                      
-                            <td>Tiger Nixon</td>
-                            <td>System Architect</td>
+                          {% for obj in object_list %}
+                            <td>{{obj.name}}</td>
+                            <td>{{obj.age}}</td>
                             <td>Edinburgh</td>
                             <td>61</td>
                             <td>2011/04/25</td>
@@ -131,6 +130,7 @@
                             <td>2011/07/25</td>
                             <td>$170,750</td>
                             <td><button class="btn btn-success">Edit</button> <button class="btn btn-danger">Delete</button></td>
+                          {% endfor %}
                         </tr>
                     </tbody>
                 </table>
@@ -149,7 +149,7 @@
   $('#add-data').on('click', function () {
       $.ajax({
           type: "GET",
-          url: "{% url 'lb:add_person2' %}",  // URL to your view that serves new info
+          url: "{% url 'lb:add_person2' %}",
           success: function (data) {
               $(".person2-data").html(data);
           }
