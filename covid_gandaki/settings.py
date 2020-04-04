@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'material.frontend',
     'viewflow',
     'viewflow.frontend',
+    'crispy_forms',
     
     'covid_gandaki.food_meds',
     'covid_gandaki.users',
@@ -89,6 +90,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'covid_gandaki.wsgi.application'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container-fluid">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="reg_agent" value="{{ user.id }}">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>   
+    </div>
+{% endblock %}

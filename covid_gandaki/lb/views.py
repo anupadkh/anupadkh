@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 # Create your views here.
-from .models import *
+from .models import Person2
+from .forms import Person2Form
 
 def index(request):
     context = {}
@@ -15,10 +17,14 @@ def lbody(request):
     context={'user':request.user}
 
 
-@login_required(login_url='users:login')
-def index_dtable(request):
-    context = {'user':request.user, 'login':True}
-    return render(request, 'base/data_tables.html', context=context)
+# @login_required(login_url='users:login')
+# def index_dtable(request):
+#     context = {'user':request.user, 'login':True}
+#     return render(request, 'base/data_tables.html', context=context)
+
+class index_dtable(ListView):
+    model = Person2
+    template_name = 'base/data_tables.html'
 
 
 @login_required(login_url='users:login')
@@ -47,3 +53,9 @@ def list_dtable(request,id):
         context['table2_set'] = True
     
     return render(request, mydict[id], context=context)
+
+
+class Person2CreateView(CreateView):
+    model = Person2
+    form_class = Person2Form
+    template_name = 'form/Person2_create.html'
