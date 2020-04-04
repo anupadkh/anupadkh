@@ -1,0 +1,201 @@
+{% extends 'base/body.html' %}
+{% load static %}
+
+{% block header-scripts %}
+<link href="{% static 'dist/css/tabulator.min.css' %}" rel="stylesheet">
+<script type="text/javascript" src="{% static 'dist/js/tabulator.min.js' %}"></script>
+<style>
+    a {
+        color: #222;
+    }
+
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}
+{% block footer-scripts %}
+
+{% endblock %}
+{% block body %}
+<nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+    <div class="col-md-1"><img data-role="gravatar" data-email="sergey@pimenov.com.ua" height="50" width="50"></div>
+    <div class="navbar-brand col-md-1 title ">{{user.municipality}}</div>
+    <div class="col-md-1 subtitle fg-white">{{user.full_name}}</div>
+    <div class="col-md-9"></div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky pt-4">
+                <ul class="nav flex-column">
+
+                    <li class="nav-item"><a class="nav-link" href='/'><i class="fas fa-home"></i> गृहपृष्ठ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-sitemap"></i> स्थानिय निकाय
+                            बारे</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'lb:table_view' id=0 %}"><i
+                                class="far fa-address-card"></i> विदेशवाट आएकाहरुको विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=1 %}"><i
+                                class="fas fa-head-side-mask"></i> क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=2 %}"><i
+                                class="fas fa-hospital-user"></i> COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=3 %}"><i
+                                class="fas fa-seedling"></i> स्थानिय तहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=4 %}"><i
+                                class="fas fa-cloud-meatball"></i> स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको
+                            वस्तुः</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=5 %}"><i
+                                class="fas fa-capsules"></i> तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=6 %}"><i
+                                class="fas fa-portrait"></i> आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People)
+                            सम्वन्धि विवरण</a></li>
+                    <li class="nav-item" class="divider"></li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2">{{heading}}</h1>
+                <!-- <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+            </div>
+
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <span data-feather="calendar"></span>
+              This week
+            </button>
+          </div> -->
+            </div>
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <div class=" h5 modal-title" id="exampleModalLabel">Modal title</div>
+
+                            <div class="m-auto">
+                                <button type="button" id="add-row" class="btn btn-primary">नयाँ थप्नुहोस् </button>
+                                <button type="button" id="history-undo" class="btn btn-secondary ml-2"><i
+                                        class="fas fa-undo"></i> Undo</button>
+                                <button type="button" id="history-redo" class="btn btn-secondary ml-2"><i
+                                        class="fas fa-redo"></i> Redo</button>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div id="example-table" style="margin-top: 30px;margin-bottom: 20px; ;"></div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success">Save changes</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                        data-target=".bd-example-modal-lg">नयाँ थप्नुहोस् </button>
+                </div>
+                <br>
+
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>नाम</th>
+                            <th>उमेर</th>
+                            <th>लिङ्ग</th>
+                            <th>वडा</th>
+                            <th>बाहिर रहेको देश</th>
+                            <th>विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन काठमाडौँ वा नाकावाट स्थानिय तहमा
+                                आउदा प्रयोग गरेको यातायात साधन</th>
+                            <th>नेपाल प्रवेश मिति</th>
+                            <th>अन्य विवरण</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tiger Nixon</td>
+                            <td>System Architect</td>
+                            <td>Edinburgh</td>
+                            <td>61</td>
+                            <td>2011/04/25</td>
+                            <td>$320,800</td>
+                            <td>2011/07/25</td>
+                            <td>$170,750</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% block table2 %}
+                {% endblock table2 %}
+            </div>
+
+
+    </div>
+    </main>
+</div>
+</div>
+
+{% block table-script %}
+<script>
+
+    // Initialize datatable
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+
+    // var tableData = [{ "id": 1, "traveller_name": "Anup Adhikari", "traveller_age": "1", "Arrival Date": "2020-04-02", "Foreign Country": "Nepal", "mode_of_transport_international": "Plane", "mode_of_transport_national": "Bus", "traveller": 1, "mun": "\u092e\u0939\u093e\u0928\u0917\u0930\u092a\u093e\u0932\u093f\u0915\u093e", "ward": 1, "district": "\u0915\u093e\u0938\u094d\u0915\u0940" }];
+    var tableData = [];
+    var table = new Tabulator("#example-table", {
+        data: tableData, //set initial table data
+        ajaxURL: "{% url 'snippets:travellers' %}",
+        height: "500px",
+        layout: "fitColumns",
+        history: true,
+        addRowPos: "top",          //when adding a new row, add it to the top of the table
+        pagination: "local",       //paginate the data
+        paginationSize: 15,         //allow 7 rows per page of data
+        resizableRows: true,       //allow row order to be changed
+
+        columns: [
+            { title: "नाम", field: "traveller_name", width: 200, editor: "input" },
+            { title: "उमेर", field: "traveller_age", hozAlign: "right", editor: "input" },
+            { title: "लिङ्ग", field: "Gender", editor: "input" },
+            { title: "वडा", field: "ward", editor: "input" },
+            { title: "बाहिर रहेको देश", field: "Foreign Country", editor: "input" },
+            { title: "विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन	काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन", field: "rating", hozAlign: "center", width: 100, variableHeight: true },
+            { title: "नेपाल प्रवेश मिति", field: "Arrival Date", sorter: "date", hozAlign: "center" },
+            { title: "अन्य विवरण", field: "remarks", hozAlign: "center", sorter: "boolean" },
+        ],
+    });
+    //undo button
+    document.getElementById("history-undo").addEventListener("click", function () {
+        table.undo();
+    });
+
+    //redo button
+    document.getElementById("history-redo").addEventListener("click", function () {
+        table.redo();
+    });
+    document.getElementById("add-row").addEventListener("click", function () {
+        table.addRow({});
+    });
+    document.getElementById("del-row").addEventListener("click", function () {
+        table.deleteRow(document.getElementById("active_component").value);
+    });
+</script>
+{% endblock %}
+{% endblock body %}

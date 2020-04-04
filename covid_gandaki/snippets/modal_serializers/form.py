@@ -11,6 +11,7 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
     name = serializers.CharField(write_only=True)
     age = serializers.IntegerField(write_only=True)
     ward = serializers.IntegerField(write_only=True)
+    gender = serializers.IntegerField(write_only=True)
     
     class Meta:
         model = Travel
@@ -41,6 +42,7 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
             'ward', address.ward)
         address.save()
         traveller.current_full_address = address
+        traveller.gender = validated_data.get('gender', traveller.gender)
         traveller.save()
         instance.traveller = traveller
 
@@ -54,7 +56,7 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
                 setattr(instance, attr, value)
             except:
                 pass
-            
+
         instance.full_clean()
         instance.save()
         return instance
@@ -67,6 +69,7 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
         data['ward'] = obj.traveller.current_full_address.ward
         data['name'] = obj.traveller.full_name
         data['age'] = obj.traveller.age
+        data['gender'] = obj.traveller.gender
         return data
         
         # Traveller = data['traveller']

@@ -1,0 +1,234 @@
+{% extends 'jdata/body.html' %}
+{% load static %}
+{% block header-scripts %}
+<script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
+<script src="{% static 'jexcel/jexcel.js' %}"></script>
+<link rel="stylesheet" href="{% static 'jsuites/dist/jsuites.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'jexcel/jexcel.css' %}" type="text/css" />
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<style>
+    a {
+        color: #222;
+    }
+
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}
+{% block table-script %}
+<div class="row">
+    <div class="container col-sm-9">
+        <h7 style="color:red;">रोजेको प्रश्न : </h7> <h4<span id="column_header" ></span></h4>
+    </div>
+    <div>
+        <button class="btn btn-primary float-right" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
+    </div>
+</div>
+
+<div id="spreadsheet" style="margin-top: 20px;"></div>
+
+<script>
+    // window.onload = function(e){
+    var x = 1;
+    // var data = ;
+    var loaded = function (instance) {
+        // $('#log').append('New data is loaded');
+        console.log('New Data Loaded');
+        x = 2;
+    };
+    var changed = function (instance, cell, x, y, value) {
+        var cellName = jexcel.getColumnNameFromId([x, y]);
+        // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
+        console.log('New change on cell ' + cellName + ' to: ' + value + '');
+    };
+    var beforeChange = function (instance, cell, x, y, value) {
+        var cellName = jexcel.getColumnNameFromId([x, y]);
+        // $('#log').append('The cell ' + cellName + ' will be changed');
+    };
+
+    var selectionActive = function (instance, x1, y1, x2, y2, origin) {
+            var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+            var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+            // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+            // console.log(table.getHeader(x1));
+            document.getElementById("column_header").innerHTML = table.getHeader(x1)
+    };
+
+        table = jexcel(document.getElementById('spreadsheet'), {
+            // data: [[1,2,3,],[4,5,6]],
+            url: '{% url 'snippets:travellers' %}',
+            columns: [
+                //  type: hidden, dropdown, text, calendar, text
+                // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+
+                {
+                    type: 'hidden',
+                    name: 'id'
+                },
+                {
+                    type: 'hidden',
+                    name: 'traveller'
+                },
+                {
+                    type: 'hidden',
+                    name: 'created_by'
+                },
+                {
+                    type: 'text',
+                    title: 'नाम',
+                    width: '150',
+                    name: 'name'
+                },
+                {
+                    type: 'text',
+                    title: 'उमेर',
+                    width: '50',
+                    name: 'age'
+
+                },
+                {
+                    type: 'dropdown',
+                    title: 'लिङ्ग',
+                    width: '50',
+                    name: 'gender',
+                    source:[{"id":2, "name":'महिला'},{"id":1, "name":'पुरुष'},{"id":3,"name":'अन्य'}]
+
+                },
+                {
+                    type: 'numeric',
+                    title: 'वडा',
+                    width: '50',
+                    mask: '#,##', decimal: '.',
+                    name: 'ward'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'बाहिर रहेको देश',
+                    width: '50',
+                    // mask: '#,##', decimal: '.',
+                    name: 'Foreign Country'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
+                    name: 'mode_of_transport_international'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
+                    name: 'mode_of_transport_national'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'calendar',
+                    title: 'नेपाल प्रवेश मिति',
+                    width: '100',
+                    // mask: '#,##', decimal: '.',
+                    name: 'Arrival Date'
+
+                    // editor: 'number',
+                },
+                 
+                
+                {
+                    type: 'text',
+                    title: 'अन्य विवरण',
+                    width: '300',
+                    name: 'remarks'
+                },
+                { type: 'hidden' }
+
+                // {
+                //     type: 'autocomplete',
+                //     title: 'Name of Hospital',
+                //     width: '300',
+                //     url: '{% url 'snippets:hospital' %}'
+                // },
+                // {
+                //     type: 'dropdown',
+                //     title: 'Food',
+                //     width: '150',
+                //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+                // },
+                // {
+                //     type: 'checkbox',
+                //     title: 'Stock',
+                //     width: '100'
+                // },
+            ],
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+                // Number formating
+                // if (col == 3) {
+                //     // Get text
+                //     txt = cell.innerText;
+                //     // Format text
+                //     txt = numeral(txt).format('0,0.00');
+                //     // Update cell value
+                //     cell.innerHTML = '$ ' + txt;
+                // }
+
+                // // Odd row colours
+                // if (row % 2) {
+                //     cell.style.backgroundColor = '#edf3ff';
+                // }
+
+                // // Total row
+                // if (row == 9) {
+                //     if (col < 3) {
+                //         cell.innerHTML = '';
+                //     }
+
+                //     if (col == 2) {
+                //         cell.innerHTML = 'Total';
+                //         cell.style.fontWeight = 'bold';
+                //     }
+
+                //     cell.className = '';
+                //     cell.style.backgroundColor = '#f46e42';
+                //     cell.style.color = '#ffffff';
+                // }
+                // console.log(instance,cell);
+                // if (x == 2) {
+                //     console.log(col, row, val, label, cellName);
+                // }
+
+            },
+            onload: loaded,
+            onchange: changed,
+            onbeforechange: beforeChange,
+            onselection: selectionActive,
+            
+
+        });
+    var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
+    // };
+
+
+</script>
+
+
+
+<!-- <select id='columnNumber'>
+        <option value="0">Column 0</option>
+        <option value="1">Column 1</option>
+        <option value="2">Column 2</option>
+    </select>
+
+    <input type='button' value='Set header title'
+        onclick="table.setHeader(document.getElementById('columnNumber').value)" />
+    <input type='button' value='Get header title'
+        onclick="table.getHeader(document.getElementById('columnNumber').value)" /> -->
+
+{% endblock %}

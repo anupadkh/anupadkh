@@ -1,15 +1,22 @@
-<html>{% load static %}
-
-<head>
-    <script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
+{% extends 'base/data_tables.html' %}
+{% load static %}
+{% block header-scripts %}    <script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
     <script src="{% static 'jexcel/jexcel.js' %}"></script>
     <link rel="stylesheet" href="{% static 'jsuites/dist/jsuites.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'jexcel/jexcel.css' %}" type="text/css" />
     <!-- <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script> -->
-</head>
-
-<body>
-    <div id="spreadsheet"></div>
+    <style>
+        a {
+            color: #222;
+        }
+    
+        .active {
+            color: blue;
+        }
+        </style>
+{% endblock %}
+{% block table-script %}  
+<div id="spreadsheet"></div>
 
     <script>
     // window.onload = function(e){
@@ -145,7 +152,7 @@
 
     </script>
 
-    <select id='columnNumber'>
+    <!-- <select id='columnNumber'>
         <option value="0">Column 0</option>
         <option value="1">Column 1</option>
         <option value="2">Column 2</option>
@@ -154,9 +161,6 @@
     <input type='button' value='Set header title'
         onclick="table.setHeader(document.getElementById('columnNumber').value)" />
     <input type='button' value='Get header title'
-        onclick="table.getHeader(document.getElementById('columnNumber').value)" />
+        onclick="table.getHeader(document.getElementById('columnNumber').value)" /> -->
   
-    
-</body>
-
-</html>
+ {% endblock %}   
