@@ -36,57 +36,33 @@
         data = table.getData();
         for (let i=0; i<data.length; i++){
             to_post = data[i];
-            
             $.ajax({
                 url:"{{url}}", 
                 type:"POST", 
-                
                 data: JSON.stringify(
-                    // {
-                    //     "id": 17,
-                    //     "Arrival Date": "2020-01-04",
-                    //     "Foreign Country": "Germany",
-                    //     "mode_of_transport_international": "Plane",
-                    //     "mode_of_transport_national": "Bus",
-                    //     "created_date": "2020-04-05T09:48:45.161656Z",
-                    //     "remarks": "America",
-                    //     "traveller": 25,
-                    //     "created_by": 1,
-                    //     "ward": 8,
-                    //     "name": "Ullu Hari Lamsal",
-                    //     "age": 12,
-                    //     "gender": 1
-                    // }
-                {
-                    "id":to_post[0],
-                    "name":to_post[3],
-                    "age":to_post[4],
-                    "gender":to_post[5],
-                    "ward":to_post[6],
-                    "Foreign Country": to_post[7],
-                    "mode_of_transport_international": to_post[8],
-                    "mode_of_transport_national":to_post[9],
-                    "Arrival Date" : to_post[10],
-                    "remarks": to_post[11]
-                 
-                }
+                    {
+                        "id": to_post[0],
+                        "name": to_post[1],
+                        "qty": to_post[2],
+                        "qty_unit": to_post[3],
+                        "sufficiency": to_post[4],
+                        "remarks": to_post[5],
+                    }
                 ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-                        
                     },
                 success: function (arg) {
                     // location.reload()
+                    console.log(arg);
                 }
-                
             } 
             // function(data,status){
             //     alert("saved!");
             //     console.log(data,status);
             // }
-            ) 
-            
-        }; setTimeout(function () { console.log(to_post) }, 200000); 
+            );
+        };
     }
 
     );
@@ -129,7 +105,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-            data:[[,,,"Sample: हरि काफ्ले", 50, 1,3,"India","Aeroplane","Bus","2020-01-12","यसलाई हटाउनुहोस्"]],
+            data:[[,'पेट्रोल',10,"लिटर", 5, "यसलाई हटाउनुहोस्"]],
             {% else %}
             url: "{{url}}",
             {% endif %}
@@ -137,97 +113,55 @@
                 //  type: hidden, dropdown, text, calendar, text
                 // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
                 {
-                    type: 'text',
+                    type: 'numeric',
                     title: 'Key',
                     name: 'id',
                     readOnly:true,
-                    primaryKey: true
-                    
-                },
-                {
-                    type: 'hidden',
-                    name: 'traveller'
-                },
-                {
-                    type: 'hidden',
-                    name: 'created_by'
+                    primaryKey: true,
+                    mask: '#,##'
                     
                 },
                 {
                     type: 'text',
-                    title: 'नाम',
-                    width: '150',
+                    title: 'आवश्यक वस्तुको नाम',
+                    width: '200',
                     name: 'name'
                     // primaryKey: true
                 },
                 {
-                    type: 'text',
-                    title: 'उमेर',
-                    width: '50',
-                    name: 'age'
-
-                },
-                {
-                    type: 'dropdown',
-                    title: 'लिङ्ग',
-                    width: '50',
-                    name: 'gender',
-                    source:[{"id":2, "name":'महिला'},{"id":1, "name":'पुरुष'},{"id":3,"name":'अन्य'}]
-
-                },
-                {
                     type: 'numeric',
-                    title: 'वडा',
+                    title: 'मौज्दात परिमाण/ संख्या',
                     width: '50',
+                    name: 'qty',
                     mask: '#,##', decimal: '.',
-                    name: 'ward'
 
-                    // editor: 'number',
-                },
+                }, 
                 {
                     type: 'text',
-                    title: 'बाहिर रहेको देश',
-                    width: '50',
-                    // mask: '#,##', decimal: '.',
-                    name: 'Foreign Country'
-
-                    // editor: 'number',
-                },
-                {
-                    type: 'text',
-                    title: 'विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन',
-                    width: '150',
-                    // mask: '#,##', decimal: '.',
-                    name: 'mode_of_transport_international'
-
-                    // editor: 'number',
-                },
-                {
-                    type: 'text',
-                    title: 'काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन',
-                    width: '150',
-                    // mask: '#,##', decimal: '.',
-                    name: 'mode_of_transport_national'
-
-                    // editor: 'number',
-                },
-                {
-                    type: 'calendar',
-                    title: 'नेपाल प्रवेश मिति',
+                    title: 'परिमाण मापन विधि',
                     width: '100',
-                    // mask: '#,##', decimal: '.',
-                    name: 'Arrival Date'
-
-                    // editor: 'number',
+                    name: 'qty_unit'
+                    // primaryKey: true
                 },
                 
+                {
+                    type: 'numeric',
+                    title: 'माग गरिएको बस्तुले पुग्ने अवधि',
+                    width: '50',
+                    mask: '#,##', decimal: '.',
+                    name: 'sufficiency'
+
+                    // editor: 'number',
+                },
                 {
                     type: 'text',
                     title: 'अन्य विवरण',
                     width: '300',
                     name: 'remarks'
                 },
-                { type: 'hidden' }
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
 
                 // {
                 //     type: 'autocomplete',

@@ -89,8 +89,10 @@ class QTPersonSerializer(serializers.ModelSerializer):
             data['ward'] = obj.person.current_full_address.ward
         except:
             data['ward'] = ''
-
-        data['hospital_name'] = obj.quarantined_zone.name
+        try:
+            data['hospital_name'] = obj.quarantined_zone.name
+        except:
+            data['hospital_name'] = ""
         return data
     
     @transaction.atomic
@@ -141,3 +143,4 @@ class QTPersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = QTPerson
         fields = '__all__'
+        read_only_fields = ["created_by","person"]

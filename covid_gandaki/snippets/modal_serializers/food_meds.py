@@ -9,6 +9,7 @@ class Lb_Food_Serializer(serializers.ModelSerializer):
         model = Food
         fields = ['id', 'name', 'qty', 'qty_unit',
                   'sufficiency', 'remarks', 'ordered_by']
+        read_only_fields =['demand_by','created_by']
     
         
 
@@ -36,7 +37,7 @@ class Lb_Petroleum_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Petroleum
         fields = "__all__"
-        write_only = ['created','demand_by','created_by']
+        read_only_fields = ['created','demand_by','created_by']
     
     def create(self, validated_data):
         request = self.context['request']

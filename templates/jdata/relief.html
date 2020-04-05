@@ -35,54 +35,35 @@
 <script>
     $("#save").click(function () {
         data = table.getData();
-        var a = []
         for (let i = 0; i < data.length; i++) {
             to_post = data[i];
-            // a.push(
-            //     {
-            //         "id": to_post[0],
-            //         "name": to_post[1],
-            //         "total_beds": to_post[2],
-            //         "ward": to_post[3],
-
-            //         "ward": to_post[6],
-            //         "Foreign Country": to_post[7],
-            //         "mode_of_transport_international": to_post[8],
-            //         "mode_of_transport_national": to_post[9],
-            //         "Arrival Date": to_post[10],
-            //         "remarks": to_post[11]
-
-            //     }
-            // )
-            // };
             $.ajax({
                 url: "{{url}}",
                 type: "POST",
                 data: JSON.stringify(
                     {
-                        "id": to_post[0],
-                        "name": to_post[1],
-                        "age": to_post[2],
-                        "ward": to_post[3],
-                        "is_positive": to_post[4],
-                        "quarantined_zone": to_post[5],
-                        "remarks": to_post[6],
-                    }
-                ), contentType: "application/json",
+                        "id": if(to_post[0]== 0) null,
+                "name": to_post[1],
+                "qty": to_post[2],
+                "qty_unit": to_post[3],
+                "sufficiency": to_post[4],
+                "remarks": to_post[5],
+            }
+            ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                 },
-                success: function (arg) {
-                    // location.reload()
-                    console.log(arg);
-                }
+            success: function (arg) {
+                // location.reload()
+                console.log(arg);
             }
-                // function(data,status){
-                //     alert("saved!");
-                //     console.log(data,status);
-                // }
-            );
         }
+            // function(data,status){
+            //     alert("saved!");
+            //     console.log(data,status);
+            // }
+            );
+        };
     }
 
     );
@@ -125,7 +106,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-    data: [[, "Sample: हरेराम शर्मा: यसलाई हटाउनुहोस् ।", 50, 2, 1,2,"In full Isolation"]],
+    data: [[, 'पेट्रोल', 10, "लिटर", 5, "यसलाई हटाउनुहोस्"]],
         {% else %}
     url: "{{url}}",
         {% endif %}
@@ -133,58 +114,73 @@
         //  type: hidden, dropdown, text, calendar, text
         // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
         {
-            type: 'text',
+            type: 'numeric',
             title: 'Key',
             name: 'id',
             readOnly: true,
-            primaryKey: true
+            primaryKey: true,
+            mask: '#,##'
 
         },
         {
             type: 'text',
-            title: 'नाम',
-            width: '250',
+            title: 'आवश्यक वस्तुको नाम',
+            width: '200',
             name: 'name'
+            // primaryKey: true
         },
         {
             type: 'numeric',
-            title: 'उमेर',
-            width: '150',
-            name: 'age',
+            title: 'मौज्दात परिमाण/ संख्या',
+            width: '50',
+            name: 'qty',
             mask: '#,##', decimal: '.',
 
         },
         {
-            type: 'dropdown',
-            title: 'टेष्टको परिणाम',
-            width: '150',
-            name: 'age',
-            source: [{ "id": 0, "name": 'Positive' }, { "id": 1, "name": 'Negative' }]
-
-        },
-        {
-            type: 'dropdown',
-            title: 'क्वारेन्टाइन । आइसोलेसनको नाम',
-            width: '250',
-            name: 'quarantined_zone',
-            url: '/router/quarantines/?format=json'
-
-        },
-        {
             type: 'text',
-            title: 'remarks',
-            width: '150',
-            name: 'अन्य विवरण'
+            title: 'परिमाण मापन विधि',
+            width: '100',
+            name: 'qty_unit'
+            // primaryKey: true
+        },
+
+        {
+            type: 'numeric',
+            title: 'माग गरिएको बस्तुले पुग्ने अवधि',
+            width: '50',
+            mask: '#,##', decimal: '.',
+            name: 'sufficiency'
+
             // editor: 'number',
         },
         {
-            type: 'hidden'
+            type: 'text',
+            title: 'अन्य विवरण',
+            width: '300',
+            name: 'remarks'
         },
         { type: 'hidden' },
         { type: 'hidden' },
         { type: 'hidden' },
 
-
+        // {
+        //     type: 'autocomplete',
+        //     title: 'Name of Hospital',
+        //     width: '300',
+        //     url: '{% url 'snippets:hospital' %}'
+        // },
+        // {
+        //     type: 'dropdown',
+        //     title: 'Food',
+        //     width: '150',
+        //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+        // },
+        // {
+        //     type: 'checkbox',
+        //     title: 'Stock',
+        //     width: '100'
+        // },
     ],
         updateTable: function (instance, cell, col, row, val, label, cellName) {
             // Number formating

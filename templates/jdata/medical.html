@@ -35,26 +35,8 @@
 <script>
     $("#save").click(function () {
         data = table.getData();
-        var a = []
         for (let i = 0; i < data.length; i++) {
             to_post = data[i];
-            // a.push(
-            //     {
-            //         "id": to_post[0],
-            //         "name": to_post[1],
-            //         "total_beds": to_post[2],
-            //         "ward": to_post[3],
-
-            //         "ward": to_post[6],
-            //         "Foreign Country": to_post[7],
-            //         "mode_of_transport_international": to_post[8],
-            //         "mode_of_transport_national": to_post[9],
-            //         "Arrival Date": to_post[10],
-            //         "remarks": to_post[11]
-
-            //     }
-            // )
-            // };
             $.ajax({
                 url: "{{url}}",
                 type: "POST",
@@ -62,11 +44,9 @@
                     {
                         "id": to_post[0],
                         "name": to_post[1],
-                        "age": to_post[2],
-                        "ward": to_post[3],
-                        "is_positive": to_post[4],
-                        "quarantined_zone": to_post[5],
-                        "remarks": to_post[6],
+                        "required_qty": to_post[2],
+                        "available": to_post[3],
+                        "remarks": to_post[4]
                     }
                 ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
@@ -82,7 +62,7 @@
                 //     console.log(data,status);
                 // }
             );
-        }
+        };
     }
 
     );
@@ -125,7 +105,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-    data: [[, "Sample: हरेराम शर्मा: यसलाई हटाउनुहोस् ।", 50, 2, 1,2,"In full Isolation"]],
+    data: [[, 'Sample: धान', "100 मुरी", 'daily', "यसलाई हटाउनुहोस्"]],
         {% else %}
     url: "{{url}}",
         {% endif %}
@@ -133,58 +113,64 @@
         //  type: hidden, dropdown, text, calendar, text
         // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
         {
-            type: 'text',
+            type: 'numeric',
             title: 'Key',
             name: 'id',
             readOnly: true,
-            primaryKey: true
+            primaryKey: true,
+            mask: '#,##'
 
         },
         {
             type: 'text',
-            title: 'नाम',
-            width: '250',
+            title: 'मेडिकल सामाग्रीको नाम',
+            width: '200',
             name: 'name'
+            // primaryKey: true
         },
         {
             type: 'numeric',
-            title: 'उमेर',
-            width: '150',
-            name: 'age',
-            mask: '#,##', decimal: '.',
+            title: 'आवश्यक परिमाण',
+            width: '50',
+            name: 'qty',
+            mask: '#,##', decimal: '.'
 
         },
         {
-            type: 'dropdown',
-            title: 'टेष्टको परिणाम',
-            width: '150',
-            name: 'age',
-            source: [{ "id": 0, "name": 'Positive' }, { "id": 1, "name": 'Negative' }]
-
-        },
-        {
-            type: 'dropdown',
-            title: 'क्वारेन्टाइन । आइसोलेसनको नाम',
-            width: '250',
-            name: 'quarantined_zone',
-            url: '/router/quarantines/?format=json'
-
+            type: 'numeric',
+            title: 'मौजदात परिमाण',
+            width: '100',
+            name: 'produce_freq',
+            mask: '#,##', decimal: '.'
+            // primaryKey: true
         },
         {
             type: 'text',
-            title: 'remarks',
-            width: '150',
-            name: 'अन्य विवरण'
-            // editor: 'number',
-        },
-        {
-            type: 'hidden'
+            title: 'अन्य विवरण',
+            width: '300',
+            name: 'remarks'
         },
         { type: 'hidden' },
         { type: 'hidden' },
         { type: 'hidden' },
 
-
+        // {
+        //     type: 'autocomplete',
+        //     title: 'Name of Hospital',
+        //     width: '300',
+        //     url: '{% url 'snippets:hospital' %}'
+        // },
+        // {
+        //     type: 'dropdown',
+        //     title: 'Food',
+        //     width: '150',
+        //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+        // },
+        // {
+        //     type: 'checkbox',
+        //     title: 'Stock',
+        //     width: '100'
+        // },
     ],
         updateTable: function (instance, cell, col, row, val, label, cellName) {
             // Number formating
