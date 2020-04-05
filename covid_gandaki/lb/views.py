@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 import requests
 
 from django.apps import apps
+from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 # Create your views here.
 from .models import Person2
@@ -41,7 +42,8 @@ def list_dtable(request,id):
             'app': 'form',
             'model': 'Travel',
             'heading': 'विदेशवाट मा आएकाहरुको विवरण',
-            'page': 'base/data_tables.html'
+            'page': 'jdata/travel.html',
+            'url':'/router/travel/'
         },
         1:{
             'app': 'lb',
@@ -84,13 +86,17 @@ def list_dtable(request,id):
             'model': 'Travel'
         },
     }
-    class
-    context = {'login': True, "heading":headings[id]}
+    App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
+    context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
+
+    if App.objects.all().count() == 0:
+        context['nodata'] = True
     if id==1:
         # context = {'login': True,'table2_set':True}
         context['table2_set'] = True
+        
     
-    return render(request, mydict[id], context=context)
+    return render(request, applications[id]['page'], context=context)
 
 
 class Person2CreateView(CreateView):
