@@ -39,56 +39,52 @@ def list_dtable(request,id):
     applications = {
         0:{
             'app': 'form',
-            'model': 'Travel'
+            'model': 'Travel',
+            'heading': 'विदेशवाट मा आएकाहरुको विवरण',
+            'page': 'base/data_tables.html'
         },
         1:{
-            'app': 'form',
-            'model': 'Travel'
+            'app': 'lb',
+            'model': 'Hospital',
+            'heading':'क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण',
+            'page': 'data/isolation.html'
         },
         2:{
-            'app': 'form',
-            'model': 'Travel'
+            'app': 'public',
+            'model': 'QTPerson',
+            'heading': 'COVID 19 टेस्ट सम्वन्धि विवरण',
+            'page':'data/covid_cases.html',
         },
         3:{
-            'app': 'form',
-            'model': 'Travel'
+            'app': 'food_med',
+            'model': 'Petroleum',
+            'page' : 'data/petroleum.html',
+            'heading':'स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु  र पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम पदार्थ',
+
         },
         4:{
-            'app': 'form',
-            'model': 'Travel'
+            'app': 'food_med',
+            'model': 'Production',
+            'page':'data/production.html',
+            'heading': 'स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः',
         },
-        5:{
-            'app': 'form',
-            'model': 'Travel'
+        5:{ 'page' : 'data/medical.html',
+            'app': 'food_med',
+            'model': 'Medical',
+            'heading': 'तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण',
         },
         6:{
-            'app': 'form',
-            'model': 'Travel'
+            'page':'data/need.html',
+            'app': 'public',
+            'model': 'Needy',
+            'heading': 'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण'
         },
         7:{
             'app': 'form',
             'model': 'Travel'
         },
     }
-    headings = [
-        'विदेशवाट मा आएकाहरुको विवरण',
-        'क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण',
-        'COVID 19 टेस्ट सम्वन्धि विवरण',
-        'स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु  र पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम पदार्थ',
-        'स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः',
-        'तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण',
-        'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण'
-        ]
-        
-    mydict = {
-        0: 'base/data_tables.html',
-        1: 'data/isolation.html',
-        2: 'data/covid_cases.html',
-        3: 'data/petroleum.html',
-        4: 'data/production.html',
-        5: 'data/medical.html',
-        6: 'data/need.html',
-    }
+    class
     context = {'login': True, "heading":headings[id]}
     if id==1:
         # context = {'login': True,'table2_set':True}
