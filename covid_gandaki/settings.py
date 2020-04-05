@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'covid_gandaki.lb',
     'covid_gandaki.snippets',
 
+    "rest_framework_bulk",
+
     
 
 ]

@@ -1,0 +1,263 @@
+{% extends 'jdata/body.html' %}
+{% load static %}
+{% block header-scripts %}
+<script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
+<script src="{% static 'jexcel/jexcel.js' %}"></script>
+<link rel="stylesheet" href="{% static 'jsuites/dist/jsuites.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'jexcel/jexcel.css' %}" type="text/css" />
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<style>
+    a {
+        color: #222;
+    }
+
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}
+{% block table-script %}
+<div class="row">
+    <div class="container col-sm-9">
+        <h7 style="color:red;">रोजेको प्रश्न : </h7>
+        <h4<span id="column_header"></span></h4>
+    </div>
+    <div>
+        <button class="btn btn-primary float-right" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
+    </div>
+    <div>
+        <button class="btn btn-primary float-right" id="save">Save</button>
+    </div>
+</div>
+{% csrf_token %}
+<div id="spreadsheet" style="margin-top: 20px;"></div>
+
+<script>
+    $("#save").click(function () {
+        data = table.getData();
+        var a = []
+        for (let i = 0; i < data.length; i++) {
+            to_post = data[i];
+            // a.push(
+            //     {
+            //         "id": to_post[0],
+            //         "name": to_post[1],
+            //         "total_beds": to_post[2],
+            //         "ward": to_post[3],
+
+            //         "ward": to_post[6],
+            //         "Foreign Country": to_post[7],
+            //         "mode_of_transport_international": to_post[8],
+            //         "mode_of_transport_national": to_post[9],
+            //         "Arrival Date": to_post[10],
+            //         "remarks": to_post[11]
+
+            //     }
+            // )
+        // };
+        $.ajax({
+            url: "{{url}}",
+            type: "POST",
+            data: JSON.stringify(
+                {
+                    "id": to_post[0],
+                    "name": to_post[1],
+                    "total_beds": to_post[2],
+                    "ward": to_post[3],
+                    "is_quarantine":to_post[4],
+                    "currently_quarantined":to_post[5],
+                }
+            ), contentType: "application/json",
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            },
+            success: function (arg) {
+                // location.reload()
+                console.log(arg);
+            }
+        }
+            // function(data,status){
+            //     alert("saved!");
+            //     console.log(data,status);
+            // }
+        );
+    }
+}
+
+    );
+
+
+    // window.onload = function(e){
+    var x = 1;
+    // var data = ;
+    var loaded = function (instance) {
+        // $('#log').append('New data is loaded');
+        console.log('New Data Loaded');
+        x = 2;
+    };
+    var changed = function (instance, cell, x, y, value) {
+        var cellName = jexcel.getColumnNameFromId([x, y]);
+        // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
+        console.log('New change on cell ' + cellName + ' to: ' + value + '');
+        console.log(x, y);
+
+    };
+    var beforeChange = function (instance, cell, x, y, value) {
+        var cellName = jexcel.getColumnNameFromId([x, y]);
+        // $('#log').append('The cell ' + cellName + ' will be changed');
+    };
+
+    var selectionActive = function (instance, x1, y1, x2, y2, origin) {
+        var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+        var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+        // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+        // console.log(table.getHeader(x1));
+        document.getElementById("column_header").innerHTML = table.getHeader(x1)
+    };
+
+    function ask() {
+        return confirm("Delete ?")
+
+    }
+
+    table = jexcel(document.getElementById('spreadsheet'), {
+            // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
+            
+            {% if data %}
+    data: [[ ,"Sample: LakeCity Hospital: यसलाई हटाउनुहोस् ।" ,  50, 2, 1]],
+        {% else %}
+    url: "{{url}}",
+        {% endif %}
+    columns: [
+        //  type: hidden, dropdown, text, calendar, text
+        // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+        {
+            type: 'text',
+            title: 'Key',
+            name: 'id',
+            readOnly: true,
+            primaryKey: true
+
+        },
+        {
+            type: 'text',
+            title: 'नाम',
+            width: '250',
+            name: 'name'
+        },
+        {
+            type: 'numeric',
+            title: 'बेड संख्या',
+            width: '150',
+            name: 'age',
+            mask: '#,##', decimal: '.',
+
+        },
+        {
+            type: 'numeric',
+            title: 'हाल क्वारेन्टाइनमा बसेकाहरुको संख्या',
+            width: '250',
+            name: 'currently_quarantined',
+            mask: '#,##', decimal: '.'
+
+        },
+        {
+            type: 'dropdown',
+            title: 'क्वारेन्टाइन क्षेत्र या आइसोलेसन क्षेत्र',
+            width: '150',
+            name: 'is_quarantine',
+            source: [{ "id": 1, "name": 'क्वारेन्टाइन' }, { "id": 1, "name": 'आइसोलेसन' }, { "id": 3, "name": 'दुवै' }]
+            
+            // editor: 'number',
+        },
+        {
+            type:'hidden'
+        },
+        {type:'hidden'},
+        { type: 'hidden' },
+        { type: 'hidden' },
+
+
+    ],
+        updateTable: function (instance, cell, col, row, val, label, cellName) {
+            // Number formating
+            // if (col == 3) {
+            //     // Get text
+            //     txt = cell.innerText;
+            //     // Format text
+            //     txt = numeral(txt).format('0,0.00');
+            //     // Update cell value
+            //     cell.innerHTML = '$ ' + txt;
+            // }
+
+            // // Odd row colours
+            // if (row % 2) {
+            //     cell.style.backgroundColor = '#edf3ff';
+            // }
+
+            // // Total row
+            // if (row == 9) {
+            //     if (col < 3) {
+            //         cell.innerHTML = '';
+            //     }
+
+            //     if (col == 2) {
+            //         cell.innerHTML = 'Total';
+            //         cell.style.fontWeight = 'bold';
+            //     }
+
+            //     cell.className = '';
+            //     cell.style.backgroundColor = '#f46e42';
+            //     cell.style.color = '#ffffff';
+            // }
+            // console.log(instance,cell);
+            // if (x == 2) {
+            //     console.log(col, row, val, label, cellName);
+            // }
+
+        },
+    onload: loaded,
+        onchange: changed,
+            onbeforechange: beforeChange,
+                onselection: selectionActive,
+                    // persistance: "/router/travel/?format=json",
+                    allowDeleteColumn: false,
+                        allowInsertColumn: false,
+                            allowManualInsertRow: false,
+                                defaultColWidth: "70",
+                                    onbeforedeleterow: ask,
+            
+            
+
+        });
+    var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
+    // };
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+</script>
+
+
+
+<!-- <select id='columnNumber'>
+        <option value="0">Column 0</option>
+        <option value="1">Column 1</option>
+        <option value="2">Column 2</option>
+    </select>
+
+    <input type='button' value='Set header title'
+        onclick="table.setHeader(document.getElementById('columnNumber').value)" />
+    <input type='button' value='Get header title'
+        onclick="table.getHeader(document.getElementById('columnNumber').value)" /> -->
+
+{% endblock %}

@@ -8,6 +8,30 @@ from covid_gandaki.snippets.modal_serializers import lb,users,form,food_meds,pub
 # ViewSets define the view behavior.
 
 
+# from rest_framework_bulk import (
+#     BulkListSerializer,
+#     BulkSerializerMixin,
+#     ListBulkCreateUpdateDestroyAPIView,
+# )
+
+
+
+# class FooView(ListBulkCreateUpdateDestroyAPIView):
+#     queryset = form.Travel.objects.all()
+#     model = form.Travel
+#     serializer_class = form.Lb_Travel_Serializer
+
+#     def get(self,request,format=None):
+#         return self.queryset
+    
+#     @classmethod
+#     def get_extra_actions(cls):
+#         return []
+
+
+
+
+
 
 class TravelViewSet(viewsets.ModelViewSet):
     queryset = form.Travel.objects.all()
@@ -65,3 +89,4 @@ router.register(r'needy', NeedyViewSet)
 router.register(r'medical', MedicalViewSet)
 router.register(r'sell', ProductionViewSet)
 router.register(r'supplies', PetroleumViewSet)
+# router.register(r'travels', FooView.asView())

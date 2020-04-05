@@ -43,25 +43,28 @@ def list_dtable(request,id):
             'model': 'Travel',
             'heading': 'विदेशवाट मा आएकाहरुको विवरण',
             'page': 'jdata/travel.html',
-            'url':'/router/travel/'
+            'url':'/router/travel/',
         },
         1:{
             'app': 'lb',
             'model': 'Hospital',
             'heading':'क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण',
-            'page': 'data/isolation.html'
+            'page': 'jdata/quarantine.html',
+            'url': '/router/quarantines',
         },
         2:{
             'app': 'public',
             'model': 'QTPerson',
             'heading': 'COVID 19 टेस्ट सम्वन्धि विवरण',
             'page':'data/covid_cases.html',
+            'url':'/router/covid/',
         },
         3:{
             'app': 'food_med',
             'model': 'Petroleum',
             'page' : 'data/petroleum.html',
             'heading':'स्थानियतहलाई आवश्यक पर्ने खाद्यवस्तु  र पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम पदार्थ',
+            'url' : '/router/supplies',
 
         },
         4:{
@@ -69,21 +72,25 @@ def list_dtable(request,id):
             'model': 'Production',
             'page':'data/production.html',
             'heading': 'स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः',
+            'url' : '/router/sell/',
         },
         5:{ 'page' : 'data/medical.html',
             'app': 'food_med',
             'model': 'Medical',
             'heading': 'तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण',
+            'url' : '/router/medical/',
         },
         6:{
             'page':'data/need.html',
             'app': 'public',
             'model': 'Needy',
-            'heading': 'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण'
+            'heading': 'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण',
+            'url' : 'router/needy',
         },
         7:{
             'app': 'form',
             'model': 'Travel'
+
         },
     }
     App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])

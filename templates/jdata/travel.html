@@ -37,41 +37,41 @@
         var a=[]
         for (let i=0; i<data.length; i++){
             to_post = data[i];
-            a.push(
-                {
-                    "id": to_post[0],
-                    "name": to_post[3],
-                    "age": to_post[4],
-                    "gender": to_post[5],
-                    "ward": to_post[6],
-                    "Foreign Country": to_post[7],
-                    "mode_of_transport_international": to_post[8],
-                    "mode_of_transport_national": to_post[9],
-                    "Arrival Date": to_post[10],
-                    "remarks": to_post[11]
+            // a.push(
+            //     {
+            //         "id": to_post[0],
+            //         "name": to_post[3],
+            //         "age": to_post[4],
+            //         "gender": to_post[5],
+            //         "ward": to_post[6],
+            //         "Foreign Country": to_post[7],
+            //         "mode_of_transport_international": to_post[8],
+            //         "mode_of_transport_national": to_post[9],
+            //         "Arrival Date": to_post[10],
+            //         "remarks": to_post[11]
 
-                }
-            )
-        };
+            //     }
+            // )
+        
             $.ajax({
                 url:"{{url}}", 
                 type:"POST", 
-                data: JSON.stringify(a
-                    // {
-                    //     "id": 17,
-                    //     "Arrival Date": "2020-01-04",
-                    //     "Foreign Country": "Germany",
-                    //     "mode_of_transport_international": "Plane",
-                    //     "mode_of_transport_national": "Bus",
-                    //     "created_date": "2020-04-05T09:48:45.161656Z",
-                    //     "remarks": "America",
-                    //     "traveller": 25,
-                    //     "created_by": 1,
-                    //     "ward": 8,
-                    //     "name": "Ullu Hari Lamsal",
-                    //     "age": 12,
-                    //     "gender": 1
-                    // }
+                data: JSON.stringify(
+                    {
+                        "id": 17,
+                        "Arrival Date": "2020-01-04",
+                        "Foreign Country": "Germany",
+                        "mode_of_transport_international": "Plane",
+                        "mode_of_transport_national": "Bus",
+                        "created_date": "2020-04-05T09:48:45.161656Z",
+                        "remarks": "America",
+                        "traveller": 25,
+                        "created_by": 1,
+                        "ward": 8,
+                        "name": "Ullu Hari Lamsal",
+                        "age": 12,
+                        "gender": 1
+                    }
                 ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
@@ -86,6 +86,7 @@
             //     console.log(data,status);
             // }
             );
+        };
     }
 
     );

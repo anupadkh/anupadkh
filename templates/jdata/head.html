@@ -30,14 +30,14 @@
             <div class="row" style="background-color:#00cc66">
                 <div class="cell-3 col-md-3 img-container" style="max-width: 15%; "> <img
                         src={% static 'Emblem_of_Nepal.svg' %} alt="Nepal Logo" style="height:100px"; /> </div>
-                <div class="cell-8 col-md-9 text-center" style="font-family: Noto Sans;">
+                <div class="cell-8 col-md-8 text-center" style="font-family: Noto Sans;">
                     <h4>प्रदेश सरकार</h4>
                     <h3>उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालय</h3>
                     <h5>गण्डकी प्रदेश, पोखरा, नेपाल</h5>
                 </div>
-                <div class="cell-1 col-md-9 text-center">
+                <div class="cell-1 col-md-1 text-center">
                     {% if login %}
-                    <a class="button primary" href="{% url 'users:logout' %}">Logout</a>
+                    <a class="btn btn-primary float-right" href="{% url 'users:logout' %}">Logout</a>
                     {% endif %}
                 </div>
             </div>

@@ -19,14 +19,14 @@ def index(request):
 def login_view(request):
     #Loggin in the UsersConfig
     if request.user.is_authenticated:
-        return redirect('lb:dashboard')
+        return redirect('lb:table_view', id=0)
     if request.method == 'POST':
         #Do sth
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('lb:dashboard')
+            return redirect('lb:table_view',id=0)
 
     else:
         #instantiate
