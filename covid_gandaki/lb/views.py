@@ -50,7 +50,7 @@ def list_dtable(request,id):
             'model': 'Hospital',
             'heading':'क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण',
             'page': 'jdata/quarantine.html',
-            'url': '/router/quarantines',
+            'url': '/router/quarantines/',
         },
         2:{
             'app': 'public',
@@ -95,8 +95,10 @@ def list_dtable(request,id):
     }
     App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
     context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
-
+    from pprint import pprint
+    context['data'] = True
     if App.objects.all().count() != 0:
+        pprint('count is not 0')
         context['data'] = False
     if id==1:
         # context = {'login': True,'table2_set':True}

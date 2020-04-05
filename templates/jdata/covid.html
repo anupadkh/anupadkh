@@ -54,35 +54,35 @@
 
             //     }
             // )
-        // };
-        $.ajax({
-            url: "{{url}}",
-            type: "POST",
-            data: JSON.stringify(
-                {
-                    "id": to_post[0],
-                    "name": to_post[1],
-                    "total_beds": to_post[2],
-                    "ward": to_post[3],
-                    "is_quarantine":to_post[4],
-                    "currently_quarantined":to_post[5],
+            // };
+            $.ajax({
+                url: "{{url}}",
+                type: "POST",
+                data: JSON.stringify(
+                    {
+                        "id": to_post[0],
+                        "name": to_post[1],
+                        "total_beds": to_post[2],
+                        "ward": to_post[3],
+                        "is_quarantine": to_post[4],
+                        "currently_quarantined": to_post[5],
+                    }
+                ), contentType: "application/json",
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                },
+                success: function (arg) {
+                    // location.reload()
+                    console.log(arg);
                 }
-            ), contentType: "application/json",
-            beforeSend: function (xhr, settings) {
-                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-            },
-            success: function (arg) {
-                // location.reload()
-                console.log(arg);
             }
+                // function(data,status){
+                //     alert("saved!");
+                //     console.log(data,status);
+                // }
+            );
         }
-            // function(data,status){
-            //     alert("saved!");
-            //     console.log(data,status);
-            // }
-        );
     }
-}
 
     );
 
@@ -124,7 +124,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-    data: [[ , "Sample: LakeCity Hospital: यसलाई हटाउनुहोस् ।" ,  50, 2, 1,,,,]],
+    data: [[, "Sample: LakeCity Hospital: यसलाई हटाउनुहोस् ।", 50, 2, 1]],
         {% else %}
     url: "{{url}}",
         {% endif %}
@@ -155,15 +155,6 @@
         },
         {
             type: 'numeric',
-            title: 'वडा',
-            width: '50',
-            mask: '#,##', decimal: '.',
-            name: 'ward'
-
-            // editor: 'number',
-        },
-        {
-            type: 'numeric',
             title: 'हाल क्वारेन्टाइनमा बसेकाहरुको संख्या',
             width: '250',
             name: 'currently_quarantined',
@@ -175,15 +166,14 @@
             title: 'क्वारेन्टाइन क्षेत्र या आइसोलेसन क्षेत्र',
             width: '150',
             name: 'is_quarantine',
-            source: [{ "id": 0, "name": 'क्वारेन्टाइन' }, { "id": 1, "name": 'आइसोलेसन' }],
-            
-            
+            source: [{ "id": 1, "name": 'क्वारेन्टाइन' }, { "id": 1, "name": 'आइसोलेसन' }, { "id": 3, "name": 'दुवै' }]
+
             // editor: 'number',
         },
         {
-            type:'hidden'
+            type: 'hidden'
         },
-        {type:'hidden'},
+        { type: 'hidden' },
         { type: 'hidden' },
         { type: 'hidden' },
 
