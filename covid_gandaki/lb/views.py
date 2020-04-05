@@ -89,8 +89,8 @@ def list_dtable(request,id):
     App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
     context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
 
-    if App.objects.all().count() == 0:
-        context['nodata'] = True
+    if App.objects.all().count() != 0:
+        context['data'] = True
     if id==1:
         # context = {'login': True,'table2_set':True}
         context['table2_set'] = True

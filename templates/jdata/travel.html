@@ -65,7 +65,7 @@
         table = jexcel(document.getElementById('spreadsheet'), {
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
-            {% if nodata %}
+            {% if data %}
             data:[[,,,"Sample: हरि काफ्ले", 50, 1,3,"India","Aeroplane","Bus","2020-01-12","यसलाई हटाउनुहोस्"]],
             {% else %}
             url: "{{url}}",
