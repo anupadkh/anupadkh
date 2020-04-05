@@ -90,7 +90,7 @@ def list_dtable(request,id):
     context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
 
     if App.objects.all().count() != 0:
-        context['data'] = True
+        context['data'] = False
     if id==1:
         # context = {'login': True,'table2_set':True}
         context['table2_set'] = True
