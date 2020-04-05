@@ -13,10 +13,6 @@ class TravelViewSet(viewsets.ModelViewSet):
     queryset = form.Travel.objects.all()
     serializer_class  = form.Lb_Travel_Serializer
 
-    @method_decorator(csrf_exempt)
-    def create(self, *args, **kwargs):
-        return super(TravelViewSet, self).create(*args, **kwargs)
-
     
 
     
@@ -55,8 +51,6 @@ class ProductionViewSet(viewsets.ModelViewSet):
 
 class MedicalViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Medical.objects.all()
-    if len(queryset) == 0:
-        queryset = [food_meds.Medical()]
     serializer_class = food_meds.Lb_Medical_Serializer
 
 
