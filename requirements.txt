@@ -1,2 +1,5 @@
 django-crispy-forms
 requests
+djangorestframework-bulk
+django-material 
+django-viewflow
