@@ -25,7 +25,7 @@ def index(request):
     return HttpResponse('Hello')
 
 def test(request):
-    return render(request,'jdata/travel.html')
+    return render(request,'jdata/travel.html',context={'nodata':True})
 
 def datatable(request):
     return render(request, 'dtables/drf_datatable.html' )

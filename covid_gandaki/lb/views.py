@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 import requests
 
+from django.apps import apps
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 # Create your views here.
 from .models import Person2
@@ -35,6 +36,40 @@ def index_dtable(request):
 
 @login_required(login_url='users:login')
 def list_dtable(request,id):
+    applications = {
+        0:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        1:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        2:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        3:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        4:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        5:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        6:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+        7:{
+            'app': 'form',
+            'model': 'Travel'
+        },
+    }
     headings = [
         'विदेशवाट मा आएकाहरुको विवरण',
         'क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण',
@@ -44,6 +79,7 @@ def list_dtable(request,id):
         'तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण',
         'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण'
         ]
+        
     mydict = {
         0: 'base/data_tables.html',
         1: 'data/isolation.html',

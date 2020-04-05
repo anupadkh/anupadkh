@@ -41,6 +41,8 @@
         var cellName = jexcel.getColumnNameFromId([x, y]);
         // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
         console.log('New change on cell ' + cellName + ' to: ' + value + '');
+        console.log(x,y);
+
     };
     var beforeChange = function (instance, cell, x, y, value) {
         var cellName = jexcel.getColumnNameFromId([x, y]);
@@ -62,13 +64,19 @@
 
         table = jexcel(document.getElementById('spreadsheet'), {
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
+            
+            {% if nodata %}
+            data:[[,,,"Sample: हरि काफ्ले", 50, 1,3,"India","Aeroplane","Bus","2020-01-12","यसलाई हटाउनुहोस्"]],
+            {% else %}
             url: '{% url 'snippets:travellers' %}',
+            {% endif %}
             columns: [
                 //  type: hidden, dropdown, text, calendar, text
                 // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
                 {
                     type: 'hidden',
                     name: 'id'
+                    
                 },
                 {
                     type: 'hidden',
@@ -77,12 +85,14 @@
                 {
                     type: 'hidden',
                     name: 'created_by'
+                    
                 },
                 {
                     type: 'text',
                     title: 'नाम',
                     width: '150',
-                    name: 'name'
+                    name: 'name',
+                    primaryKey: true
                 },
                 {
                     type: 'text',

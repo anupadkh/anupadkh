@@ -15,7 +15,8 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
     
     class Meta:
         model = Travel
-        exclude = ['created_date']
+        fields = "__all__"
+        read_only_fields = ['created_date','created_by','traveller']
     
     @transaction.atomic
     def create(self,validated_data):
