@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'material.frontend',
     'viewflow',
     'viewflow.frontend',
+    'crispy_forms',
     
     'covid_gandaki.food_meds',
     'covid_gandaki.users',
