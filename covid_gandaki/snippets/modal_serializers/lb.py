@@ -220,5 +220,6 @@ class ReliefFundSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReliefFund
         fields = '__all__'
+        read_only_fields = ['submitter','office','receiver']
 
     

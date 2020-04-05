@@ -74,8 +74,11 @@
                 //  type: hidden, dropdown, text, calendar, text
                 // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
                 {
-                    type: 'hidden',
-                    name: 'id'
+                    type: 'text',
+                    title: 'Key',
+                    name: 'id',
+                    readOnly:true,
+                    primaryKey: true
                     
                 },
                 {
@@ -91,8 +94,8 @@
                     type: 'text',
                     title: 'नाम',
                     width: '150',
-                    name: 'name',
-                    primaryKey: true
+                    name: 'name'
+                    // primaryKey: true
                 },
                 {
                     type: 'text',
