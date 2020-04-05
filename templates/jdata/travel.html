@@ -25,7 +25,7 @@
         <button class="btn btn-primary float-right" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
     </div>
 </div>
-
+{% csrf_token %}
 <div id="spreadsheet" style="margin-top: 20px;"></div>
 
 <script>
@@ -55,13 +55,17 @@
             document.getElementById("column_header").innerHTML = table.getHeader(x1)
     };
 
+    function ask(){
+        return confirm("Delete ?")
+        
+    }
+
         table = jexcel(document.getElementById('spreadsheet'), {
-            data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2}],
+            // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             url: '{% url 'snippets:travellers' %}',
             columns: [
                 //  type: hidden, dropdown, text, calendar, text
                 // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
-
                 {
                     type: 'hidden',
                     name: 'id'
@@ -140,7 +144,6 @@
 
                     // editor: 'number',
                 },
-                 
                 
                 {
                     type: 'text',
@@ -209,12 +212,29 @@
             onchange: changed,
             onbeforechange: beforeChange,
             onselection: selectionActive,
+            persistance: "/router/travel/?format=json",
+            allowDeleteColumn: false,
+            allowInsertColumn: false,
+            allowManualInsertRow: false,
+            defaultColWidth: "70",
+            onbeforedeleterow: ask,
             
 
         });
     var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
     // };
-
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
 
 </script>
 

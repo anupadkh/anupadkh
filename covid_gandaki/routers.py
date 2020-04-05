@@ -1,12 +1,25 @@
 # from covid_gandaki.users.models import User
 from rest_framework import routers, serializers, viewsets
+from rest_framework.response import Response
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from covid_gandaki.snippets.modal_serializers import lb,users,form,food_meds,public
 # ViewSets define the view behavior.
 
+
+
 class TravelViewSet(viewsets.ModelViewSet):
     queryset = form.Travel.objects.all()
     serializer_class  = form.Lb_Travel_Serializer
+
+    @method_decorator(csrf_exempt)
+    def create(self, *args, **kwargs):
+        return super(TravelViewSet, self).create(*args, **kwargs)
+
+    
+
+    
 
 
 
@@ -42,6 +55,8 @@ class ProductionViewSet(viewsets.ModelViewSet):
 
 class MedicalViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Medical.objects.all()
+    if len(queryset) == 0:
+        queryset = [food_meds.Medical()]
     serializer_class = food_meds.Lb_Medical_Serializer
 
 
