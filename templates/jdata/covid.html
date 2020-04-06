@@ -78,8 +78,9 @@
                     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                 },
                 success: function (arg) {
-                    // location.reload()
-                    console.log(arg);
+                    if (i == data.length-1) {
+                        location.reload()};
+                    // console.log(arg);
                 },
                 async: false,
             }
@@ -157,6 +158,14 @@
             title: 'उमेर',
             width: '150',
             name: 'age',
+            mask: '#,##', decimal: '.',
+
+        },
+         {
+            type: 'numeric',
+            title: 'वार्ड',
+            width: '150',
+            name: 'ward',
             mask: '#,##', decimal: '.',
 
         },
