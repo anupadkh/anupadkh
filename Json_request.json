@@ -87,6 +87,31 @@ http: //localhost:8000/snip/snippets/ [
     }
 ]
 
+"id": to_post[
+    0
+],
+"receiver_name": to_post[
+    1
+],
+"receiver_address": to_post[
+    2
+],
+"ward": to_post[
+    2
+],
+"mobile": to_post[
+    3
+],
+"father_name": to_post[
+    4
+],
+"grandfather_name": to_post[
+    5
+],
+"relief_details": to_post[
+    6
+]
+
 http: //localhost:8000/snip/relief/ [
     {
         "id": 1,

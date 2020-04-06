@@ -37,11 +37,7 @@
         data = table.getData();
         for (let i = 0; i < data.length; i++) {
             to_post = data[i];
-            $.ajax({
-                url: "{{url}}",
-                type: "POST",
-                data: JSON.stringify(
-                    {
+            my_obj = {
                 "id": to_post[0],
                 "receiver_name": to_post[1],
                 "receiver_address": to_post[2],
@@ -50,7 +46,15 @@
                 "father_name": to_post[4],
                 "grandfather_name": to_post[5],
                 "relief_details": to_post[6]
-            }
+            };
+            if (my_obj.id == "") {
+                delete my_obj.id;
+            };
+            $.ajax({
+                url: "{{url}}",
+                type: "POST",
+                data: JSON.stringify(
+                    my_obj
             ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
@@ -58,7 +62,8 @@
             success: function (arg) {
                 // location.reload()
                 console.log(arg);
-            }
+            },
+            async: false,
         }
             // function(data,status){
             //     alert("saved!");

@@ -55,18 +55,22 @@
             //     }
             // )
         // };
+        my_obj = {
+                "id": to_post[0],
+                "name": to_post[1],
+                "total_beds": to_post[2],
+                "ward": to_post[3],
+                "is_quarantine": to_post[4],
+                "currently_quarantined": to_post[5],
+            };
+        if (my_obj.id == "") {
+                delete my_obj.id;
+            };
         $.ajax({
             url: "{{url}}",
             type: "POST",
             data: JSON.stringify(
-                {
-                    "id": to_post[0],
-                    "name": to_post[1],
-                    "total_beds": to_post[2],
-                    "ward": to_post[3],
-                    "is_quarantine":to_post[4],
-                    "currently_quarantined":to_post[5],
-                }
+                my_obj
             ), contentType: "application/json",
             beforeSend: function (xhr, settings) {
                 xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
@@ -74,7 +78,8 @@
             success: function (arg) {
                 // location.reload()
                 console.log(arg);
-            }
+            },
+            async: false,
         }
             // function(data,status){
             //     alert("saved!");

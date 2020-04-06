@@ -37,17 +37,21 @@
         data = table.getData();
         for (let i = 0; i < data.length; i++) {
             to_post = data[i];
+            my_obj = {
+                "id": to_post[0],
+                "name": to_post[1],
+                "required_qty": to_post[2],
+                "available": to_post[3],
+                "remarks": to_post[4]
+            };
+            if (my_obj.id == "") {
+                delete my_obj.id;
+            };
             $.ajax({
                 url: "{{url}}",
                 type: "POST",
                 data: JSON.stringify(
-                    {
-                        "id": to_post[0],
-                        "name": to_post[1],
-                        "required_qty": to_post[2],
-                        "available": to_post[3],
-                        "remarks": to_post[4]
-                    }
+                    
                 ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
@@ -55,7 +59,8 @@
                 success: function (arg) {
                     // location.reload()
                     console.log(arg);
-                }
+                },
+                async: false,
             }
                 // function(data,status){
                 //     alert("saved!");

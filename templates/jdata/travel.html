@@ -36,12 +36,29 @@
         data = table.getData();
         for (let i=0; i<data.length; i++){
             to_post = data[i];
+            my_obj = {
+                "id": to_post[0],
+                "name": to_post[3],
+                "age": to_post[4],
+                "gender": to_post[5],
+                "ward": to_post[6],
+                "Foreign Country": to_post[7],
+                "mode_of_transport_international": to_post[8],
+                "mode_of_transport_national": to_post[9],
+                "Arrival Date": to_post[10],
+                "remarks": to_post[11]
+
+            };
+            if (my_obj.id == ""){
+                delete my_obj.id;
+            };
+        
             
             $.ajax({
                 url:"{{url}}", 
                 type:"POST", 
                 
-                data: JSON.stringify(
+                data: JSON.stringify( my_obj
                     // {
                     //     "id": 17,
                     //     "Arrival Date": "2020-01-04",
@@ -57,19 +74,7 @@
                     //     "age": 12,
                     //     "gender": 1
                     // }
-                {
-                    "id":to_post[0],
-                    "name":to_post[3],
-                    "age":to_post[4],
-                    "gender":to_post[5],
-                    "ward":to_post[6],
-                    "Foreign Country": to_post[7],
-                    "mode_of_transport_international": to_post[8],
-                    "mode_of_transport_national":to_post[9],
-                    "Arrival Date" : to_post[10],
-                    "remarks": to_post[11]
-                 
-                }
+                
                 ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
@@ -77,7 +82,8 @@
                     },
                 success: function (arg) {
                     // location.reload()
-                }
+                },
+                async: false,
                 
             } 
             // function(data,status){
