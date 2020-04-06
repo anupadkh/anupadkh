@@ -57,7 +57,9 @@
                     xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                 },
                 success: function (arg) {
-                    // location.reload()
+                    if (i == data.length - 1) {
+                        location.reload()
+                    };
                     console.log(arg);
                 },
                 async: false,
