@@ -42,12 +42,14 @@
                 type: "POST",
                 data: JSON.stringify(
                     {
-                        "id": if(to_post[0]== 0) null,
-                "name": to_post[1],
-                "qty": to_post[2],
-                "qty_unit": to_post[3],
-                "sufficiency": to_post[4],
-                "remarks": to_post[5],
+                "id": to_post[0],
+                "receiver_name": to_post[1],
+                "receiver_address": to_post[2],
+                "ward": to_post[2],
+                "mobile": to_post[3],
+                "father_name": to_post[4],
+                "grandfather_name": to_post[5],
+                "relief_details": to_post[6]
             }
             ), contentType: "application/json",
                 beforeSend: function (xhr, settings) {
@@ -106,7 +108,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-    data: [[, 'पेट्रोल', 10, "लिटर", 5, "यसलाई हटाउनुहोस्"]],
+    data: [[, 'पाउनेको नाम', 10, "लिटर", 5, "यसलाई हटाउनुहोस्"]],
         {% else %}
     url: "{{url}}",
         {% endif %}
@@ -124,41 +126,56 @@
         },
         {
             type: 'text',
-            title: 'आवश्यक वस्तुको नाम',
+            title: 'राहत प्राप्त गर्ने व्यक्तिको नाम',
             width: '200',
-            name: 'name'
+            name: 'receiver_name'
             // primaryKey: true
-        },
-        {
-            type: 'numeric',
-            title: 'मौज्दात परिमाण/ संख्या',
-            width: '50',
-            name: 'qty',
-            mask: '#,##', decimal: '.',
-
         },
         {
             type: 'text',
-            title: 'परिमाण मापन विधि',
-            width: '100',
-            name: 'qty_unit'
+            title: 'ठेगाना',
+            width: '120',
+            name: 'receiver_address'
             // primaryKey: true
         },
+        {
+            type: 'numeric',
+            title: 'वडा नं',
+            width: '50',
+            name: 'ward',
+            mask: '#,##', decimal: '.',
+
+        },
+        
 
         {
             type: 'numeric',
-            title: 'माग गरिएको बस्तुले पुग्ने अवधि',
+            title: 'मोबाइल नं',
             width: '50',
             mask: '#,##', decimal: '.',
-            name: 'sufficiency'
+            name: 'mobile'
 
             // editor: 'number',
         },
         {
             type: 'text',
-            title: 'अन्य विवरण',
-            width: '300',
-            name: 'remarks'
+            title: 'बाबुको नाम',
+            width: '100',
+            name: 'father_name'
+        },
+        {
+            type: 'text',
+            title: 'बाजेको नाम',
+            width: '100',
+            name: 'grandfather_name'
+            
+        },
+        {
+            type: 'text',
+            title: 'राहत विवरण',
+            width: '200',
+            name: 'relief_details'
+            
         },
         { type: 'hidden' },
         { type: 'hidden' },

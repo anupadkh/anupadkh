@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 import requests
 
@@ -8,6 +8,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView, D
 # Create your views here.
 from .models import Person2
 from .forms import Person2Form
+from covid_gandaki.lb.sub_models.rahat import ReliefFund
 
 def index(request):
     context = {}
@@ -88,17 +89,24 @@ def list_dtable(request,id):
             'url' : '/router/needy/',
         },
         7:{
-            'app': 'form',
-            'model': 'Travel'
-
+            # 'app': 'lb',
+            # 'model': 'sub_models.rahat.'
+            'heading' : 'राहत सम्बन्धी जानकारी',
+            'url' : '/router/relief/'
         },
     }
-    App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
-    context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
-    from pprint import pprint
+
+    if  id<7:
+        App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
+        context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
+    elif id == 7:
+        App = ReliefFund
+        context = {
+            'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url']}
+    else:
+        return redirect('lb:table_view',id=0)
     context['data'] = True
     if App.objects.all().count() != 0:
-        pprint('count is not 0')
         context['data'] = False
     if id==1:
         # context = {'login': True,'table2_set':True}
