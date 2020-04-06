@@ -43,9 +43,9 @@
                 data: JSON.stringify(
                     {
                         "id": to_post[0],
-                        "name": to_post[1],
-                        "required_qty": to_post[2],
-                        "available": to_post[3],
+                        "full_name": to_post[1],
+                        "age": to_post[2],
+                        "type_of_need": to_post[3],
                         "remarks": to_post[4]
                     }
                 ), contentType: "application/json",
@@ -105,7 +105,7 @@
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
             {% if data %}
-    data: [[, 'Sample: धान', "100 मुरी", 'daily', "यसलाई हटाउनुहोस्"]],
+    data: [[, 'Sample: हर्क गुरुङ्ग', 12, "अपाङ्ग", "यसलाई Edit गर्नुहोस"]],
         {% else %}
     url: "{{url}}",
         {% endif %}
@@ -123,25 +123,24 @@
         },
         {
             type: 'text',
-            title: 'मेडिकल सामाग्रीको नाम',
+            title: 'नाम',
             width: '200',
             name: 'name'
             // primaryKey: true
         },
         {
             type: 'numeric',
-            title: 'आवश्यक परिमाण',
+            title: 'उमेर',
             width: '50',
-            name: 'qty',
+            name: 'age',
             mask: '#,##', decimal: '.'
 
         },
         {
-            type: 'numeric',
-            title: 'मौजदात परिमाण',
+            type: 'text',
+            title: 'आवश्यकताको किसिम',
             width: '100',
-            name: 'produce_freq',
-            mask: '#,##', decimal: '.'
+            name: 'type_of_need',
             // primaryKey: true
         },
         {

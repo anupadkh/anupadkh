@@ -81,11 +81,11 @@ def list_dtable(request,id):
             'url' : '/router/medical/',
         },
         6:{
-            'page':'jdata/need.html',
+            'page':'jdata/needy.html',
             'app': 'public',
             'model': 'Needy',
             'heading': 'सडक वालवालिका र दैनिक ज्यालामा काम गर्ने कामदार, क्वारेन्टाइनमा बसेका र आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People) सम्वन्धि विवरण',
-            'url' : 'router/needy',
+            'url' : '/router/needy/',
         },
         7:{
             'app': 'form',
