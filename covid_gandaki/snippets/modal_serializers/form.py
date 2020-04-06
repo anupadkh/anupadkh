@@ -86,5 +86,8 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
         #     data['ward'] = ''
         #     data['district']=''
         # return data
-        
+    
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(Lb_Travel_Serializer, self).__init__(many=many, *args, **kwargs)
         

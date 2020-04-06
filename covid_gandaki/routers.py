@@ -76,6 +76,7 @@ class ProductionViewSet(viewsets.ModelViewSet):
 class MedicalViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Medical.objects.all()
     serializer_class = food_meds.Lb_Medical_Serializer
+    
 
 
 # Routers provide an easy way of automatically determining the URL conf.
