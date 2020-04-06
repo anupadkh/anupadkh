@@ -48,7 +48,8 @@ class NeedySerializer(serializers.ModelSerializer):
             instance.created_by = emp_submitter.user
             instance.municipality = emp_submitter.municipality.address.mun
         else:
-            needy = validated_data.get('person')
+            instance = Needy.objects.get(pk=self.initial_data['id'])
+            needy = instance.person
             needy.age = validated_data.get('age',needy.age)
             needy.full_name = validated_data.get('full_name',needy.full_name)
             needy.save()
@@ -59,7 +60,7 @@ class NeedySerializer(serializers.ModelSerializer):
             #         validated_data.pop(x)
             #     except:
             #         pass
-            instance = Needy.objects.get(pk=self.initial_data['id'])
+            
             instance.person = needy
             instance.type_of_need = validated_data['type_of_need']
             instance.remarks = validated_data['remarks']
@@ -71,7 +72,7 @@ class NeedySerializer(serializers.ModelSerializer):
     class Meta:
         model = Needy
         fields='__all__'
-        read_only=['create_date']
+        read_only_fields=['create_date', 'person']
 
 
 class QTPersonSerializer(serializers.ModelSerializer):

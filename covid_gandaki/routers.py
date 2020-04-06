@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from covid_gandaki.snippets.modal_serializers import lb,users,form,food_meds,public
 # ViewSets define the view behavior.
-
+from rest_framework.decorators import action
 
 # from rest_framework_bulk import (
 #     BulkListSerializer,
@@ -37,6 +37,27 @@ class TravelViewSet(viewsets.ModelViewSet):
     queryset = form.Travel.objects.all()
     serializer_class  = form.Lb_Travel_Serializer
 
+    @action(detail=True, methods=['get','post'])
+    def user(self,request,pk=None):
+        if request.method=='GET':
+            return Response ({'Hi':'There'})
+        if request.method == 'POST':
+            return Response({"GO":"Now"})
+        y = form.Travel.objects.filter(created_by=request.user)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+        # return Response(serializer.data)
+
+    # @action(detail=False)
+    # def user(self, request):
+    #     serializer = self.get_serializer(
+    #         form.Travel.objects.filter(created_by=request.user), many=True)
+    #     return Response(serializer.data)
+
+    
+        
+
+
     
 
     
@@ -52,6 +73,16 @@ class UserViewSet(viewsets.ModelViewSet):
 class ReliefViewSet(viewsets.ModelViewSet):
     queryset = lb.ReliefFund.objects.all()
     serializer_class = lb.ReliefFundSerializer
+
+    # @action(detail=False, methods=['get'])
+    # def user(self, request, pk=None):
+    #     if pk != None:
+    #         serializer = self.get_serializer(
+    #             lb.ReliefFund.objects.all(), many=True)
+    #     else:
+    #         serializer = self.get_serializer(
+    #             lb.ReliefFund.objects.filter(submitter=pk), many=True)
+    #     return Response(serializer.data)
 
 class HospitalViewSet(viewsets.ModelViewSet):
     queryset = lb.Hospital.objects.all()
