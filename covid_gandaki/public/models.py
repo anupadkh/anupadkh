@@ -10,7 +10,7 @@ class Person(models.Model):
     permanent_address = models.CharField(max_length=500, null=True, blank=True)
     current_address = models.CharField(max_length=500, null=True, blank=True)
     mobile = models.CharField(
-        max_length=300, null=True, blank=True, unique=True)
+        max_length=300, null=True, blank=True)
     remarks = models.TextField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)
     location = models.CharField(max_length=300, null=True, blank=True)
@@ -18,7 +18,7 @@ class Person(models.Model):
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     current_full_address = models.ForeignKey(
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
-    belong_to_form = models.IntegerField(default=1)
+    belong_to_form = models.IntegerField(default=1) # Type of Form Actually: 1 = Local Body, 3 = General Public
     gender = models.IntegerField(default=1, verbose_name='लिङ्ग')
 
     def __str__(self):

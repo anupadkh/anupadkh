@@ -30,7 +30,78 @@ def test(request):
 def datatable(request):
     return render(request, 'dtables/drf_datatable.html' )
 
-@transaction.atomic
+
+def make_person(request, values):
+    theerrors = []
+    person = Person(
+        full_name=values['person_name'],
+        mobile=values['mobile'],
+        location=str("%s,%s" % (values['long'], values['lat'])),
+        permanent_address=values['perm_address'],
+        current_address=values['temp_address'],
+        age=values['age'],
+        belong_to_form=3,
+        )
+    try:
+        n = person.save()
+    except:
+        theerrors.append(
+            'Error Saving Person' + values['person_name'] + ' \n The person already exists')
+
+    for x in values['food'].split('\r\n'):
+        food = x.split(':')
+        if (food[0] == ""):
+            continue
+        else:
+            food = Food(name=food[0], qty=food[1], qty_unit=food[2],
+                        sufficiency=food[3], ordered_by=person.id, order_type=1)
+            # food.save()
+            try:
+                food.save()
+            except:
+                theerrors.append('Error saving food')
+
+    for x in values['members'].split('\r\n'):
+        member = x .split(':')
+        if (member[0] == ""):
+            continue
+        else:
+            new_member = Person(
+                full_name=member[0], age=member[1], belong_to_form=3)
+            # new_member.save()
+            # fm = Family(head=person, member=new_member)
+            try:
+                new_member.save()
+                fm = Family(head=person, member=new_member)
+            except:
+                theerrors.append('Error saving ' + member[0])
+                pass
+
+    for x in values['medicine'].split('\r\n'):
+        medicine = x .split(':')
+        if (medicine[0] == ""):
+            continue
+        else:
+            new_medicine = Medicine(name=medicine[0], type_medicine=medicine[1], qty=medicine[2], sufficiency = medicine[3], ordered_by = person.id, order_type=1)
+            # new_medicine.save()
+        try:
+            new_medicine.save()
+
+        except:
+            theerrors.append('Error saving ' + medicine[0])
+
+    y = Delivery(person=person, mode_delivery=values['delivery'])
+    y.save()
+
+    if len(theerrors) == 0:
+        return render(request, 'base/body.html', context={'message': "Submit Successful! तपाईँको माग दर्ता भएको छ ।  हामी तपाईँलाई मोबाइलमा सम्पर्क गर्नेछौँ । धन्यवाद "})
+    else:
+        return render(request, 'form/index.html', context={'errors': theerrors})
+    for x in values:
+        print(values[x])
+    return HttpResponse(values)
+
+
 def submit_general(request):
     mydict = {
         'person_name':'full_name',
@@ -39,77 +110,14 @@ def submit_general(request):
         'age':'age'
 
     }
-    theerrors = []
+    
     values = request.POST
     try:
-        make_call = Person.objects.get(mobile=values['mobile'])
-
-        return render(request, 'base/body.html', context={'message': "Submission Already Registered!  However it was already entered. Please contact us for making changes."})
+        make_call = Person.objects.get(mobile=values['mobile'], belong_to_form=3)
+        return render(request, 'base/body.html', context={'message': "Submission Already Registered!  \n However it was already entered. Please contact us for making changes. \n It was registered by name " + make_call.full_name})
     except:
-        person = Person(
-            full_name=values['person_name'],
-            mobile=values['mobile'],
-            location=str("%s,%s"%(values['long'], values['lat'])),
-            permanent_address = values['perm_address'],
-            current_address = values['temp_address'],
-            age = values['age']
-            )
-        try:
-            n = person.save()
-        except:
-            theerrors.append('Error Saving Person')
-
-        for x in values['food'].split('\r\n'):
-            food = x.split(':')
-            if (food[0] == ""):
-                continue
-            else:
-                food = Food(name=food[0], qty=food[1], qty_unit=food[2], sufficiency=food[3], ordered_by=person.id, order_type=1)
-                # food.save()
-                try:
-                    food.save()
-                except:
-                    theerrors.append('Error saving food')
+        return make_person(request,values)
         
-        for x in values['members'].split('\r\n'):
-            member = x .split(':')
-            if (member[0] == ""):
-                continue
-            else:
-                new_member = Person(full_name=member[0], age=member[1])
-                # new_member.save()
-                # fm = Family(head=person, member=new_member)
-                try:
-                    new_member.save()
-                    fm = Family(head=person, member=new_member)
-                except:
-                    theerrors.append('Error saving '+ member[0])
-                    pass
-
-        for x in values['medicine'].split('\r\n'):
-            medicine = x .split(':')
-            if (medicine[0] == ""):
-                continue
-            else:
-                new_medicine = Medicine(name=medicine[0], type_medicine=medicine[1], qty= medicine[2], sufficiency = medicine[3], ordered_by = person.id, order_type=1)
-                # new_medicine.save()
-            try:
-                new_medicine.save()
-
-            except:
-                theerrors.append('Error saving '+ medicine[0])
-
-        
-        y = Delivery(person=person, mode_delivery=values['delivery'])
-        y.save()
-            
-        if len(theerrors) == 0:
-            return render(request, 'base/body.html', context={'message': "Submit Successful! तपाईँको माग दर्ता भएको छ ।  हामी तपाईँलाई मोबाइलमा सम्पर्क गर्नेछौँ । धन्यवाद "})
-        else:
-            return render(request, 'form/index.html', context={'errors' : theerrors})
-    for x in values:
-        print(values[x])
-    return HttpResponse(values)
 
 
 @csrf_exempt
