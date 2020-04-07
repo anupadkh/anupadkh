@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee, Office
 from covid_gandaki.public.models import Person, Family
+from covid_gandaki.users.models import User, Employee
 from django.db import transaction
 
 class DistrictSerializer(serializers.ModelSerializer):
@@ -25,11 +26,22 @@ class HospitalSerializer(serializers.ModelSerializer):
         data['quarantine_count'] = Quarantines
         data['covid_count'] = Covids
         return data
+    
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        request = self.context['request']
+        employee = Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun # municipality refers to office actually
+        instance.mun = mun
+        instance.save()
+        return instance        
 
 
     class Meta:
         model = Hospital
         fields = '__all__'
+        read_only_fields = ['mun']
+
 
 
 

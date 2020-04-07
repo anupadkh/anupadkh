@@ -80,7 +80,9 @@
     // var data = ;
     var loaded = function (instance) {
         // $('#log').append('New data is loaded');
-        console.log('New Data Loaded');
+        if (table.getData().length==0){
+            table.setData([[, 'Sample: धान', "100 मुरी", 'daily', "यसलाई हटाउनुहोस्"]]);
+        }
         x = 2;
     };
     var changed = function (instance, cell, x, y, value) {
@@ -111,11 +113,11 @@
     table = jexcel(document.getElementById('spreadsheet'), {
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
             
-            {% if data %}
-    data: [[, 'Sample: धान', "100 मुरी", 'daily', "यसलाई हटाउनुहोस्"]],
-        {% else %}
-    url: "{{url}}",
-        {% endif %}
+            
+    
+        
+    url: "{{url}}user/",
+        
     columns: [
         //  type: hidden, dropdown, text, calendar, text
         // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html

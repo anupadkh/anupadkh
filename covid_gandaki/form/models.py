@@ -7,7 +7,7 @@ from covid_gandaki.users.models import User
 
 class Travel(models.Model):
     traveller = models.ForeignKey(Person, on_delete=models.CASCADE)
-    nepal_arrival_date = models.DateField(
+    nepal_arrival_date = models.TextField(
         verbose_name="नेपाल प्रवेश मिति", name="Arrival Date", blank=True, null=True)
     country_outside = models.CharField(
         verbose_name="बाहिर रहेको देश", name="Foreign Country", max_length=300)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from covid_gandaki.users.models import User, Nepali
+from covid_gandaki.users.models import User, Nepali, Employee
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -37,12 +37,12 @@ class TravelViewSet(viewsets.ModelViewSet):
     queryset = form.Travel.objects.all()
     serializer_class  = form.Lb_Travel_Serializer
 
-    @action(detail=True, methods=['get','post'])
+    @action(detail=False, methods=['get'])
     def user(self,request,pk=None):
-        if request.method=='GET':
-            return Response ({'Hi':'There'})
-        if request.method == 'POST':
-            return Response({"GO":"Now"})
+        # if request.method=='GET':
+        #     return Response ({'Hi':'There'})
+        # if request.method == 'POST':
+        #     return Response({"GO":"Now"})
         y = form.Travel.objects.filter(created_by=request.user)
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
@@ -69,6 +69,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = users.User.objects.all()
     serializer_class = users.UserSerializer
 
+    
+
+
 
 class ReliefViewSet(viewsets.ModelViewSet):
     queryset = lb.ReliefFund.objects.all()
@@ -88,25 +91,78 @@ class HospitalViewSet(viewsets.ModelViewSet):
     queryset = lb.Hospital.objects.all()
     serializer_class = lb.HospitalSerializer
 
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user )
+        y = lb.Hospital.objects.filter( mun = employee.municipality.address.mun )
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+
+
 class CovidViewSet(viewsets.ModelViewSet):
     queryset = public.QTPerson.objects.all()
     serializer_class = public.QTPersonSerializer
+
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        hospitals = lb.Hospital.objects.filter(mun = mun)
+        y = public.QTPerson.objects.filter(quarantined_zone__in = hospitals )
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+
 
 class NeedyViewSet(viewsets.ModelViewSet):
     queryset = public.Needy.objects.all()
     serializer_class = public.NeedySerializer
 
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = public.Needy.objects.filter(municipality = mun)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+
+
+    
+
 class PetroleumViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Petroleum.objects.all()
     serializer_class = food_meds.Lb_Petroleum_Serializer
+
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = food_meds.Petroleum.objects.filter(demand_by=mun)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
 
 class ProductionViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Production.objects.all()
     serializer_class = food_meds.Lb_Production_Serializer
 
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = food_meds.Production.objects.filter(produced_by=mun)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+
 class MedicalViewSet(viewsets.ModelViewSet):
     queryset = food_meds.Medical.objects.all()
     serializer_class = food_meds.Lb_Medical_Serializer
+
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = food_meds.Medical.objects.filter(produced_by=mun)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
     
 
 
