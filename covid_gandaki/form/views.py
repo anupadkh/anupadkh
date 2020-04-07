@@ -94,7 +94,7 @@ def make_person(request, values):
     y.save()
 
     if len(theerrors) == 0:
-        return render(request, 'base/body.html', context={'message': "Submit Successful! तपाईँको माग दर्ता भएको छ ।  हामी तपाईँलाई मोबाइलमा सम्पर्क गर्नेछौँ । धन्यवाद "})
+        return render(request, 'base/body.html', context={'message': "तपाईले माग गर्नु भएको विवरण तपाईले आफ्नो स्थानीय तह वा वडा बाट लिन सम्पर्क गर्नु होला । हामी सकेसम्म उक्त वस्तुहरु तपाईको नजिकैको स्थानीय तह वा वडामा पठाउने छौ । विवरण माग गर्नु भएकोमा धन्यवाद । भन्ने म्यासेज आउने बनाउनु होला ।"})
     else:
         return render(request, 'form/index.html', context={'errors': theerrors})
     for x in values:
