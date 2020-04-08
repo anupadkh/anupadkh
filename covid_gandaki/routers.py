@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.permissions import BasePermission, SAFE_METHODS
+
 from covid_gandaki.snippets.modal_serializers import lb,users,form,food_meds,public
 # ViewSets define the view behavior.
 from rest_framework.decorators import action
@@ -54,9 +56,25 @@ class TravelViewSet(viewsets.ModelViewSet):
     #         form.Travel.objects.filter(created_by=request.user), many=True)
     #     return Response(serializer.data)
 
-    
-        
 
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS
+    
+class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = lb.District.objects.all()
+    serializer_class = lb.DistrictSerializer
+    permission_classes = [ReadOnly]
+
+    @action(detail=True, methods=['get'])
+    def mun(self,request,pk=None):
+        if pk==None:
+            y = lb.Municipality.objects.all()
+        else:
+            y = lb.Municipality.objects.filter(district=pk)
+        
+        serializer = lb.MunicipalitySerializer(y,many=True)
+        return Response(serializer.data)
 
     
 
@@ -177,4 +195,5 @@ router.register(r'needy', NeedyViewSet)
 router.register(r'medical', MedicalViewSet)
 router.register(r'sell', ProductionViewSet)
 router.register(r'supplies', PetroleumViewSet)
+router.register(r'district', DistrictViewSet)
 # router.register(r'travels', FooView.asView())

@@ -35,7 +35,7 @@ def user(request):
         serializer = users.CreateUserSerializer(data=data)
         if serializer.is_valid():
             user_instance = serializer.save()
-            mun = lb.Office.objects.get(id=data['municipality'])
+            mun = lb.Office.objects.filter(address__mun=data['municipality'])[0]
             emp = Employee(user = user_instance, municipality = mun)
             emp.save()
             request.session['message'] = "You have been registered. Please contact MOITFE to activate."

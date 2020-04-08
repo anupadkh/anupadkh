@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 </head>
 <body>
 <div class="login-page">
@@ -20,11 +20,11 @@
             <br/>
             <input type="text" placeholder="email address" name="email"/>
             <!-- <input type="text" placeholder="email address" name="email" /> -->
-            
-            <select id="municipality" name="municipality">
-                <option value="-" id="loading">Loading</option>
+            <select id="district"><option value="-">Loading</option></select>
+            <select id="municipality" name="municipality" >
+                <option value="-" id="loading">पहिला जिल्ला रोज्नुहोस्</option>
             </select>
-            <button type="Submit" name="submit">Create</button>
+            <button type="Submit" name="submit" width="200" height="150">Create</button>
             <p class="message"> {{message}} <a href="#">Sign In</a></p>
         </form>
         <form class="login-form" method="POST" action="{% url 'users:login' %}">
@@ -37,22 +37,38 @@
     
     <script src="{% static 'js/login.js' %}"></script>
     <script>
-        let dropdown = $('#municipality');
-
-            dropdown.empty();
-
-            dropdown.append('<option selected="true" disabled>आफ्नो कार्यालय रोज्नुहोस्</option>');
-            dropdown.prop('selectedIndex', 0);
-
-            const url = '{% url 'form:muns' %}';
-
-            // Populate dropdown with list of provinces
-            $.getJSON(url, function (data) {
-                // console.log(data);
-                $.each(data, function (key, entry) {
-                    dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name));
-                })
-            });
+    
+        load_muns = function municipality(id) {
+                
+                let dropdown = $('#municipality');
+                dropdown.empty();
+                dropdown.append('<option selected="true" disabled>आफ्नो कार्यालय रोज्नुहोस्</option>');
+                dropdown.prop('selectedIndex', 0);
+                url = '/router/district/'+String(id) +'/mun/';
+                // Populate dropdown with list of provinces
+                $.getJSON(url, function (data) {
+                    // console.log(data);
+                    $.each(data, function (key, entry) {
+                        dropdown.append($('<option></option>').attr('value', entry.id).text(entry.mun_name));
+                    })
+                });
+            }
+        $('#district').empty().append(
+            "<option selected=\"false\" disabled>जिल्ला रोज्नुहोस्</option>"
+        ).prop('selectedIndex',0);
+        $.getJSON('/router/district/', function(data){
+            $.each(data,function(key,entry){
+                $('#district').append(
+                    $('<option></option>').attr('value',entry.id).text(entry.nep_name)
+                )
+            }
+            )
+        });
+        $('#district').change(function(){
+            load_muns($(this)[0].value);
+        }
+            
+        );
     </script>
 </div>
 </body>
