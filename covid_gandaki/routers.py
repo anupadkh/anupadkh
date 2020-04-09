@@ -127,8 +127,8 @@ class ReliefItemViewSet(viewsets.ModelViewSet):
 
 
 class ReliefViewSet(viewsets.ModelViewSet):
-    queryset = lb.ReliefFund.objects.all()
-    serializer_class = lb.ReliefFundSerializer
+    queryset = lb.Person.objects.filter(belong_to_form = 4)
+    serializer_class = lb.ReliefPersonSerializer
 
     # @action(detail=False, methods=['get'])
     # def user(self, request, pk=None):

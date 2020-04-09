@@ -9,7 +9,9 @@ urlpatterns = [
     path('dtable', views.index_dtable, name='dtable'),
     path('food_info', pv.index, name='khadya' ),
     path('<int:id>/dtable', views.list_dtable, name='table_view'),
-    path('add_person2/', views.Person2CreateView.as_view(), name="add_person2")
+    path('add_person2/', views.Person2CreateView.as_view(), name="add_person2"),
+    path('<int:id>/reliefperson', views.reliefs, name='relief')
+
 ]
 
 app_name = "lb"

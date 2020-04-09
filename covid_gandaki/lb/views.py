@@ -20,6 +20,10 @@ def submit(request):
 def lbody(request):
     context={'user':request.user}
 
+@login_required(login_url='users:login')
+def reliefs(request, id):
+    pass
+
 
 @login_required(login_url='users:login')
 def index_dtable(request):

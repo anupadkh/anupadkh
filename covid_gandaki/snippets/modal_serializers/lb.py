@@ -158,25 +158,28 @@ class ReliefFundSerializer(serializers.ModelSerializer):
 
 
 class ReliefPersonSerializer(serializers.ModelSerializer):
-    receiver_name = serializers.CharField(
-        required=False, allow_blank=True, max_length=300)
     father_name = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
     grandfather_name = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
     mobile = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
-    receiver_address = serializers.CharField(
-        required=False, allow_blank=True, max_length=300)
+    # reliefs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Person
-        fields = '__all__'
+        fields = "__all__"
+        # extra_fields = ['receiver']
 
-    
+    def get_field_names(self, declared_fields, info):
+        expanded_fields = super().get_field_names(declared_fields, info)
+        if getattr(self.Meta, 'extra_fields', None):
+            return expanded_fields + self.Meta.extra_fields
+        else:
+            return expanded_fields
+
     def to_representation(self, obj):
         data = super().to_representation(obj)
-        data['receiver_name'] = obj.full_name
         data['mobile'] = obj.mobile
         family = Family.objects.filter(head=obj)
         try:
@@ -190,9 +193,9 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
             data['grandfather_name'] = grandfather.full_name
         except:
             data['grandfather_name'] = ''
-        data['receiver_address'] = obj.receiver.permanent_address
+
         return data
-    
+
     def create(self, validated_data):
         flag = {'father': 0, 'grandfather': 0}
 
@@ -220,29 +223,30 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
             head = Person()
             father = Person()
             grandfather = Person()
+            flag['father'] = 1
+            flag['grandfather'] = 1
 
         father.full_name = validated_data['father_name']
         grandfather.full_name = validated_data['grandfather_name']
-        head.full_name = validated_data['receiver_name']
+        head.full_name = validated_data['full_name']
         head.mobile = validated_data['mobile']
-        head.permanent_address = validated_data['receiver_address']
-        head.belong_to_form = 2
+        head.permanent_address = validated_data['permanent_address']
+        head.belong_to_form = 4
         with transaction.atomic():
             head.save()
-            father.save()
-            grandfather.save()
 
             # Only save for New Members for the families
             if (flag['father'] == 1):
+                father.save()
                 family = Family(head=head, member=father, relation_type=1)
                 family.save()
-            elif (flag['grandfather'] == 1):
+            if (flag['grandfather'] == 1):
+                grandfather.save()
                 family = Family(head=head, member=grandfather, relation_type=2)
                 family.save()
 
         return head
-        # validated_data['receiver'] = head
-        # validated_data['submitter_id'] = submitter_id #already present in create
+
 
 class ReliefItemSerializer(serializers.ModelSerializer):
     class Meta:

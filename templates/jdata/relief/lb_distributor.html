@@ -1,0 +1,182 @@
+{% extends 'jdata/body.html' %}
+{% load static %}
+{% block table-scripts %}
+
+<div class="row container col-md-9">
+    <div class="col-md-12">
+        <h2>{{heading}}</h2>
+    </div>
+    <div class="col-md-12 row">
+        <div class="col-md-6">
+            <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ थप्नुहोस् ।</button>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-primary float-right" id="save_distribute">Save</button>
+        </div>
+    </div>
+    <div class="row">
+        <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
+        <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
+    </div>
+    <div id="spreadsheet" class="col-md-12"></div>
+    <script>
+        $("#save_distribute").click(function () {
+            data = table_distribute.getData();
+            for (let i = 0; i < data.length; i++) {
+                to_post = data[i];
+                my_obj = {
+                    "id": to_post[0],
+                    "submitter_name": to_post[1],
+                    "mobile": to_post[2],
+                    "address": to_post[3],
+                };
+                if (my_obj.id == "") {
+                    delete my_obj.id;
+                };
+                $.ajax({
+                    url: "/router/reliefdistributers/",
+                    type: "POST",
+
+                    data: JSON.stringify(
+                        my_obj
+                    ), contentType: "application/json",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    success: function (arg) {
+                        // location.reload()
+                        if (i == data.length - 1) {
+                            location.reload()
+                        };
+                        console.log(arg);
+                    },
+                    async: false,
+                }
+                    // function(data,status){
+                    //     alert("saved!");
+                    //     console.log(data,status);
+                    // }
+                );
+            };
+        }
+
+        );
+
+
+        // window.onload = function(e){
+        var x = 1;
+        // var data = ;
+        var loaded_distribute = function (instance) {
+            // $('#log').append('New data is loaded');
+            if (table_distribute.getData().length == 0) {
+                table_distribute.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
+            }
+            x = 2;
+        };
+
+
+        var selectionDistributeActive = function (instance, x1, y1, x2, y2, origin) {
+            var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+            var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+            // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+            // console.log(table.getHeader(x1));
+            document.getElementById("column_distribute_header").innerHTML = table_distribute.getHeader(x1)
+        };
+
+        function ask() {
+            return confirm("Delete ?")
+
+        }
+
+        table_distribute = jexcel(document.getElementById('spreadsheet'), {
+
+            url: "/router/reliefdistributers/mun/",
+
+            columns: [
+                //  type: hidden, dropdown, text, calendar, text
+                // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+                {
+                    type: 'numeric',
+                    title: 'सि.नं.',
+                    name: 'id',
+                    readOnly: true,
+                    primaryKey: true,
+                    mask: '#,##'
+
+                },
+                {
+                    type: 'text',
+                    title: 'वितरण गर्ने प्रतिनिधिको नाम',
+                    width: '250',
+                    name: 'submitter_name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'numeric',
+                    title: 'मोबाइल नं',
+                    width: '150',
+                    name: 'mobile',
+                    mask: '###'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'ठेगाना',
+                    width: '250',
+                    name: 'address',
+                    // mask: '#,##', decimal: '.'
+
+                },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+
+            ],
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+            },
+            onload: loaded_distribute,
+            onselection: selectionDistributeActive,
+            allowDeleteColumn: false,
+            allowInsertColumn: false,
+            allowManualInsertRow: false,
+            defaultColWidth: "70",
+            onbeforedeleterow: ask,
+
+
+
+        });
+        var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
+        // };
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+</div>
+
+{% endblock %}
+
+{% block header-scripts %}
+<script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
+<script src="{% static 'jexcel/jexcel.js' %}"></script>
+<link rel="stylesheet" href="{% static 'jsuites/dist/jsuites.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'jexcel/jexcel.css' %}" type="text/css" />
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<style>
+    a {
+        color: #222;
+    }
+
+    .active {
+        color: blue;
+    }
+</style>
+{% endblock %}
