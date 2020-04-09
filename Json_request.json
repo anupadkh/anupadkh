@@ -131,3 +131,20 @@ http: //localhost:8000/snip/relief/ [
         "receiver_address": null
     }
 ]
+
+http: //localhost:8000/router/reliefOffice/
+{
+    "id": 1,
+    "name": "Office of District Development Committee-Parbat",
+    "description": "",
+    "address": 3,
+    "ward": 1,
+    "municipality": "गोरखा नगरपालिका",
+    "street": "Harka Laurey"
+},
+{
+    "ward": null,
+    "street": "",
+    "name": "",
+    "description": ""
+}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee, Office
+from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee, Office, Address
 from covid_gandaki.public.models import Person, Family
 from covid_gandaki.users.models import User, Employee
 from django.db import transaction
@@ -54,24 +54,110 @@ class CovidCasesSerializer(serializers.ModelSerializer):
 
 
 class OfficeSerializer(serializers.ModelSerializer):
+    ward = serializers.IntegerField(write_only=True)
+    street = serializers.CharField(max_length=300, write_only=True, allow_null=True, allow_blank = True)
+    
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['ward'] = instance.address.ward
+        data['municipality'] = instance.address.mun.mun_name
+        data['street'] = instance.address.street
+        return data
+    
+     
+    
+    def create(self, validated_data):
+        request = self.context['request']
+        employee = Employee.objects.get(user=request.user)
+        # municipality refers to office actually
+        mun = employee.municipality.address.mun
+        with transaction.atomic():
+        # try:
+            request = self.context['request']
+            if self.initial_data.get('id', False) != False:
+                obj = Office.objects.get(id=self.initial_data['id'])
+                address = obj.address
+                
+            else:
+                obj = Office()
+                address = Address(mun = mun)
+            
+            address.ward = validated_data.pop('ward')
+            address.street = validated_data.pop('street')    
+            address.save()
+            obj.address = address
+            obj.name = validated_data.get('name', obj.name)
+            obj.description = validated_data.get('description', obj.description)
+            obj.save()
+        
+        return obj
 
+            
+        #     return super().create(validated_data)
+        # except:
+        #     pass
+    
     class Meta:
         model = Office
         fields = '__all__'
+        read_only_fields = ['address']
 
 
 class OfficeEmployeeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = CovidCases
+        model = OfficeEmployee
         fields = '__all__'
 
-from covid_gandaki.lb.sub_models.rahat import ReliefFund
+from covid_gandaki.lb.sub_models.rahat import ReliefFund, ReliefItem
 
 
 from collections import OrderedDict
 
 class ReliefFundSerializer(serializers.ModelSerializer):
+    submitter_name = serializers.CharField(max_length=300, write_only=True)
+    mobile = serializers.CharField(allow_null=True, allow_blank=True, write_only=True, max_length=10, min_length=10)
+    address = serializers.CharField(max_length=300, write_only=True, allow_null = True)
+
+
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        data['submitter_name'] = obj.submitter.full_name
+        data['mobile'] = obj.submitter.mobile
+        data['address'] = obj.submitter.current_address
+        return data
+
+    
+
+    @transaction.atomic
+    def create(self, validated_data):
+        request = self.context['request']
+        employee = Employee.objects.get(user=request.user)
+        if self.initial_data.get('id', False):
+            instance = ReliefFund.objects.get(id=self.initial_data['id'])
+        else:
+            default = Office.objects.filter(address__mun = employee.municipality.address.mun)[0]
+            instance = ReliefFund(office = validated_data.get('office', default))
+            instance.submitter = Person2()
+        
+        
+        instance.submitter.full_name = validated_data.get('submitter_name', instance.submitter.full_name)
+        instance.submitter.mobile = validated_data.get('mobile', instance.submitter.mobile)
+        instance.submitter.current_address = validated_data.get('address', instance.submitter.current_address)
+        submitter = instance.submitter
+        # Throws error if the mobile number repeats
+        submitter.save()
+        instance.submitter = submitter
+        instance.office = validated_data.get('office', instance.office)
+        instance.save()
+        return instance
+
+    class Meta:
+        model = ReliefFund
+        exclude = ['submitter']
+
+
+class ReliefPersonSerializer(serializers.ModelSerializer):
     receiver_name = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
     father_name = serializers.CharField(
@@ -83,15 +169,16 @@ class ReliefFundSerializer(serializers.ModelSerializer):
     receiver_address = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
 
+    class Meta:
+        model = Person
+        fields = '__all__'
+
+    
     def to_representation(self, obj):
         data = super().to_representation(obj)
-        data['receiver_name'] = obj.receiver.full_name
-        data["submitter_name"] = obj.submitter.full_name
-        data['office_name'] = obj.office.name
-        data['office_mun'] = obj.office.address.mun.nep_name
-        data['office_ward'] = obj.office.address.ward
-        data['mobile'] = obj.receiver.mobile
-        family = Family.objects.filter(head=obj.receiver)
+        data['receiver_name'] = obj.full_name
+        data['mobile'] = obj.mobile
+        family = Family.objects.filter(head=obj)
         try:
             father = family.get(relation_type=1).member
             data['father_name'] = father.full_name
@@ -103,28 +190,14 @@ class ReliefFundSerializer(serializers.ModelSerializer):
             data['grandfather_name'] = grandfather.full_name
         except:
             data['grandfather_name'] = ''
-        
-        data['submitter_mobile'] = obj.submitter.mobile
         data['receiver_address'] = obj.receiver.permanent_address
         return data
     
-    
-
-    @transaction.atomic
     def create(self, validated_data):
-        # session 
-        #  request.session['has_commented']
-        # request = self.context['request']
-        # request.session.get('post_user',False)
-        # print('We Entered Here')
-        # if self.initial_data.get('id',False):
-        #     return self.update(instance=self, validated_data=validated_data)
-        flag = {'father':0,'grandfather':0}
+        flag = {'father': 0, 'grandfather': 0}
 
-        if self.initial_data.get('id',False):
-            instance = ReliefFund.objects.get(id=self.initial_data['id'])
-            head = instance.receiver
-            
+        if self.initial_data.get('id', False):
+            head = Person.objects.get(id=self.initial_data['id'])
             try:
                 father = Family.objects.get(head=head, relation_type=1)
                 try:
@@ -132,8 +205,7 @@ class ReliefFundSerializer(serializers.ModelSerializer):
                         head=head, relation_type=2).member
                 except:
                     grandfather = Person()
-                    flag['grandfather']=1
-                    
+                    flag['grandfather'] = 1
             except:
                 father = Person()
                 flag['father'] = 1
@@ -155,83 +227,25 @@ class ReliefFundSerializer(serializers.ModelSerializer):
         head.mobile = validated_data['mobile']
         head.permanent_address = validated_data['receiver_address']
         head.belong_to_form = 2
-        head.save()
-        father.save()
-        grandfather.save()
+        with transaction.atomic():
+            head.save()
+            father.save()
+            grandfather.save()
 
-        # Only save for New Members for the families
-        if (flag['father'] == 1) :   
-            family = Family(head=head, member=father, relation_type=1)
-            family.save()
-        elif (flag['grandfather']==1):
-            family = Family(head=head, member=grandfather, relation_type=2)
-            family.save()
-        
+            # Only save for New Members for the families
+            if (flag['father'] == 1):
+                family = Family(head=head, member=father, relation_type=1)
+                family.save()
+            elif (flag['grandfather'] == 1):
+                family = Family(head=head, member=grandfather, relation_type=2)
+                family.save()
 
+        return head
         # validated_data['receiver'] = head
         # validated_data['submitter_id'] = submitter_id #already present in create
-        submitter = validated_data['submitter']
-        office = OfficeEmployee.objects.get(employee=submitter).office
-        if self.initial_data.get('id', False):
-            instance.receiver = head
-            instance.submitter = submitter
-            instance.office = office
-            instance.relief_details = validated_data['relief_details']
-            instance.save()
-            return instance
-        return ReliefFund.objects.create(receiver=head, submitter=submitter,office=office,relief_details=validated_data['relief_details'])
 
-
-    # @transaction.atomic
-    # def update(self, instance, validated_data):
-    #     print(instance.receiver.full_name)
-    #     head = instance.receiver
-    #     head.full_name = validated_data.get('receiver_name', head.full_name)
-    #     head.mobile = validated_data.get(
-    #         'mobile', head.mobile)
-    #     head.permanent_address = validated_data.get(
-    #         'receiver_address', head.permanent_address)
-    #     head.belong_to_form = 2
-    #     head.save()
-
-    #     try:
-    #         father = Family.objects.get(head=head, relation_type=1)
-    #         father.full_name = validated_data.get('father_name', father.full_name)
-    #         father.belong_to_form = 2
-    #         father.save()
-    #     except:
-    #         try:
-    #             father = Person(full_name=validated_data.get('father_name'))
-    #             father.belong_to_form = 2
-    #             father.save()
-    #         except:
-    #             pass
-
-    #     try:
-    #         grandfather = Family.objects.get(head=head, relation_type=2)
-    #         grandfather.full_name = validated_data.get(
-    #             'grandfather_name', grandfather.full_name)
-    #         grandfather.belong_to_form = 2
-    #         grandfather.save()
-    #     except:
-    #         try:
-    #             grandfather = Person(full_name=validated_data.get('grandfather_name'))
-    #             grandfather.belong_to_form = 2
-    #             grandfather.save()
-    #         except:
-    #             pass
-        
-    #     instance.relief_details = validated_data.get('relief_details', instance.relieve_details)
-    #         #         validated_data is an OrderedDict and OrderedDict.get(key, default) is the method that fetches the value for the given key, returning the default if the key is missing from the dict.
-
-
-    #         # In other words: instance.title = validated_data.get('title', instance.title) will try to fetch title from validated_data but will return the current instance.title if the title key is not present in the validated data.
-    #     instance.save()
-    #     return instance
-
+class ReliefItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ReliefFund
-        fields = '__all__'
-        read_only_fields = ['submitter','office','receiver']
+        model = ReliefItem
+        fields="__all__"
 
-    

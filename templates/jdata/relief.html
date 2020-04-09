@@ -17,21 +17,27 @@
 </style>
 {% endblock %}
 {% block table-script %}
-<div class="row">
+<!-- <div class="row">
     <div class="container col-sm-9">
-        <h7 style="color:red;">रोजेको प्रश्न : </h7>
-        <h4<span id="column_header"></span></h4>
+        <h6>राहत वितरण गर्ने कार्यालयहरु</h6>
+        <div class="row">
+            <h7 class="col-md-3" style="color:red;">प्रश्न : </h7>
+            <h4 class="col=md-9"><span id="column_header"></span></h4>
+        </div>
+        
     </div>
-    <div>
-        <button class="btn btn-primary float-right" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
+    
+</div> -->
+<!-- <div id="spreadsheet" style="margin-top: 20px;"></div>
+<div class="row">
+    <div class="col-md-6">
+        <button class="btn btn-primary float-left" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
     </div>
-    <div>
+    <div class="col-md-6">
         <button class="btn btn-primary float-right" id="save">Save</button>
     </div>
-</div>
-{% csrf_token %}
-<div id="spreadsheet" style="margin-top: 20px;"></div>
-
+</div> -->
+<!--
 <script>
     $("#save").click(function () {
         data = table.getData();
@@ -39,19 +45,16 @@
             to_post = data[i];
             my_obj = {
                 "id": to_post[0],
-                "receiver_name": to_post[1],
-                "receiver_address": to_post[2],
+                "name": to_post[1],
                 "ward": to_post[2],
-                "mobile": to_post[3],
-                "father_name": to_post[4],
-                "grandfather_name": to_post[5],
-                "relief_details": to_post[6]
+                "street": to_post[3],
+                "description": to_post[4]
             };
             if (my_obj.id == "") {
                 delete my_obj.id;
             };
             $.ajax({
-                url: "{{url}}",
+                url: "/router/reliefOffice/",
                 type: "POST",
                 data: JSON.stringify(
                     my_obj
@@ -67,10 +70,6 @@
             },
             async: false,
         }
-            // function(data,status){
-            //     alert("saved!");
-            //     console.log(data,status);
-            // }
             );
         };
     }
@@ -87,36 +86,18 @@
     }
         x = 2;
     };
-    var changed = function (instance, cell, x, y, value) {
-        var cellName = jexcel.getColumnNameFromId([x, y]);
-        // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
-        console.log('New change on cell ' + cellName + ' to: ' + value + '');
-        console.log(x, y);
-
-    };
-    var beforeChange = function (instance, cell, x, y, value) {
-        var cellName = jexcel.getColumnNameFromId([x, y]);
-        // $('#log').append('The cell ' + cellName + ' will be changed');
-    };
 
     var selectionActive = function (instance, x1, y1, x2, y2, origin) {
-        var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
-        var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
-        // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
-        // console.log(table.getHeader(x1));
-        document.getElementById("column_header").innerHTML = table.getHeader(x1)
-    };
+            document.getElementById("column_header").innerHTML = table.getHeader(x1)
+        };
 
     function ask() {
         return confirm("Delete ?")
 
-    }
+    };
 
     table = jexcel(document.getElementById('spreadsheet'), {
-            // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
-            
-    
-    url: "{{url}}user/",
+    url: "/router/reliefOffice/user/",
     
     columns: [
         //  type: hidden, dropdown, text, calendar, text
@@ -132,18 +113,12 @@
         },
         {
             type: 'text',
-            title: 'राहत प्राप्त गर्ने व्यक्तिको नाम',
+            title: 'संस्थाको नाम',
             width: '200',
-            name: 'receiver_name'
+            name: 'name'
             // primaryKey: true
         },
-        {
-            type: 'text',
-            title: 'ठेगाना',
-            width: '120',
-            name: 'receiver_address'
-            // primaryKey: true
-        },
+        
         {
             type: 'numeric',
             title: 'वडा नं',
@@ -152,35 +127,17 @@
             mask: '#,##', decimal: '.',
 
         },
-        
-
         {
-            type: 'numeric',
-            title: 'मोबाइल नं',
-            width: '50',
-            mask: '#,##', decimal: '.',
-            name: 'mobile'
-
-            // editor: 'number',
+            type: 'text',
+            title: 'सडक/मार्गको नाम',
+            width: '150',
+            name: 'street'
         },
         {
             type: 'text',
-            title: 'बाबुको नाम',
-            width: '100',
-            name: 'father_name'
-        },
-        {
-            type: 'text',
-            title: 'बाजेको नाम',
-            width: '100',
-            name: 'grandfather_name'
-            
-        },
-        {
-            type: 'text',
-            title: 'राहत विवरण',
+            title: 'विवरण अन्य',
             width: '200',
-            name: 'relief_details'
+            name: 'description'
             
         },
         { type: 'hidden' },
@@ -243,9 +200,7 @@
 
         },
     onload: loaded,
-        onchange: changed,
-            onbeforechange: beforeChange,
-                onselection: selectionActive,
+        onselection:selectionActive,
                     // persistance: "/router/travel/?format=json",
                     allowDeleteColumn: false,
                         allowInsertColumn: false,
@@ -272,6 +227,375 @@
     });
 
 </script>
+-->
+<div class="row container col-md-9">
+    <!-- Submitter Name -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>वितरण गर्न खटिएका प्रतिनिधीहरुको सुची</h2>
+        </div>
+
+        <div class="col-md-12 row">
+            <div class="col-md-6">
+                <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ थप्नुहोस् ।</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary float-right" id="save_distribute">Save</button>
+            </div>
+        </div>
+        <div class="row">
+            <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
+            <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
+        </div>
+        <div id="spreadsheet3" class="col-md-12"></div>
+
+
+    </div>
+
+    <script>
+        $("#save_distribute").click(function () {
+            data = table_distribute.getData();
+            for (let i = 0; i < data.length; i++) {
+                to_post = data[i];
+                my_obj = {
+                    "id": to_post[0],
+                    "submitter_name": to_post[1],
+                    "mobile": to_post[2],
+                    "address": to_post[3],
+                };
+                if (my_obj.id == "") {
+                    delete my_obj.id;
+                };
+                $.ajax({
+                    url: "/router/reliefdistributers/",
+                    type: "POST",
+
+                    data: JSON.stringify(
+                        my_obj
+                    ), contentType: "application/json",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    success: function (arg) {
+                        // location.reload()
+                        if (i == data.length - 1) {
+                            location.reload()
+                        };
+                        console.log(arg);
+                    },
+                    async: false,
+                }
+                    // function(data,status){
+                    //     alert("saved!");
+                    //     console.log(data,status);
+                    // }
+                );
+            };
+        }
+
+        );
+
+
+        // window.onload = function(e){
+        var x = 1;
+        // var data = ;
+        var loaded_distribute = function (instance) {
+            // $('#log').append('New data is loaded');
+            if (table_distribute.getData().length == 0) {
+                table_distribute.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
+            }
+            x = 2;
+        };
+        
+
+        var selectionDistributeActive = function (instance, x1, y1, x2, y2, origin) {
+            var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+            var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+            // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+            // console.log(table.getHeader(x1));
+            document.getElementById("column_distribute_header").innerHTML = table_distribute.getHeader(x1)
+        };
+
+        function ask() {
+            return confirm("Delete ?")
+
+        }
+
+        table_distribute= jexcel(document.getElementById('spreadsheet3'), {
+
+            url: "/router/reliefdistributers/mun/",
+
+            columns: [
+                //  type: hidden, dropdown, text, calendar, text
+                // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+                {
+                    type: 'numeric',
+                    title: 'सि.नं.',
+                    name: 'id',
+                    readOnly: true,
+                    primaryKey: true,
+                    mask: '#,##'
+
+                },
+                {
+                    type: 'text',
+                    title: 'वितरण गर्ने प्रतिनिधिको नाम',
+                    width: '250',
+                    name: 'submitter_name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'numeric',
+                    title: 'मोबाइल नं',
+                    width: '150',
+                    name: 'mobile',
+                    mask: '###'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'ठेगाना',
+                    width: '250',
+                    name: 'address',
+                    // mask: '#,##', decimal: '.'
+
+                },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+
+            ],
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+            },
+            onload: loaded_distribute,
+            onselection: selectionDistributeActive,
+            allowDeleteColumn: false,
+            allowInsertColumn: false,
+            allowManualInsertRow: false,
+            defaultColWidth: "70",
+            onbeforedeleterow: ask,
+
+
+
+        });
+        var myTracker = jSuites.tracker(document.getElementById('spreadsheet3'));
+        // };
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+</div>
+
+<div class="row container col-md-9">
+    <!-- Food Name -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>वितरण गरिएका खाद्यसामाग्रीहरुको सुची</h2>
+        </div>
+        
+        <div class="col-md-12 row">
+            <div class="col-md-6">
+                <button class="btn btn-primary float-left" onclick="table_food.insertRow()">नयाँ थप्नुहोस् ।</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary float-right" id="save_food">Save</button>
+            </div>
+        </div>
+        <div class="row">
+            <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
+            <h3 class="col-md-9"><span id="column_food_header"></span></h3>
+        </div>
+        <div id="spreadsheet2" class="col-md-12"></div>
+        
+        
+    </div>
+    
+    <script>
+        $("#save_food").click(function () {
+                data = table_food.getData();
+                for (let i = 0; i < data.length; i++) {
+                    to_post = data[i];
+                    my_obj = {
+                        "id": to_post[0],
+                        "name": to_post[1],
+                        "unit": to_post[2],
+                        "rate_equivalent": to_post[3],
+                    };
+                    if (my_obj.id == "") {
+                        delete my_obj.id;
+                    };
+                    $.ajax({
+                        url: "/router/relieffoodname/",
+                        type: "POST",
+
+                        data: JSON.stringify(
+                            my_obj
+                        ), contentType: "application/json",
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                        },
+                        success: function (arg) {
+                            // location.reload()
+                            if (i == data.length - 1) {
+                                location.reload()
+                            };
+                            console.log(arg);
+                        },
+                        async: false,
+                    }
+                        // function(data,status){
+                        //     alert("saved!");
+                        //     console.log(data,status);
+                        // }
+                    );
+                };
+            }
+
+            );
+
+
+            // window.onload = function(e){
+            var x = 1;
+            // var data = ;
+            var loaded = function (instance) {
+                // $('#log').append('New data is loaded');
+                if (table_food.getData().length == 0) {
+                    table_food.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
+                }
+                x = 2;
+            };
+            var changed = function (instance, cell, x, y, value) {
+                var cellName = jexcel.getColumnNameFromId([x, y]);
+                // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
+                console.log('New change on cell ' + cellName + ' to: ' + value + '');
+                console.log(x, y);
+
+            };
+            var beforeChange = function (instance, cell, x, y, value) {
+                var cellName = jexcel.getColumnNameFromId([x, y]);
+                // $('#log').append('The cell ' + cellName + ' will be changed');
+            };
+
+            var selectionFoodActive = function (instance, x1, y1, x2, y2, origin) {
+                var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+                var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+                // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+                // console.log(table.getHeader(x1));
+                document.getElementById("column_food_header").innerHTML = table_food.getHeader(x1)
+            };
+
+            function ask() {
+                return confirm("Delete ?")
+
+            }
+
+            table_food = jexcel(document.getElementById('spreadsheet2'), {
+                // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
+
+
+
+
+                url: "/router/relieffoodname/user/",
+
+                columns: [
+                    //  type: hidden, dropdown, text, calendar, text
+                    // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+                    {
+                        type: 'numeric',
+                        title: 'सि.नं.',
+                        name: 'id',
+                        readOnly: true,
+                        primaryKey: true,
+                        mask: '#,##'
+
+                    },
+                    {
+                        type: 'text',
+                        title: 'खाद्यान्नको नाम',
+                        width: '200',
+                        name: 'name'
+                        // primaryKey: true
+                    },
+                    {
+                        type: 'text',
+                        title: 'खाद्यान्नको मापन विधि',
+                        width: '150',
+                        name: 'unit',
+                        // primaryKey: true
+                    },
+                    {
+                        type: 'numeric',
+                        title: 'प्रति मापन विधि तोकिएको खाद्यान्नको बजार मुल्य',
+                        width: '250',
+                        name: 'rate_equivalent',
+                        mask: '#,##', decimal: '.'
+
+                    },
+                    { type: 'hidden' },
+                    { type: 'hidden' },
+                    { type: 'hidden' },
+
+                    // {
+                    //     type: 'autocomplete',
+                    //     title: 'Name of Hospital',
+                    //     width: '300',
+                    //     url: '{% url 'snippets:hospital' %}'
+                    // },
+                    // {
+                    //     type: 'dropdown',
+                    //     title: 'Food',
+                    //     width: '150',
+                    //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+                    // },
+                    // {
+                    //     type: 'checkbox',
+                    //     title: 'Stock',
+                    //     width: '100'
+                    // },
+                ],
+                updateTable: function (instance, cell, col, row, val, label, cellName) {
+                    
+
+                },
+                onload: loaded,
+                onselection: selectionFoodActive,
+                // persistance: "/router/travel/?format=json",
+                allowDeleteColumn: false,
+                allowInsertColumn: false,
+                allowManualInsertRow: false,
+                defaultColWidth: "70",
+                onbeforedeleterow: ask,
+
+
+
+            });
+            var myTracker = jSuites.tracker(document.getElementById('spreadsheet2'));
+            // };
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+    </script>
+</div>
+
+
 
 
 

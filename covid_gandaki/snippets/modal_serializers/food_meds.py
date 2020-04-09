@@ -120,3 +120,19 @@ class Lb_Fulfilled_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Fulfilled
         exclude = ['fulfilled_date']
+
+class Lb_FoodName(serializers.ModelSerializer):
+    class Meta:
+        model = FoodName
+        read_only_fields = ['mun']
+        fields = "__all__"
+    
+    def create(self, validated_data):
+        request = self.context['request']
+        instance = super().create(validated_data)
+        emp_submitter = Employee.objects.get(user=request.user)
+        instance.mun = emp_submitter.municipality.address.mun
+        instance.save()
+        return instance
+        
+        

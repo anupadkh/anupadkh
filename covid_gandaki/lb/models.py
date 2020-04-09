@@ -1,5 +1,4 @@
 from django.db import models
-from django.shortcuts import reverse
 
 class Person2(models.Model):
     full_name = models.CharField(max_length=300, verbose_name="Full Name")
@@ -11,6 +10,7 @@ class Person2(models.Model):
     remarks = models.TextField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)
     location = models.CharField(max_length=300, null=True, blank=True)
+    formtype = models.IntegerField(default=1) # 1 for others, 2 for Relief_Form_Submittors(Distributors)
     # permanent_full_address = models.ForeignKey(
     #     Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     # current_full_address = models.ForeignKey(
@@ -19,8 +19,6 @@ class Person2(models.Model):
     def __str__(self):
         return self.full_name
     
-    def get_absolute_url(self):
-        return reverse('lb:dtable')
     
     class Meta:
         db_table = "especial_people_"
@@ -103,3 +101,4 @@ class Office(models.Model):
 class OfficeEmployee(models.Model):
     office = models.ForeignKey(Office,on_delete=models.CASCADE)
     employee = models.ForeignKey(Person2, on_delete=models.CASCADE)
+

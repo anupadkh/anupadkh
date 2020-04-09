@@ -70,3 +70,12 @@ class Fulfilled(models.Model):
     obj_id = models.IntegerField()
     fulfilled_date = models.DateTimeField(auto_now_add=True)
 
+class FoodName(models.Model):
+    name = models.CharField(max_length=100)
+    mun = models.ForeignKey(Municipality, on_delete=models.CASCADE, null=True, blank=True)
+    unit = models.CharField(max_length=50)
+    rate_equivalent = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return "%s (%s)" % (self.name, self.unit)
+

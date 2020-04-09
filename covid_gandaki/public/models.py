@@ -18,7 +18,8 @@ class Person(models.Model):
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Permanent")
     current_full_address = models.ForeignKey(
         Address, on_delete=models.SET_NULL, null=True, blank=True, related_name="Temporary")
-    belong_to_form = models.IntegerField(default=1) # Type of Form Actually: 1 = Local Body, 3 = General Public
+    belong_to_form = models.IntegerField(default=1) 
+    # Type of Form Actually: 1 = Local Body, 3 = General Public, 4= ReliefFund
     gender = models.IntegerField(default=1, verbose_name='लिङ्ग')
 
     def __str__(self):

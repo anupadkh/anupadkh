@@ -92,15 +92,16 @@ def list_dtable(request,id):
             # 'app': 'lb',
             # 'model': 'sub_models.rahat.'
             'heading' : 'राहत सम्बन्धी जानकारी',
-            'url' : '/router/relief/'
+            'url' : '/router/relief/',
+            'page': 'jdata/relief.html'
         },
     }
 
     if  id<7:
-        App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
+        # App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
         context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
     elif id == 7:
-        App = ReliefFund
+        # App = ReliefFund.objects.filter
         context = {
             'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url']}
     else:

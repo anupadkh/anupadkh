@@ -30,7 +30,7 @@ from rest_framework.decorators import action
 #     def get_extra_actions(cls):
 #         return []
 
-
+ 
 
 
 
@@ -78,7 +78,38 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
 
     
 
-    
+class DistributerViewSet(viewsets.ModelViewSet):
+    queryset = lb.OfficeEmployee.objects.all()
+    serializer_class = lb.OfficeEmployeeSerializer
+
+    @action(detail=True, methods=['get'])
+    def mun(self,request,pk=None):
+        if pk==None:
+            y = lb.OfficeEmployee.objects.filter(office__mun=request.user.municipality.mun)
+        else:
+            y = lb.OfficeEmployee.objects.get(pk=pk)
+        serializer = lb.OfficeEmployeeSerializer(y,many=True)
+        return Response(serializer.data)
+
+
+class ReliefDistributerViewSet(viewsets.ModelViewSet):
+    queryset = lb.ReliefFund.objects.all()
+    serializer_class = lb.ReliefFundSerializer
+
+    @action(detail=False, methods=['get'])
+    def mun(self, request, pk=None):
+        if pk == None:
+            employee = users.Employee.objects.get(user=request.user)
+            mun = employee.municipality.address.mun
+            y = lb.ReliefFund.objects.filter(
+                office__address__mun=mun)
+        else:
+            y = lb.ReliefFund.objects.get(pk=pk)
+        serializer = lb.ReliefFundSerializer(y, many=True)
+        return Response(serializer.data)
+
+        
+
 
 
 
@@ -87,6 +118,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = users.User.objects.all()
     serializer_class = users.UserSerializer
 
+
+class ReliefItemViewSet(viewsets.ModelViewSet):
+    queryset = lb.ReliefItem.objects.all()
+    serializer_class = lb.ReliefItemSerializer
     
 
 
@@ -181,6 +216,32 @@ class MedicalViewSet(viewsets.ModelViewSet):
         y = food_meds.Medical.objects.filter(produced_by=mun)
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
+
+class FoodNameViewSet(viewsets.ModelViewSet):
+    queryset = food_meds.FoodName.objects.all()
+    serializer_class = food_meds.Lb_FoodName
+
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = food_meds.FoodName.objects.filter(mun=mun)
+        serializer = self.get_serializer(y,many=True)
+        return Response(serializer.data)
+
+class OfficeViewSet(viewsets.ModelViewSet):
+    queryset = lb.Office.objects.all()
+    serializer_class = lb.OfficeSerializer
+
+    @action(detail=False, methods=['get'])
+    def user(self, request, pk=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        y = lb.Office.objects.filter(address__mun=mun)
+        serializer = self.get_serializer(y, many=True)
+        return Response(serializer.data)
+
+
     
 
 
@@ -197,3 +258,8 @@ router.register(r'sell', ProductionViewSet)
 router.register(r'supplies', PetroleumViewSet)
 router.register(r'district', DistrictViewSet)
 # router.register(r'travels', FooView.asView())
+
+router.register(r'reliefdistributers', ReliefDistributerViewSet)
+router.register(r'relieffoodname', FoodNameViewSet)
+router.register(r'reliefItem', ReliefItemViewSet)
+router.register(r'reliefOffice', OfficeViewSet)
