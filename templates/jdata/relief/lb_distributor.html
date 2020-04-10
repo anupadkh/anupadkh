@@ -1,6 +1,6 @@
 {% extends 'jdata/body.html' %}
 {% load static %}
-{% block table-scripts %}
+{% block table-script %}
 
 <div class="row container col-md-9">
     <div class="col-md-12">
@@ -26,15 +26,21 @@
                 to_post = data[i];
                 my_obj = {
                     "id": to_post[0],
-                    "submitter_name": to_post[1],
-                    "mobile": to_post[2],
-                    "address": to_post[3],
+                    "full_name": to_post[1],
+                    "age": to_post[2],
+                    "mobile": to_post[3],
+                    "permanent_address": to_post[4],
+                    "father_name": to_post[5],
+                    "grandfather_name": to_post[6],
+                    "remarks": to_post[7],{% for item in foods %}
+                    "{{item.id}}":to_post[{{forloop.counter0|add:8}}],{% endfor %}
+                    "submitter":{{submittor}},
                 };
                 if (my_obj.id == "") {
                     delete my_obj.id;
                 };
                 $.ajax({
-                    url: "/router/reliefdistributers/",
+                    url: "{% url 'lb:relief' id=submittor %}",
                     type: "POST",
 
                     data: JSON.stringify(
@@ -72,6 +78,7 @@
                 table_distribute.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
             }
             x = 2;
+            var extra_columns ;
         };
 
 
@@ -90,7 +97,7 @@
 
         table_distribute = jexcel(document.getElementById('spreadsheet'), {
 
-            url: "/router/reliefdistributers/mun/",
+            url: "/router/reliefItem/user/",
 
             columns: [
                 //  type: hidden, dropdown, text, calendar, text
@@ -106,9 +113,17 @@
                 },
                 {
                     type: 'text',
-                    title: 'वितरण गर्ने प्रतिनिधिको नाम',
+                    title: 'राहत पाउनेको नाम',
                     width: '250',
-                    name: 'submitter_name'
+                    name: 'full_name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'numeric',
+                    title: 'उमेर',
+                    width: '150',
+                    name: 'age',
+                    mask: '###'
                     // primaryKey: true
                 },
                 {
@@ -123,13 +138,49 @@
                     type: 'text',
                     title: 'ठेगाना',
                     width: '250',
-                    name: 'address',
+                    name: 'permanent_address',
                     // mask: '#,##', decimal: '.'
 
                 },
+                {
+                    type: 'text',
+                    title: 'बाबुको नाम',
+                    width: '250',
+                    name: 'father_name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'हजुरबुबाको नाम',
+                    width: '250',
+                    name: 'grandfather_name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'जम्मा परिवार संख्या',
+                    width: '150',
+                    name: 'remarks',
+                    mask: '###'
+                },
+                {% for item in foods %}
+                    {
+                        type:'numeric',
+                        title:'{{item.name}}({{item.unit}})',
+                        width: '150',
+                        name: '{{item.id}}',
+                        mask: '###'
+                    },
+                {% endfor %}
                 { type: 'hidden' },
                 { type: 'hidden' },
                 { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                
+
 
             ],
             updateTable: function (instance, cell, col, row, val, label, cellName) {

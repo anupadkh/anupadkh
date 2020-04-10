@@ -76,6 +76,7 @@ class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = lb.MunicipalitySerializer(y,many=True)
         return Response(serializer.data)
 
+
     
 
 class DistributerViewSet(viewsets.ModelViewSet):
@@ -122,6 +123,29 @@ class UserViewSet(viewsets.ModelViewSet):
 class ReliefItemViewSet(viewsets.ModelViewSet):
     queryset = lb.ReliefItem.objects.all()
     serializer_class = lb.ReliefItemSerializer
+
+    @action(detail=False, methods=['get'])
+    def user(self,request,pk=None):
+        if pk==None:
+            employee = users.Employee.objects.get(user=request.user)
+            RI = lb.ReliefItem.objects.filter(fund__office__address__mun = employee.municipality.address.mun)
+            receivers = RI.values_list('receiver', flat=True)
+            y = public.Person.objects.filter(id__in=receivers)
+            serializer = lb.ReliefPersonSerializer(y, many=True)
+            foodsitems = food_meds.FoodName.objects.filter(mun=employee.municipality.address.mun)
+            return Response(serializer.data)
+        
+            # employee = users.Employee.objects.get(user=request.user)
+            # RI = lb.ReliefItem.objects.filter(
+            #     fund__office__address__mun=employee.municipality.address.mun)
+            # receivers = RI.values_list('receiver', flat=True)
+            # y = public.Person.objects.filter(id__in=receivers)
+            # serializer = lb.ReliefPersonSerializer(y, many=True)
+            # foodsitems = food_meds.FoodName.objects.filter(
+            #     mun=employee.municipality.address.mun)
+            
+            # return Response({"Guss":"hello"})
+
     
 
 
@@ -131,14 +155,9 @@ class ReliefViewSet(viewsets.ModelViewSet):
     serializer_class = lb.ReliefPersonSerializer
 
     # @action(detail=False, methods=['get'])
-    # def user(self, request, pk=None):
-    #     if pk != None:
-    #         serializer = self.get_serializer(
-    #             lb.ReliefFund.objects.all(), many=True)
-    #     else:
-    #         serializer = self.get_serializer(
-    #             lb.ReliefFund.objects.filter(submitter=pk), many=True)
-    #     return Response(serializer.data)
+    # def user(self,request, pk=None)
+
+    
 
 class HospitalViewSet(viewsets.ModelViewSet):
     queryset = lb.Hospital.objects.all()

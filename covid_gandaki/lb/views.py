@@ -7,8 +7,14 @@ from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView, TemplateView
 # Create your views here.
 from .models import Person2
+from covid_gandaki.users.models import Employee
 from .forms import Person2Form
-from covid_gandaki.lb.sub_models.rahat import ReliefFund
+from covid_gandaki.lb.sub_models.rahat import ReliefFund, ReliefItem
+from covid_gandaki.public.models import Person
+from covid_gandaki.food_meds.models import FoodName
+from covid_gandaki.snippets.modal_serializers import lb
+from django.db import transaction
+from django.http import JsonResponse
 
 def index(request):
     context = {}
@@ -20,9 +26,59 @@ def submit(request):
 def lbody(request):
     context={'user':request.user}
 
+import json
 @login_required(login_url='users:login')
 def reliefs(request, id):
-    pass
+    context = {
+        'login': True, 
+        "heading": "राहत वितरण भएकाहरुको सुची",
+        "url":"/locla",
+        "submittor":id
+        }
+    employee = Employee.objects.get(user=request.user)
+    mun = employee.municipality.address.mun
+
+    if request.method == 'GET':
+        foods = FoodName.objects.filter(mun=mun)
+        context['foods'] = foods
+
+    elif request.method == 'POST':
+        data = request.body
+        data = json.loads(data)
+        try:
+            distributer = Person2.objects.get(id = data.get('submitter'))
+        except:
+            return Response({"error": "There is no such submitter"})
+        
+        rf, rf2 = ReliefFund.objects.get_or_create(submitter = distributer, office=employee.municipality)
+        if rf2:
+            rf = rf2
+        
+        foods = FoodName.objects.filter(mun=mun)
+        with transaction.atomic():
+            person = lb.ReliefPersonSerializer(data=data , context={'request':request})
+            person.is_valid()
+            receiver = person.save()
+            
+            for y in foods:
+                obj,created = ReliefItem.objects.get_or_create(receiver = receiver, food_type=y, fund=rf)
+                
+                
+                obj.qty = data[str(y.id)]
+                # obj.is_valid()
+                obj.save()
+            
+        serializer = lb.ReliefPersonSerializer(receiver)
+        return JsonResponse(serializer.data)
+            
+                
+
+
+        FoodName.objects.filter()
+        
+        pass
+    page = "jdata/relief/lb_distributor.html"
+    return render(request, page, context=context)
 
 
 @login_required(login_url='users:login')

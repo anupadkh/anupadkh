@@ -2,6 +2,8 @@ from rest_framework import serializers
 from covid_gandaki.lb.models import District, Municipality, Hospital, CovidCases, Person2, OfficeEmployee, Office, Address
 from covid_gandaki.public.models import Person, Family
 from covid_gandaki.users.models import User, Employee
+from covid_gandaki.food_meds import models as food_meds
+from covid_gandaki.lb.sub_models import rahat
 from django.db import transaction
 
 class DistrictSerializer(serializers.ModelSerializer):
@@ -165,6 +167,7 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
     mobile = serializers.CharField(
         required=False, allow_blank=True, max_length=300)
     # reliefs = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    submitter = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Person
@@ -193,8 +196,33 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
             data['grandfather_name'] = grandfather.full_name
         except:
             data['grandfather_name'] = ''
-
+        try:
+            fooditems = food_meds.FoodName.objects.filter(mun=obj.current_full_address.mun)
+            for item in fooditems:
+                data[item.id] = 0
+                try:
+                    rel_item = rahat.ReliefItem.objects.get(
+                        receiver=obj, food_type=item)
+                    data[item.id] = rel_item.qty
+                except:
+                    pass
+        except:
+            data['error'] = "error loading fooditems"
         return data
+    
+    # def get_relief_items(self, request):
+    #     request = self.context['request']
+    #     employee = Employee.objects.get(user=request.user)
+    #     mun = employee.municipality.address.mun
+    #     fooditems = food_meds.FoodName.objects.filter(mun=mun)
+    #     for item in fooditems:
+    #         data[item.id] = 0
+    #         try:
+    #             rel_item = rahat.ReliefItem.objects.get(
+    #                 receiver=obj, food_type=item)
+    #             data[rel_item.id] = rel_item.qty
+    #         except:
+    #             pass
 
     def create(self, validated_data):
         flag = {'father': 0, 'grandfather': 0}
@@ -232,19 +260,29 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
         head.mobile = validated_data['mobile']
         head.permanent_address = validated_data['permanent_address']
         head.belong_to_form = 4
+        user = self.context['request'].user
+        employee = Employee.objects.get(user=user)
+        head.current_full_address = employee.municipality.address
         with transaction.atomic():
             head.save()
+            father.save()
+            grandfather.save()
 
             # Only save for New Members for the families
             if (flag['father'] == 1):
-                father.save()
                 family = Family(head=head, member=father, relation_type=1)
                 family.save()
             if (flag['grandfather'] == 1):
-                grandfather.save()
+
                 family = Family(head=head, member=grandfather, relation_type=2)
                 family.save()
-
+        # foods = food_meds.FoodName.objects.filter(mun=head.current_full_address.mun)
+        # validated_data = self.initial_data
+        # RelFund = ReliefFund.objects.get(submitter = validated_data.get('submitter'))
+        # for items in foods:
+        #     RelItem, RelCreate = ReliefItem.objects.get_or_create(receiver=head, food_type=items, fund=RelFund)
+        #     # RelItem.qty = validated_data.get(items.id)
+        #     RelItem.save()
         return head
 
 
@@ -252,4 +290,6 @@ class ReliefItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReliefItem
         fields="__all__"
+    
+
 

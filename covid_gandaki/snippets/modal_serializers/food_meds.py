@@ -11,8 +11,6 @@ class Lb_Food_Serializer(serializers.ModelSerializer):
                   'sufficiency', 'remarks', 'ordered_by']
         read_only_fields =['demand_by','created_by']
     
-        
-
 
     def to_representation(self, obj):
         data = super().to_representation(obj)
@@ -129,10 +127,19 @@ class Lb_FoodName(serializers.ModelSerializer):
     
     def create(self, validated_data):
         request = self.context['request']
-        instance = super().create(validated_data)
-        emp_submitter = Employee.objects.get(user=request.user)
-        instance.mun = emp_submitter.municipality.address.mun
-        instance.save()
+        if self.initial_data.get('id',False) == False:
+            instance = FoodName.objects.create(**validated_data)
+            emp_submitter = Employee.objects.get(user=request.user)
+            instance.mun = emp_submitter.municipality.address.mun
+            instance.save()
+        else:
+            obj = FoodName.objects.get(id=self.initial_data['id'])
+            obj.rate_equivalent = validated_data.get('rate_equivalent', obj.rate_equivalent)
+            obj.name = validated_data.get('name', obj.name)
+            obj.unit = validated_data.get('unit', obj.unit)
+            
+            instance = obj
+            
         return instance
         
         
