@@ -23,6 +23,7 @@ class Lb_Medicine_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Food
         exclude = ['created']
+        read_only_fields =['produced_by']
 
     def to_representation(self, obj):
         data = super().to_representation(obj)
@@ -63,8 +64,9 @@ class Lb_Production_Serializer(serializers.ModelSerializer):
     # user =
     class Meta:
         model = Production
-        write_only = ['created','created_by']
+        write_only_fields = ['created','created_by']
         fields = "__all__"
+        read_only_fields = ['produced_by']
 
     def create(self, validated_data):
         request = self.context['request']
@@ -89,8 +91,9 @@ class Lb_Medical_Serializer(serializers.ModelSerializer):
     # user =
     class Meta:
         model = Medical
-        write_only = ['created','produced_by','created_by']
+        read_only_fields = ['created','produced_by','created_by']
         fields = "__all__"
+
     
     def create(self, validated_data):
         request = self.context['request']

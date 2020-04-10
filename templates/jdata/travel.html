@@ -30,6 +30,15 @@
 </div>
 {% csrf_token %}
 <div id="spreadsheet" style="margin-top: 20px;"></div>
+<div class="row">
+    <div class="col-md-6" id="errors">
+
+    </div>
+    <div class="col-md-6" id="success">
+
+    </div>
+</div>
+
 
 <script>
     $("#save").click( function(){
@@ -58,32 +67,27 @@
                 url:"{{url}}", 
                 type:"POST", 
                 
-                data: JSON.stringify( my_obj
-                    // {
-                    //     "id": 17,
-                    //     "Arrival Date": "2020-01-04",
-                    //     "Foreign Country": "Germany",
-                    //     "mode_of_transport_international": "Plane",
-                    //     "mode_of_transport_national": "Bus",
-                    //     "created_date": "2020-04-05T09:48:45.161656Z",
-                    //     "remarks": "America",
-                    //     "traveller": 25,
-                    //     "created_by": 1,
-                    //     "ward": 8,
-                    //     "name": "Ullu Hari Lamsal",
-                    //     "age": 12,
-                    //     "gender": 1
-                    // }
-                
-                ), contentType: "application/json",
+                data: JSON.stringify( my_obj), 
+                contentType: "application/json",
                 beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                         
                     },
                 success: function (arg) {
-                    if (i == data.length - 1) {
-                        location.reload()
-                    };
+                    // if (i == data.length - 1) {
+                    //     location.reload();
+                    // };
+                    table.updateCell(0,i,arg['id'],true);
+                    $("#success").append (
+                        "<div class=\"alert alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Saved Row :" + eval(i+1) + "> "+arg["name"] + "</div>"
+                        );
+
+                }, error: function(xhr,text,errors){
+                    
+                    $("#errors").append(
+                        "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
+
+                    );
                 },
                 async: false,
                 

@@ -19,6 +19,15 @@
         <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
     </div>
     <div id="spreadsheet" class="col-md-12"></div>
+    <div class="row">
+        <div class="col-md-6" id="errors">
+    
+        </div>
+        <div class="col-md-6" id="success">
+    
+        </div>
+    </div>
+
     <script>
         $("#save_distribute").click(function () {
             data = table_distribute.getData();
@@ -50,11 +59,20 @@
                         xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                     },
                     success: function (arg) {
-                        // location.reload()
-                        if (i == data.length - 1) {
-                            location.reload()
-                        };
-                        console.log(arg);
+                        // if (i == data.length - 1) {
+                        //     location.reload();
+                        // };
+                        table.updateCell(0, i, arg['id'], true);
+                        $("#success").append(
+                            "<div class=\"alert alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Saved Row :" + eval(i + 1) + "> " + arg["name"] + "</div>"
+                        );
+
+                    }, error: function (xhr, text, errors) {
+
+                        $("#errors").append(
+                            "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
+
+                        );
                     },
                     async: false,
                 }
