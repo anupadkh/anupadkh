@@ -248,7 +248,8 @@
             <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
         </div>
         <div id="spreadsheet3" class="col-md-12"></div>
-
+    <div class="col-md-12" id="reliefbuttons">
+    </div>
 
     </div>
 
@@ -304,6 +305,18 @@
             if (table_distribute.getData().length == 0) {
                 table_distribute.setData([[, 'Sample: शिव अधिकारी', "9802800011", "हरिचोक, पोखरा"]]);
             }
+            distributors = table_distribute.getData();
+            myhtml = document.getElementById('reliefbuttons').innerHTML;
+            for (let m = 0; m < distributors.length; m=m+1){
+                if (distributors[m][0] == ""){
+                    break;
+                } else{
+                    
+                    myhtml = myhtml + '<a href=\"/lb/' + distributors[m][0] + '/reliefperson\" class=\"btn-warning btn\">' + distributors[m][1] + '</a>';
+                    
+                }
+            }
+            document.getElementById('reliefbuttons').innerHTML = myhtml;
             x = 2;
         };
         
