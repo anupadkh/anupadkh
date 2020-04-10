@@ -51,8 +51,8 @@ def reliefs(request, id):
             return Response({"error": "There is no such submitter"})
         
         rf, rf2 = ReliefFund.objects.get_or_create(submitter = distributer, office=employee.municipality)
-        if rf2:
-            rf = rf2
+        # if rf2:
+        #     rf = rf2
         
         foods = FoodName.objects.filter(mun=mun)
         with transaction.atomic():
@@ -62,8 +62,6 @@ def reliefs(request, id):
             
             for y in foods:
                 obj,created = ReliefItem.objects.get_or_create(receiver = receiver, food_type=y, fund=rf)
-                
-                
                 obj.qty = data[str(y.id)]
                 # obj.is_valid()
                 obj.save()
