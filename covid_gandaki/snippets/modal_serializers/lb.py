@@ -260,6 +260,8 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
         head.mobile = validated_data['mobile']
         head.permanent_address = validated_data['permanent_address']
         head.belong_to_form = 4
+        head.age = validated_data['age']
+        head.remarks = validated_data['remarks']
         user = self.context['request'].user
         employee = Employee.objects.get(user=user)
         head.current_full_address = employee.municipality.address

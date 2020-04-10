@@ -41,24 +41,29 @@ def reliefs(request, id):
     if request.method == 'GET':
         foods = FoodName.objects.filter(mun=mun)
         context['foods'] = foods
+        page = "jdata/relief/lb_distributor.html"
+        return render(request, page, context=context)
 
     elif request.method == 'POST':
         data = request.body
         data = json.loads(data)
         try:
-            distributer = Person2.objects.get(id = data.get('submitter'))
+            rf = ReliefFund.objects.get(id=id)
+            distributer = rf.submitter
         except:
-            return Response({"error": "There is no such submitter"})
+            return JsonResponse({"message":{"error": "There is no such submitter"}, "status":"false"}, status=500)
         
-        rf, rf2 = ReliefFund.objects.get_or_create(submitter = distributer, office=employee.municipality)
+        # rf, rf2 = ReliefFund.objects.get_or_create(submitter = distributer, office=employee.municipality)
         # if rf2:
         #     rf = rf2
         
         foods = FoodName.objects.filter(mun=mun)
         with transaction.atomic():
             person = lb.ReliefPersonSerializer(data=data , context={'request':request})
-            person.is_valid()
-            receiver = person.save()
+            if person.is_valid():
+                receiver = person.save()
+            else:
+                return JsonResponse({'status':'false', 'message':{"errors":{"message":"Please check the input format for the data inserted", "data":data, "errors":person.errors}}}, status=500)
             
             for y in foods:
                 obj,created = ReliefItem.objects.get_or_create(receiver = receiver, food_type=y, fund=rf)
@@ -72,11 +77,8 @@ def reliefs(request, id):
                 
 
 
-        FoodName.objects.filter()
-        
-        pass
-    page = "jdata/relief/lb_distributor.html"
-    return render(request, page, context=context)
+    
+    
 
 
 @login_required(login_url='users:login')
