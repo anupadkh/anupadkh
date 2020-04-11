@@ -80,6 +80,7 @@ class QTPersonSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField( write_only=True)
     ward =serializers.IntegerField( write_only=True)
     
+    
 
     def to_representation(self, obj):
         data = super().to_representation(obj)

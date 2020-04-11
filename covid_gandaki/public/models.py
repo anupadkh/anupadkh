@@ -57,7 +57,7 @@ class QTPerson(models.Model):
         Person, on_delete=models.SET_NULL, null=True, blank=True)
     quarantined_zone = models.ForeignKey(
         Hospital, on_delete=models.SET_NULL, null=True, blank=True)
-    is_postive = models.BooleanField(default=False)
+    is_positive = models.BooleanField(default=False)
     remarks = models.TextField(
         verbose_name="Remarks", null=True, blank=True, max_length=300)
     created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
