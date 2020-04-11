@@ -21,16 +21,17 @@
     <div class="container col-sm-9">
         <h7 style="color:red;">प्रश्न : </h7> <h4<span id="column_header" ></span></h4>
     </div>
-    <div>
-        <button class="btn btn-primary float-right" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
-    </div>
-    <div>
-        <button class="btn btn-primary float-right" id="save">Save</button>
-    </div>
+    
 </div>
 {% csrf_token %}
 <div id="spreadsheet" style="margin-top: 20px;"></div>
 <div class="row">
+    <div class="col-sm-6">
+        <button class="btn btn-primary float-left" onclick="table.insertRow()">नयाँ थप्नुहोस् ।</button>
+    </div>
+    <div class="col-sm-6">
+        <button class="btn btn-primary float-right" id="save">Save</button>
+    </div>
     <div class="col-md-6" id="errors">
 
     </div>

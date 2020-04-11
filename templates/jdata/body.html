@@ -18,9 +18,14 @@
 {% block body %}
 <nav class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
     <!-- <div class="col-md-1"><img data-role="gravatar" data-email="sergey@pimenov.com.ua" height="50" width="50"></div> -->
-    <div class="navbar-brand col-md-1 title " style="color:burlywood;">{{request.session.employee}}</div>
-    <div class="col-md-1 subtitle" style="color:#fff;">{{user.full_name}}</div>
-    <div class="col-md-9 float-right"><h3 style="color:beige;">{{heading}}</h3></div>
+    <div class="navbar-brand col-md-3 title " style="color:burlywood;">{{request.session.employee}}</div>
+    <div class="col-md-2 subtitle" style="color:#fff;">{{user.full_name}}</div>
+    <div class="col-md-6 float-right"><h3 style="color:beige;">{{heading}}</h3></div>
+    <div class="cell-1 col-md-1 text-center">
+        {% if login %}
+        <a class="btn btn-primary float-left" href="{% url 'users:logout' %}">Logout</a>
+        {% endif %}
+    </div>
 </nav>
 <div class="container-fluid">
     <div class="row">
