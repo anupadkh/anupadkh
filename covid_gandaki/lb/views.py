@@ -102,7 +102,7 @@ def list_dtable(request,id):
         0:{
             'app': 'form',
             'model': 'Travel',
-            'heading': 'विदेशवाट मा आएकाहरुको विवरण',
+            'heading': 'विदेशवाट ' + request.session['employee'] +'मा आएकाहरुको विवरण',
             'page': 'jdata/travel.html',
             'url':'/router/travel/',
         },

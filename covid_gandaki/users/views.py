@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django.contrib.auth import login, logout
 
+from covid_gandaki.users.models import Employee
 # Create your views here.
 
 def landing(request):
@@ -19,14 +20,15 @@ def index(request):
 def login_view(request):
     #Loggin in the UsersConfig
     if request.user.is_authenticated:
-        return redirect('lb:table_view', id=0)
+        return redirect('form:lbindex')
     if request.method == 'POST':
         #Do sth
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('lb:table_view',id=0)
+            request.session['employee'] = Employee.objects.get(user=user).municipality.address.mun.mun_name
+            return redirect('form:lbindex')
 
     else:
         #instantiate

@@ -1,11 +1,11 @@
 from django.db import models
 
 class Person2(models.Model):
-    full_name = models.CharField(max_length=300, verbose_name="Full Name")
-    age = models.IntegerField(null=True, blank=True)
-    permanent_address = models.CharField(max_length=500, null=True, blank=True)
-    current_address = models.CharField(max_length=500, null=True, blank=True)
-    mobile = models.CharField(
+    full_name = models.CharField(verbose_name = "पुरा नाम" ,max_length=300)
+    age = models.IntegerField(verbose_name="उमेर", null=True, blank=True)
+    permanent_address = models.CharField(verbose_name="स्थाई ठेगाना",max_length=500, null=True, blank=True)
+    current_address = models.CharField(verbose_name= "अस्थाई ठेगाना" ,max_length=500, null=True, blank=True)
+    mobile = models.CharField(verbose_name="मोबाइल नं",
         max_length=300, null=True, blank=True, unique=True)
     remarks = models.TextField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)

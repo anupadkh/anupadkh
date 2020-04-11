@@ -10,6 +10,7 @@ urlpatterns=[
     path('muns/', fv.mun_list, name="muns"),
     path('test/', fv.test, name="test"),
     path('<int:id>/dtable/', fv.datatable, name="datatable"),
+    path('lbindex/', fv.lb_index, name="lbindex"),
 ]
 
 app_name = "form"

@@ -11,6 +11,7 @@ from covid_gandaki.form.models import *
 from covid_gandaki.lb.models import *
 from covid_gandaki.public.models import *
 from covid_gandaki.users.models import *
+from covid_gandaki.users.forms import MunForm, Person2Form
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb
 
@@ -24,9 +25,61 @@ def index(request):
     return render(request, 'form/index.html', context={})
     return HttpResponse('Hello')
 
-def test(request):
-    return render(request,'jdata/travel.html',context={'nodata':True})
+@login_required(login_url="users:login")
+def lb_index(request):
+    employee = Employee.objects.get(user=request.user)
+    mun = employee.municipality.address.mun
+    message=""
 
+    if request.method=="POST":
+        data = request.POST
+        man = Person2Form(data)
+        with transaction.atomic():
+            if man.is_valid():
+                instance = man.save(commit=False)
+                if data['submit'] == 'chair':
+                    if mun.chairman:
+                        instance.pk = mun.chairman.pk
+                    instance.save()
+                    mun.chairman = instance
+                elif data['submit'] == 'd_chair':
+                    if mun.deputy_chairman:
+                        instance.pk = mun.deputy_chairman.pk
+                    instance.save()
+                    mun.deputy_chairman = instance
+                elif data['submit'] == 'admin':
+                    if mun.administrator:
+                        instance.pk = mun.administrator.pk
+                    instance.save()
+                    mun.administrator = instance
+                else:
+                    pass
+                mun.save()
+                message="SAVED !"
+            else:
+                message = "Errors: " + str(man.errors)
+
+    if mun.chairman:
+        chair = Person2Form(instance=mun.chairman)
+    else:
+        chair = Person2Form()
+    if mun.deputy_chairman:
+        d_chair = Person2Form(instance = mun.deputy_chairman)
+    else:
+        d_chair = Person2Form()
+    if mun.administrator:
+        admin = Person2Form(instance = mun.administrator)
+    else:
+        admin = Person2Form()
+    persons = {'chairman': chair, 'administrator': admin,
+               'deputy_chairman': d_chair}
+    return render(request, 'users/landing_lb.html', context={'nodata': True, 'persons': persons, "message": message})
+
+def test(request):
+    pass
+
+
+@login_required(login_url="users:login")
 def datatable(request):
     return render(request, 'dtables/drf_datatable.html' )
 

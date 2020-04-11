@@ -5,18 +5,14 @@
 <div class="container-fluid grid" style="margin-top:30px;">
     <div class="row">
         <div class="cell-3" style="background-color:chocolate;">
-            {% block sidebar %}
-            <h3 class="remark primary">COVID-19 को घटनागत विवरणसम्बन्धी पोर्टल</h3>
-                    <p class="remark warning">विश्वभर महामारीको रुपमा फैलिएको कोरोना भाइरस ( COVID-19 ) का घटनाहरुको नियमित सुचना संकलन र विश्लेषणलाई मध्यनजर गर्दै कोरोना संक्रमणको असहज परिस्थितिमा दैनिक अत्यावश्यक उपभोग्य बस्तुको सहज आपूर्ति गुणस्तर सम्वन्धि कार्यको अनुगमन तथा सुपरिवेक्षणलाई महत्त्व दिएर यस पोर्टल निर्माण गरिएको छ । <br/><br/>यसमा उपभोक्ताहरुले आफ्नो परिवारलाई चाहिने आवश्यक खाद्यवस्तु तथा औषधीहरुको माग गर्न सक्नेछन् ।<br/><br/> साथै स्थानीय तहलाई उपलब्ध गराइएको युजरनेम र पासवर्डद्वारा प्रदेशस्तरिय कोरोना भाइरससम्बन्धी विवध विवरण घटनागत आधारमा अद्यावद्यिक गर्न सक्नेछन् ।
-                    </p>
-                    <p class="remark success">केहि प्रश्न र जिज्ञासाको लागि उद्योग, पर्यटन, वन तथा वातावरण मन्त्रालयका प्रवक्ता (नारायण आचार्यः ९८५१०४७१७३) र सूचना अधिकारी (शिव परियारः ९८५७६२४१११) लाई सम्पर्क गर्नुपर्नेछ ।</p>
-            {% endblock %}
+            {% include 'users/info.html' %}
         </div>
         <div class="cell-9" style="background-color: azure; padding-left:50px; ">
             <div class="row">
-            <div class="cell-3 offset-9 " style="font-family:Cambay;">
+            <div class="cell-3 offset-9 " style="font-family:Cambay;">{% block food %}
                 <button class="button primary va-text-bottom float-right" type="button"
                     onclick="Metro.dialog.open('#demoDialog1')">प्रदेश सरकारले तोकेको खाद्यान्न प्याकेज जानकारी</button>
+                    {% endblock %}
             </div>
             {% block main %} <h2>{{message}}</h2>{% endblock %}
             </div>

@@ -1,0 +1,94 @@
+{% extends 'base/body.html' %}
+
+{% block body %}
+<div class="container-fluid grid" style="margin-top:30px;">
+    <div class="row">
+        <div class="cell-3" style="background-color:chocolate;">
+            <p class="remark warning">
+                तपाई अहिले COVID-19 का कारण परेक प्रभाव र राहतको विवरण भर्ने पेजमा हुनु हुन्छ । यहाँलाई उद्योग, पर्यटन, वन तथा वातावरण
+                मन्त्रालय, गण्डकी प्रदेश हार्दिक स्वागत गर्दछ ।
+            </p>
+            {% include 'users/info.html' %}
+        </div>
+        <div class="cell-6" style="background-color: azure; padding-left:50px; ">
+            <div class="row">
+                <div class="cell-3 offset-9 " style="font-family:Cambay;">
+
+                </div>
+                
+            </div>
+            <p class="primary remark text-center">
+                स्वागतम श्री {{request.user.full_name}} {{request.session.employee}}
+                {{message}}
+            </p>
+            <div data-role="wizard">
+                <section>
+                    <div class="page-content">
+                        <form action="{% url 'form:lbindex' %}" method="POST" id="chair" name="chair">
+                        <h1>{{request.session.employee}}का अध्यक्षको विवरण</h1>
+                        <div class="row container-fluid">
+                            {% csrf_token %}
+                                {{persons.chairman}}
+                                <input class="primary button" name="submit" value="chair" type="hidden"/>
+                                <input type="submit" value="पेश गर्नुहोस्"/>
+
+                            
+                        </div>
+                        </form>
+                        
+                        
+                    </div>
+                </section>
+                <section>
+                    <div class="page-content">
+                        <form action="{% url 'form:lbindex' %}" method="POST" name="d_chair" id="d_chair">
+                        <h1>{{request.session.employee}}का उपाध्यक्षको विवरण</h1>
+                        <div class="row container-fluid">
+                            {% csrf_token %}
+                            {{persons.deputy_chairman}}
+                            <input class="primary button float-right" name="submit" value="d_chair" type="hidden"/>
+                            <input type="submit" value="पेश गर्नुहोस्"/>
+                        
+                        </div>
+                        </form>
+                            
+                        
+                    </div>
+                </section>
+                <section>
+                    <div class="page-content">
+                        <form action="{% url 'form:lbindex' %}" method="POST">
+                        <h1>{{request.session.employee}}का प्रशासकीय अधिकृतको विवरण</h1>
+                        <div class="row container-fluid">
+                            {% csrf_token %}
+                            {{persons.administrator}} 
+                            <input class="primary button float-right" name="submit" value="admin" type="hidden"/>
+                            <input type="submit" value="पेश गर्नुहोस्" />
+                        
+                        </div>
+                        </form>
+                    </div>
+                </section>
+                <section>
+                    <div class="page-content">
+                       <p class="container" style="font-size: 20px;"> तपाईँले {{request.session.employee}}बारे अगाडीका फारमहरु भर्नुभएकोमा धन्यवाद । <br/><br/>कृपया अन्य अनुसुचिहरु भरेर COVID-19का जोखिमहरुबारे सुचना दिनुहोला । </p><br/><br/>
+                    <p><a href="{% url 'lb:table_view' id=0 %}" class="button primary center">फारममा जानुहोस</a></p>
+                    </div>
+                </section>
+                <!-- <section>
+                    <div class="page-content">Page 5</div>
+                </section> -->
+            </div>
+        </div>
+        <div class="cell-3">
+                <h3>COVID-19 सँग सम्बन्धित अनुसुचि फारमहरुमा जान तल क्लिक गर्नुहोस् ।</h3>
+                <p><a href="{% url 'lb:table_view' id=0 %}" class="button primary center">फारममा जानुहोस</a></p>
+                <p class="container"><br />
+                कृपया तपाईको थथार्थ विवरण क्रमशः भरी यो महामारीलाई व्यवस्थापन गर्न सहयोग गर्नुहोला । स्थानीय तहबारे प्रतिनिधिहरुको विवरण भर्न
+                बायाँको फारमहरु भरेर पेश गर्नुहोला । <br /><br /> अन्य प्रतिनिधिहरुको विवरण भर्न Arrow क्लिक गर्दै जानुहोला ।</p>
+            
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
