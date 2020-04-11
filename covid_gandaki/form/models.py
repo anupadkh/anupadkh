@@ -21,3 +21,18 @@ class Travel(models.Model):
     created_by = models.ForeignKey(User,blank=True, null=True, on_delete=models.SET_NULL)
     remarks = models.TextField(blank=True,null=True)
 
+class Stat(models.Model):
+    title = models.CharField(max_length=300)
+    subtitle = models.CharField(null=True, blank=True, max_length=300)
+    image = models.CharField(null=True, blank=True, max_length=500)
+
+    def __str__(self):
+        return self.title
+
+class StatValues(models.Model):
+    reference = models.ForeignKey(Stat, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    value = models.CharField(null=True, blank=True, max_length=10)
+
+    def __str__(self):
+        return self.title

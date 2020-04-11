@@ -1,0 +1,56 @@
+[
+    {
+            'title': "COVID-19",
+            'subtitle': "विवरण",
+            'image': "https://www.cpf.navy.mil/COVID19/images/2019-ncov-576.png",
+            'values': [
+            {'title': 'जम्मा', 'value': "१०"
+            },
+            {'title': '‌+ve', 'value': "१०"
+            },
+            {'title': '-ve', 'value': "१०"
+            },
+        ]
+    },
+    {
+            'title': "Quarantines",
+            'subtitle': "विवरण",
+            'image': "https://www.publicdomainpictures.net/pictures/320000/velka/coronavirus-symbol-sign.png",
+            'values': [
+            {'title': 'जम्मा', 'value': "१०"
+            },
+            {'title': 'क्वारेन्टाइन', 'value': "१०"
+            },
+            {'title': 'आईसोलेसन', 'value': "१०"
+            },
+        ]
+    },
+    {
+            'title': "राहत वितरण",
+            'subtitle': "स्थानिय तह",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Pictograms-nps-misc-sea_plane.svg",
+            'values': [
+            {'title': 'जम्मा', 'value': "१०"
+            },
+            {'title': 'पुरुष', 'value': "१०"
+            },
+            {'title': 'महिला', 'value': "१०"
+            },
+        ]
+    },
+    {
+            'title': "आर्थिक कमजोरी",
+            'subtitle': "किन्न नसक्ने",
+        "image": "/static/images/beggar.png",
+            'values': [
+            {'title': 'जम्मा', 'value': "१०"
+            },
+            {'title': 'बालक', 'value': "१०"
+            },
+            {'title': 'वृद्ध', 'value': "१०"
+            },
+            {'title': 'अन्य', 'value': "१०"
+            },
+        ]
+    },
+]

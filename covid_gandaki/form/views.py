@@ -75,8 +75,34 @@ def lb_index(request):
                'deputy_chairman': d_chair}
     return render(request, 'users/landing_lb.html', context={'nodata': True, 'persons': persons, "message": message})
 
+import json
 def test(request):
-    pass
+    from django.conf import settings
+    
+    if request.GET['generate']:
+        data = []
+        y = Stat.objects.all()
+        for m in y:
+            values = []
+            for z in StatValues.objects.filter(reference=m):
+                values.append({
+                    'title': z.title,
+                    'value': z.value
+                })
+
+            data.append({
+                "title": m.title,
+                "subtitle": m.subtitle,
+                "image": m.image,
+                "values": values,
+            })
+        
+        with open(settings.STATIC_ROOT + '/data1.json', 'w+') as f:
+            f.write(json.dumps(data))
+            f.close()
+            pass
+    context = {}
+    return render(request, 'd3js/data.html', context=context)
 
 
 @login_required(login_url="users:login")

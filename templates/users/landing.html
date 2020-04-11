@@ -19,68 +19,88 @@
                             COVID-19 को घटनागत विवरण तथा राहतसम्बन्धी पोर्टल
                         </h3>
                     </div>
-                    <div class="card cell-sm-3 ">
-                        <div class="card-header">
-                            <h5>सहज खाद्यान्न प्याकेज सम्बन्धी जानकारी</h5>
+                    <div class="cell-12"><div class="row">{% for x in data %}
+                        <div class="cell-sm-{{num}}">
+                            <div class="social-box">
+                                <div class="header bg-cyan fg-white">
+                                    <div class="title text-left">{{x.title}}</div>
+                                    <div class="subtitle text-left">{{x.subtitle}}</div>
+                                    <img src="{{x.image}}" alt="" class="avatar bg-red">
+                                </div>
+                                <ul class="skills">
+                                    {% for z in x.values %}<li>
+                                        <div class="text-bold">{{z.value}}</div>
+                                        <div>{{z.title}}</div>
+                                    </li>{% endfor %}
+                                </ul>
+                            </div>
                         </div>
-                        <!-- <div class="card-content p-2">
-                            <img src="http://lorempixel.com/1000/600/" style="width: 100%">
-                        </div> -->
-                        <div class="card-footer">
-                            <!-- <button class="button primary va-text-bottom float-right" type="button" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज जानकारी</button> -->
-                            <a href="{% url 'lb:khadya' %}" class="button primary va-text-bottom float-right">खाद्यान्न प्याकेज जानकारी</a>
+
+                    {% endfor %}</div></div>
+                    <div class="row">
+                        <div class="card cell-sm-3 ">
+                            <div class="card-header">
+                                <h5>सहज खाद्यान्न प्याकेज सम्बन्धी जानकारी</h5>
+                            </div>
+                            <!-- <div class="card-content p-2">
+                                                    <img src="http://lorempixel.com/1000/600/" style="width: 100%">
+                                                </div> -->
+                            <div class="card-footer">
+                                <!-- <button class="button primary va-text-bottom float-right" type="button" onclick="Metro.dialog.open('#demoDialog1')">खाद्यान्न प्याकेज जानकारी</button> -->
+                                <a href="{% url 'lb:khadya' %}" class="button primary va-text-bottom h-center">खाद्यान्न प्याकेज जानकारी</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card cell-sm-3 offset-1">
-                        <div class="card-header fg-back" >
-                            <h5>घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्नु पर्ने फारम</h5>
-                        </div>
-                        <!-- <div class="card-content p-2">
-                            <p class="fg-gray">Posted on January 21, 2015</p>
-                            Quisque eget vestibulum nulla. Quisque quis dui quis ex
-                            ultricies efficitur vitae non felis. Phasellus quis nibh
-                            hendrerit...
-                        </div> -->
-                        <div class="card-footer">
-                            <a class="button primary va-text-bottom flex-justify-center" href="{% url 'form:index' %}">यहाँ भर्नुहोस् ।</a>
-                        </div>
-                    </div>
-                
-                    <div class="card cell-sm-3 offset-1">
-                        <div class="card-header fg-back">
-                            <h5>स्थानिय तहले भर्नु पर्ने फारम</h5>
-                        </div>
-                        <!-- <div class="card-content p-2">
+                        <div class="card cell-sm-3 offset-1">
+                            <div class="card-header fg-back">
+                                <h5>घरपरिवारलाई खाद्यवस्तु, औषधी आवश्यक परेमा भर्ने फारम</h5>
+                            </div>
+                            <!-- <div class="card-content p-2">
                                                     <p class="fg-gray">Posted on January 21, 2015</p>
                                                     Quisque eget vestibulum nulla. Quisque quis dui quis ex
                                                     ultricies efficitur vitae non felis. Phasellus quis nibh
                                                     hendrerit...
                                                 </div> -->
-                        <div class="card-footer">
-                            <a class="button primary va-text-bottom float-right" href="{% url 'users:login' %}">यहाँ भर्नुहोस् ।</a>
-                        </div>
-                        <!-- <div class="card-header">
-                            <div class="avatar">
-                                <img src="http://lorempixel.com/68/68/people/">
+                            <div class="card-footer">
+                                <a class="button primary va-text-bottom h-center" href="{% url 'form:index' %}">यहाँ भर्नुहोस् ।</a>
                             </div>
-                            <div class="name">John Doe</div>
-                            <div class="date">Monday at 3:47 PM</div>
                         </div>
-                        <div class="card-content p-2">
-                            What a nice photo i took yesterday!
+                        
+                        <div class="card cell-sm-3 offset-1">
+                            <div class="card-header fg-back">
+                                <h5>स्थानिय तहले भर्नु पर्ने फारम</h5>
+                            </div>
+                            <!-- <div class="card-content p-2">
+                                                                            <p class="fg-gray">Posted on January 21, 2015</p>
+                                                                            Quisque eget vestibulum nulla. Quisque quis dui quis ex
+                                                                            ultricies efficitur vitae non felis. Phasellus quis nibh
+                                                                            hendrerit...
+                                                                        </div> -->
+                            <div class="card-footer">
+                                <a class="button primary va-text-bottom h-center" href="{% url 'users:login' %}">यहाँ भर्नुहोस् ।</a>
+                            </div>
+                            <!-- <div class="card-header">
+                                                    <div class="avatar">
+                                                        <img src="http://lorempixel.com/68/68/people/">
+                                                    </div>
+                                                    <div class="name">John Doe</div>
+                                                    <div class="date">Monday at 3:47 PM</div>
+                                                </div>
+                                                <div class="card-content p-2">
+                                                    What a nice photo i took yesterday!
+                                                </div>
+                                                <div class="card-content">
+                                                    <img src="http://lorempixel.com/1000/600/" style="width: 100%">
+                                                </div>
+                                                <div class="card-content fg-gray p-2">
+                                                    <span><small>Likes: </small>112</span>
+                                                    <span><small>Comments: </small>43</span>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button class="flat-button mif-thumbs-up mif-2x"></button>
+                                                    <button class="flat-button mif-tag mif-2x"></button>
+                                                    <button class="flat-button mif-share mif-2x"></button>
+                                                </div> -->
                         </div>
-                        <div class="card-content">
-                            <img src="http://lorempixel.com/1000/600/" style="width: 100%">
-                        </div>
-                        <div class="card-content fg-gray p-2">
-                            <span><small>Likes: </small>112</span>
-                            <span><small>Comments: </small>43</span>
-                        </div>
-                        <div class="card-footer">
-                            <button class="flat-button mif-thumbs-up mif-2x"></button>
-                            <button class="flat-button mif-tag mif-2x"></button>
-                            <button class="flat-button mif-share mif-2x"></button>
-                        </div> -->
                     </div>
                 </div>
                 {% block main %} <h2>{{message}}</h2>{% endblock %}

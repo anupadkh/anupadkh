@@ -5,9 +5,19 @@ from django.contrib.auth import login, logout
 
 from covid_gandaki.users.models import Employee
 # Create your views here.
+from django.conf import settings
+import json
 
 def landing(request):
-    context = {}
+    # with open(settings.STATICFILES_DIRS[0] + '/data.json', 'r') as f:
+    #     data = eval(f.read())
+    data = []
+    with open(settings.STATIC_ROOT + '/data1.json', 'r') as f:
+        data = json.loads(f.read())
+    context = {
+        'data': data,
+        'num': int(12/len(data)),
+    }
     return render(request, 'users/landing.html', context)
 
 def index(request):

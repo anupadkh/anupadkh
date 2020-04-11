@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Maps Overview</title>
+    <script src="{% static 'js/d3.min.js'%}"></script>
+    <script src="{% static 'leaflet/leaflet.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'leaflet.css' %}">
+    <script src="http://d3js.org/topojson.v0.min.js"></script>
+    <style>
+        path{
+            stroke:white;
+            stroke-width: .5px;
+            fill:black;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        var milesRun = [2, 5, 4, 1, 2, 6, 5];
+
+            d3.select('body').append('svg')
+                .attr('height', 300)
+                .attr('width', 800)
+                .selectAll('rect')
+                .data(milesRun)
+                .enter()
+                .append('rect')
+                .attr('y', function (d, i) { return i * 40 })
+                .attr('height', 35)
+                .attr('x', 0)
+                .attr('width', function (d) { return d * 100 })
+                .style('fill', 'steelblue');
+    </script>
+</body>
+</html>

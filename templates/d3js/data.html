@@ -1,0 +1,102 @@
+{% extends 'base/body.html' %}
+{% load static %}
+
+{% block header-scripts %}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+<script src="{% static 'morris/morris.min.js' %}"></script>
+<!-- <script src="{% static 'js/jqeuery-3.4.1.min.js' %}"></script> -->
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script> -->
+<!-- <script src="{% static 'morris/examples/lib/example.js' %}"></script> -->
+<!-- <script src="{% static 'js/nv.d3.min.js' %}"></script> -->
+
+<link rel="stylesheet" href="{% static 'morris/morris.css' %}">
+<!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css"> -->
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid grid" style="margin-top:30px;">
+    <div class="row">
+        <div class="cell-3" style="background-color:chocolate;">
+            {% include 'users/info.html' %}
+        </div>
+        <div class="cell-9" style="background-color: rgb(81, 223, 204); padding-left:50px; ">
+            <div class="row">
+                {% block main %}
+                <div class="cell-6">
+                    <div class="mx-auto" data-role="panel" data-title-caption="Total People"
+                        data-title-icon="<span class='mif-apps'></span>" data-collapsible="true"
+                        data-cls-panel="shadow-3" data-cls-title="bg-red fg-white"
+                        data-cls-title-icon="bg-green fg-white" data-cls-content="bg-cyan fg-white"
+                        data-cls-collapse-toggle="bg-dark fg-white marker-light" data-collapsed="true">
+                        <h1>Donut Chart</h1>
+                        <div id="graph"></div>
+                    </div>
+                </div>
+                <div class="cell-6">
+                    <div class="mx-auto" data-role="panel" data-title-caption="Total People"
+                        data-title-icon="<span class='mif-apps'></span>" data-collapsible="true"
+                        data-cls-panel="shadow-1" data-cls-title="bg-red fg-white"
+                        data-cls-title-icon="bg-green fg-white" data-cls-content="bg-cyan fg-white"
+                        data-cls-collapse-toggle="bg-dark fg-white marker-light" data-collapsed="true">
+                        <table class="table" data-role="table">
+                            <thead>
+                                <tr>
+                                    <th data-sortable="true" data-sort-dir="asc">Name</th>
+                                    <th data-sortable="true">Office</th>
+                                    <th data-sortable="true" data-format="number">Age</th>
+                                    <th data-sortable="true" data-format="date">Start date</th>
+                                    <th data-sortable="true" data-show="false" data-format="money">Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tiger Nixon</td>
+                                    <td>Edinburgh</td>
+                                    <td>61</td>
+                                    <td>2011/04/25</td>
+                                    <td>$320,800</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="cell-4">
+                    <div class="icon-box border bd-default">
+                        <div class="icon bg-cyan fg-white"><span class="mif-cog"></span></div>
+                        <div class="content p-4">
+                            <div class="text-upper">cpu traffic</div>
+                            <div class="text-upper text-bold text-lead">90%</div>
+                        </div>
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer-scripts %}
+<!-- <script>
+    $(".cell-4").append("Hello World");
+</script> -->
+<script>
+    Morris.Donut({
+        element: 'graph',
+        data: [
+            { value: 70, label: 'foo' },
+            { value: 15, label: 'bar' },
+            { value: 10, label: 'baz' },
+            { value: 5, label: 'A really really long label' }
+        ],
+        formatter: function (x) { return x + "%" }
+    }).on('click', function (i, row) {
+        console.log(i, row);
+    });
+</script>
+{% endblock %}
