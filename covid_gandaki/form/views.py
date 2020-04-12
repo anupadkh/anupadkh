@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
@@ -76,11 +77,12 @@ def lb_index(request):
     return render(request, 'users/landing_lb.html', context={'nodata': True, 'persons': persons, "message": message})
 
 import json
-def test(request):
-    from django.conf import settings
+from django.conf import settings
+
+def test(request):    
+    data = []
     
-    if request.GET['generate']:
-        data = []
+    if request.GET.get('generate'):
         y = Stat.objects.all()
         for m in y:
             values = []
