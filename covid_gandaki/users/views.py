@@ -12,7 +12,7 @@ def landing(request):
     # with open(settings.STATICFILES_DIRS[0] + '/data.json', 'r') as f:
     #     data = eval(f.read())
     data = []
-    with open(settings.STATIC_ROOT + '/data1.json', 'r') as f:
+    with open(settings.STATIC_ROOT + 'data1.json', 'r') as f:
         data = json.loads(f.read())
     context = {
         'data': data,

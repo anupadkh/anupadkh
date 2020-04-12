@@ -99,7 +99,7 @@ def test(request):
                 "values": values,
             })
         
-        with open(settings.STATIC_ROOT + '/data1.json', 'w+') as f:
+        with open(settings.STATIC_ROOT + 'data1.json', 'w+') as f:
             f.write(json.dumps(data))
             f.close()
             pass
