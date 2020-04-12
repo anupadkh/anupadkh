@@ -79,6 +79,7 @@ class QTPersonSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=300, write_only=True)
     age = serializers.IntegerField( write_only=True)
     ward =serializers.IntegerField( write_only=True)
+    gender = serializers.IntegerField(write_only=True, allow_null=True)
     
     
 
@@ -86,6 +87,7 @@ class QTPersonSerializer(serializers.ModelSerializer):
         data = super().to_representation(obj)
         data['name'] = obj.person.full_name
         data['age'] = obj.person.age
+        data['gender'] = obj.person.gender
 
         try:
             data['ward'] = obj.person.current_full_address.ward
@@ -121,6 +123,7 @@ class QTPersonSerializer(serializers.ModelSerializer):
             'ward', address.ward)
         address.save()
         infected.current_full_address = address
+        infected.gender = validated_data.get('gender', infected.gender)
         infected.save()
         instance.person = infected
         

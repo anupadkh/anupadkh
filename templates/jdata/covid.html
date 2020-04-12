@@ -53,9 +53,10 @@
                 "name": to_post[1],
                 "age": to_post[2],
                 "ward": to_post[3],
-                "is_positive": to_post[4],
-                "quarantined_zone": to_post[5],
-                "remarks": to_post[6],
+                "gender": to_post[4],
+                "is_positive": to_post[5],
+                "quarantined_zone": to_post[6],
+                "remarks": to_post[7],
             }
             // a.push(
             //     {
@@ -194,6 +195,15 @@
         },
         {
             type: 'dropdown',
+            title: 'लिङ्ग',
+            width: '150',
+            name: 'gender',
+            source:[ {"id":1,"name": "पुरुष"}, { "id": 2, "name": "महिला" }, { "id": 3, "name": "अन्य" }, ],
+            mask: '#,##', decimal: '.',
+
+        },
+        {
+            type: 'dropdown',
             title: 'टेष्टको परिणाम',
             width: '150',
             name: 'is_positive',
@@ -210,9 +220,9 @@
         },
         {
             type: 'text',
-            title: 'remarks',
+            name: 'remarks',
             width: '150',
-            name: 'अन्य विवरण'
+            title: 'अन्य विवरण'
             // editor: 'number',
         },
         {

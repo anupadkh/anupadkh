@@ -81,7 +81,13 @@
                 {% block table2 %}
                 {% endblock table2 %}
                 <!-- </div> -->
-
+                {% if next_page %}
+                <div class="col-12"><br/><br/>
+                    <a class="btn btn-secondary" href="{% url 'lb:table_view' id=next_page|add:"-2" %}"> अगाडीको पृष्ठ</a>
+                    <a class="btn btn-secondary float-right" href="{% url 'lb:table_view' id=next_page %}"> अर्को पृष्ठ</a>
+                </div>
+                {% endif %}
+                
 
             
         </main>

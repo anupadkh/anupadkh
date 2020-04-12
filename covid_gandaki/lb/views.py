@@ -67,7 +67,10 @@ def reliefs(request, id):
             
             for y in foods:
                 obj,created = ReliefItem.objects.get_or_create(receiver = receiver, food_type=y, fund=rf)
-                obj.qty = data[str(y.id)]
+                if data[str(y.id)] == '':
+                    obj.qty = 0
+                else:
+                    obj.qty = data[str(y.id)]
                 # obj.is_valid()
                 obj.save()
             
@@ -157,9 +160,12 @@ def list_dtable(request,id):
         },
     }
 
-    if  id<7:
+    if  id<1:
         # App = apps.get_model(app_label=applications[id]['app'], model_name=applications[id]['model'])
-        context = {'login': True, "heading":applications[id]['heading'], 'url':applications[id]['url']}
+        context = {'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url']}
+    elif id<7:
+        context = {
+            'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url'], 'next_page': id+1}
     elif id == 7:
         # App = ReliefFund.objects.filter
         context = {
