@@ -128,7 +128,7 @@
         // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
         console.log('New change on cell ' + cellName + ' to: ' + value + '');
         console.log(x, y);
-
+मृत्यु
     };
     var beforeChange = function (instance, cell, x, y, value) {
         var cellName = jexcel.getColumnNameFromId([x, y]);
@@ -143,8 +143,32 @@
         document.getElementById("column_header").innerHTML = table.getHeader(x1)
     };
 
+    var deletess =  function (instance, x1, y1, x2, y2, origin) {
+        console.log(instance,x1,y1,x2,y2,origin);
+    }
+
     function ask() {
-        return confirm("Delete ?")
+        y = table.getSelectedRows(true);
+        
+        if (confirm("Delete ?")){
+            
+            for(let i=0; i<y.length; i=i+1){
+                var values = table.getRowData(y[i]);
+                
+                // console.log(y[i]);
+                $.ajax({
+                    url: '{{url}}' + values[0]+ '/',
+                    type: 'DELETE',
+                    async: true,
+                    success: function (result) {
+                        $("#success").append(
+                            "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i + 1) + "> " + values[1] + "</div>"
+                        );
+                    }
+                });
+            }
+        };
+        
 
     }
 
@@ -260,6 +284,7 @@
                 onselection: selectionActive,
                     // persistance: "/router/travel/?format=json",
                     allowDeleteColumn: false,
+                    deleteRow: deletess,
                         allowInsertColumn: false,
                             allowManualInsertRow: true,
                                 defaultColWidth: "70",

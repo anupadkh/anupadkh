@@ -58,23 +58,7 @@
                 "quarantined_zone": to_post[6],
                 "remarks": to_post[7],
             }
-            // a.push(
-            //     {
-            //         "id": to_post[0],
-            //         "name": to_post[1],
-            //         "total_beds": to_post[2],
-            //         "ward": to_post[3],
-
-            //         "ward": to_post[6],
-            //         "Foreign Country": to_post[7],
-            //         "mode_of_transport_international": to_post[8],
-            //         "mode_of_transport_national": to_post[9],
-            //         "Arrival Date": to_post[10],
-            //         "remarks": to_post[11]
-
-            //     }
-            // )
-            // };
+            
             if (my_obj.id == "") {
                 delete my_obj.id;
             };
@@ -148,7 +132,28 @@
     };
 
     function ask() {
-        return confirm("Delete ?")
+
+        y = table.getSelectedRows(true);
+
+        if (confirm("Delete ?")) {
+
+            for (let i = 0; i < y.length; i = i + 1) {
+                var values = table.getRowData(y[i]);
+
+                // console.log(y[i]);
+                $.ajax({
+                    url: '{{url}}' + values[0] + '/',
+                    type: 'DELETE',
+                    async: true,
+                    success: function (result) {
+                        $("#success").append(
+                            "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i + 1) + "> " + values[1] + "</div>"
+                        );
+                    }
+                });
+            }
+        };
+
 
     }
 
