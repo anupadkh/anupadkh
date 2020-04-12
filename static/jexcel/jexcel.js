@@ -136,7 +136,7 @@
             loadingSpin:false,
             // Table overflow
             tableOverflow:false,
-            tableHeight:'300px',
+            tableHeight:null,
             tableWidth:null,
             // Meta
             meta: null,
