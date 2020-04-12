@@ -31,14 +31,15 @@ class HospitalSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         if self.initial_data.get('id', False):
-            instance = Hospital.objects.create(validated_data)
+            instance = Hospital.objects.get(id=self.initial_data['id'])
+        else:
+            instance = Hospital.objects.create(**validated_data)
             request = self.context['request']
             employee = Employee.objects.get(user=request.user)
             # municipality refers to office actually
             mun = employee.municipality.address.mun
             instance.mun = mun
-        else:
-            instance = Hospital.objects.get(id=self.initial_data['id'])
+            
         instance.name = validated_data.get('name', instance.name)
         instance.total_beds = validated_data.get('total_beds', instance.total_beds)
         instance.ward = validated_data.get('ward', instance.ward)
