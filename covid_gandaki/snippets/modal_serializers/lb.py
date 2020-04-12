@@ -30,11 +30,21 @@ class HospitalSerializer(serializers.ModelSerializer):
         return data
     
     def create(self, validated_data):
-        instance = super().create(validated_data)
-        request = self.context['request']
-        employee = Employee.objects.get(user=request.user)
-        mun = employee.municipality.address.mun # municipality refers to office actually
-        instance.mun = mun
+        if self.initial_data.get('id', False):
+            instance = Hospital.objects.create(validated_data)
+            request = self.context['request']
+            employee = Employee.objects.get(user=request.user)
+            # municipality refers to office actually
+            mun = employee.municipality.address.mun
+            instance.mun = mun
+        else:
+            instance = Hospital.objects.get(id=self.initial_data['id'])
+        instance.name = validated_data.get('name', instance.name)
+        instance.total_beds = validated_data.get('total_beds', instance.total_beds)
+        instance.ward = validated_data.get('ward', instance.ward)
+        instance.is_quarantine = validated_data.get('is_quarantine', instance.is_quarantine)
+        instance.currently_quarantined = validated_data.get('currently_quarantined', instance.currently_quarantined)
+        
         instance.save()
         return instance        
 
