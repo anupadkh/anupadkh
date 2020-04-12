@@ -81,6 +81,7 @@ class Lb_Production_Serializer(serializers.ModelSerializer):
         
         instance.name = validated_data.get('name',instance.name)
         instance.qty = validated_data.get('qty', instance.qty)
+        instance.qty_unit = validated_data.get('qty_unit', instance.qty_unit)
         instance.remarks = validated_data.get('remarks',instance.remarks)
         instance.produce_freq = validated_data.get('produce_freq', instance.produce_freq)        
         instance.save()
@@ -111,7 +112,7 @@ class Lb_Medical_Serializer(serializers.ModelSerializer):
         instance.required_qty = validated_data.get('required_qty', instance.required_qty)
         instance.remarks = validated_data.get('remarks',instance.remarks)
         instance.available = validated_data.get('available', instance.available)
-
+        instance.qty_unit = validated_data.get('qty_unit', instance.qty_unit)
         instance.save()
         return instance
 

@@ -49,7 +49,8 @@ class Production(models.Model):
     # स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको वस्तुः
     name = models.CharField(max_length=300)
     qty = models.CharField(max_length=50)
-    produce_freq = models.CharField(max_length=50, default='daily')
+    produce_freq = models.CharField(max_length=50, default='daily', blank=True, null=True)
+    qty_unit = model.CharField(max_length=70, default="केजी")
     remarks = models.TextField()
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -59,8 +60,9 @@ class Medical(models.Model):
     # (च) तत्काल आवश्यक औषधि र मेडीकल उपकरण (PPE, मास्क, सेनिटाईजर, साबुन, थर्मोमिटर, पन्जा आदि) सम्वन्धि विवरण
     name = models.CharField(max_length=300)
     required_qty = models.CharField(max_length=50)
-    remarks = models.TextField()
-    available = models.CharField(max_length=50)
+    remarks = models.TextField(blank=True, null=True)
+    qty_unit = models.CharField(max_length=80)
+    available = models.CharField(max_length=50, null=True, blank=True)
     produced_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)

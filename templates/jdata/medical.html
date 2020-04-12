@@ -50,8 +50,9 @@
                 "id": to_post[0],
                 "name": to_post[1],
                 "required_qty": to_post[2],
-                "available": to_post[3],
-                "remarks": to_post[4]
+                "qty_unit": to_post[3],
+                "available": to_post[4],
+                "remarks": to_post[5]
             };
             if (my_obj.id == "") {
                 delete my_obj.id;
@@ -164,6 +165,15 @@
             mask: '#,##', decimal: '.'
 
         },
+        {
+            type: 'numeric',
+            title: 'परिमाण मापन विधि',
+            width: '100',
+            name: 'qty_unit',
+            mask: '#,##', decimal: '.'
+
+        },
+
         {
             type: 'numeric',
             title: 'मौजदात परिमाण',

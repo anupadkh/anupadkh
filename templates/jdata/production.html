@@ -50,8 +50,9 @@
                 "id": to_post[0],
                 "name": to_post[1],
                 "qty": to_post[2],
-                "produce_freq": to_post[3],
-                "remarks": to_post[4]
+                "qty_unit": to_post[3],
+                "produce_freq": to_post[4],
+                "remarks": to_post[5]
             };
             if (my_obj.id == "") {
                 delete my_obj.id;
@@ -100,7 +101,7 @@
     var loaded = function (instance) {
         // $('#log').append('New data is loaded');
         if (table.getData().length ==0){ 
-            table.setData([[, 'Sample: धान', "100 मुरी", "daily", "यसलाई हटाउनुहोस्"]]);
+            table.setData([[, 'Sample: धान', "100 ","मुरी", "daily", "यसलाई हटाउनुहोस्"]]);
         }
         console.log('New Data Loaded');
         x = 2;
@@ -162,6 +163,14 @@
                     title: 'उत्पादन हुने परिमाण',
                     width: '50',
                     name: 'qty',
+                    mask: '#,##', decimal: '.',
+
+                },
+                {
+                    type: 'numeric',
+                    title: 'उत्पादन हुने परिमाण',
+                    width: '50',
+                    name: 'qty_unit',
                     mask: '#,##', decimal: '.',
 
                 }, 
