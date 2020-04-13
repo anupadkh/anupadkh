@@ -45,7 +45,10 @@ class TravelViewSet(viewsets.ModelViewSet):
         #     return Response ({'Hi':'There'})
         # if request.method == 'POST':
         #     return Response({"GO":"Now"})
-        y = form.Travel.objects.filter(created_by=request.user)
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        creators = users.Employee.objects.filter(municipality=employee.municipality).values('user')
+        y = form.Travel.objects.filter(created_by__in=creators)
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
         # return Response(serializer.data)
