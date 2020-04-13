@@ -13,6 +13,7 @@ from covid_gandaki.lb.models import *
 from covid_gandaki.public.models import *
 from covid_gandaki.users.models import *
 from covid_gandaki.users.forms import MunForm, Person2Form
+from covid_gandaki.form.forms import CounterCovidForm, CovidCounters
 from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb
@@ -32,34 +33,42 @@ def lb_index(request):
     employee = Employee.objects.get(user=request.user)
     mun = employee.municipality.address.mun
     message=""
-
+    covid_instance, status = CovidCounters.objects.get_or_create(mun=mun)
+    covid_form = CounterCovidForm(instance=covid_instance)
     if request.method=="POST":
         data = request.POST
-        man = Person2Form(data)
-        with transaction.atomic():
-            if man.is_valid():
-                instance = man.save(commit=False)
-                if data['submit'] == 'chair':
-                    if mun.chairman:
-                        instance.pk = mun.chairman.pk
-                    instance.save()
-                    mun.chairman = instance
-                elif data['submit'] == 'd_chair':
-                    if mun.deputy_chairman:
-                        instance.pk = mun.deputy_chairman.pk
-                    instance.save()
-                    mun.deputy_chairman = instance
-                elif data['submit'] == 'admin':
-                    if mun.administrator:
-                        instance.pk = mun.administrator.pk
-                    instance.save()
-                    mun.administrator = instance
+        if data['submit'] == 'covid':
+            covid_form = CounterCovidForm(data, instance=covid_instance)
+            if covid_form.is_valid():
+                covid_instance = covid_form.save()
+            
+        else:
+            man = Person2Form(data)
+            with transaction.atomic():
+                if man.is_valid():
+                    instance = man.save(commit=False)
+                    if data['submit'] == 'chair':
+                        if mun.chairman:
+                            instance.pk = mun.chairman.pk
+                        instance.save()
+                        mun.chairman = instance
+                    elif data['submit'] == 'd_chair':
+                        if mun.deputy_chairman:
+                            instance.pk = mun.deputy_chairman.pk
+                        instance.save()
+                        mun.deputy_chairman = instance
+                    elif data['submit'] == 'admin':
+                        if mun.administrator:
+                            instance.pk = mun.administrator.pk
+                        instance.save()
+                        mun.administrator = instance
+                    else:
+                        pass
+                    
+                    mun.save()
+                    message="SAVED !"
                 else:
-                    pass
-                mun.save()
-                message="SAVED !"
-            else:
-                message = "Errors: " + str(man.errors)
+                    message = "Errors: " + str(man.errors)
 
     if mun.chairman:
         chair = Person2Form(instance=mun.chairman)
@@ -75,7 +84,7 @@ def lb_index(request):
         admin = Person2Form()
     persons = {'chairman': chair, 'administrator': admin,
                'deputy_chairman': d_chair}
-    return render(request, 'users/landing_lb.html', context={'nodata': True, 'persons': persons, "message": message})
+    return render(request, 'users/landing_lb.html', context={'nodata': True, 'persons': persons, "message": message, 'covid_form': covid_form})
 
 import json
 from django.conf import settings

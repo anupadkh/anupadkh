@@ -25,7 +25,7 @@
                 <section>
                     <div class="page-content">
                         <form action="{% url 'form:lbindex' %}" method="POST" id="chair" name="chair">
-                        <h1>{{request.session.employee}}का अध्यक्षको विवरण</h1>
+                        <h4>{{request.session.employee}}का अध्यक्षको विवरण</h4>
                         <div class="row container-fluid">
                             {% csrf_token %}
                                 {{persons.chairman}}
@@ -42,7 +42,7 @@
                 <section>
                     <div class="page-content">
                         <form action="{% url 'form:lbindex' %}" method="POST" name="d_chair" id="d_chair">
-                        <h1>{{request.session.employee}}का उपाध्यक्षको विवरण</h1>
+                        <h4>{{request.session.employee}}का उपाध्यक्षको विवरण</h4>
                         <div class="row container-fluid">
                             {% csrf_token %}
                             {{persons.deputy_chairman}}
@@ -58,7 +58,7 @@
                 <section>
                     <div class="page-content">
                         <form action="{% url 'form:lbindex' %}" method="POST">
-                        <h1>{{request.session.employee}}का प्रशासकीय अधिकृतको विवरण</h1>
+                        <h4>{{request.session.employee}}का प्रशासकीय अधिकृतको विवरण</h4>
                         <div class="row container-fluid">
                             {% csrf_token %}
                             {{persons.administrator}} 
@@ -83,10 +83,20 @@
         <div class="cell-3">
                 <h3>COVID-19 सँग सम्बन्धित अनुसुचि फारमहरुमा जान तल क्लिक गर्नुहोस् ।</h3>
                 <p><a href="{% url 'lb:table_view' id=0 %}" class="button primary center">फारममा जानुहोस</a></p>
+                <h3>कोरोना काउन्टर अपडेट - {{request.session.employee}}</h3>
+                <form action="{% url 'form:lbindex' %}" method="POST">
+                    {{covid_form}}
+                    {% csrf_token %}
+                    <input class="primary button" name="submit" value="covid" type="hidden" />
+                    <input class="button primary float-right" type="submit" value="पेश गर्नुहोस"/>
+
+                </form>
                 <p class="container"><br />
-                कृपया तपाईको थथार्थ विवरण क्रमशः भरी यो महामारीलाई व्यवस्थापन गर्न सहयोग गर्नुहोला । स्थानीय तहबारे प्रतिनिधिहरुको विवरण भर्न
-                बायाँको फारमहरु भरेर पेश गर्नुहोला । <br /><br /> अन्य प्रतिनिधिहरुको विवरण भर्न Arrow क्लिक गर्दै जानुहोला ।</p>
-            
+                    कृपया तपाईको थथार्थ विवरण क्रमशः भरी यो महामारीलाई व्यवस्थापन गर्न सहयोग गर्नुहोला । स्थानीय तहबारे प्रतिनिधिहरुको
+                    विवरण भर्न
+                    बायाँको फारमहरु भरेर पेश गर्नुहोला । <br /><br /> अन्य प्रतिनिधिहरुको विवरण भर्न Arrow क्लिक गर्दै जानुहोला ।</p>
+                <br />
+                
         </div>
     </div>
 </div>

@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-from covid_gandaki.public.models import Person,Address
+from covid_gandaki.public.models import Person,Address, Municipality
 from covid_gandaki.users.models import User, Office
 
 class Travel(models.Model):
@@ -50,3 +50,15 @@ class StatCounters(models.Model):
     class_name = models.CharField(max_length=300)
     constraint = models.CharField(max_length=100)
 
+class CovidCounters(models.Model):
+    mun = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    samples = models.IntegerField(default=0, null=True, blank=True, verbose_name="सङ्कलित नमुना")
+    infected = models.IntegerField(
+        default=0, null=True, blank=True, verbose_name="सङ्क्रमित")
+    death = models.IntegerField(
+        default=0, null=True, blank=True, verbose_name="मृत्यु")
+    cured = models.IntegerField(
+        default=0, null=True, blank=True, verbose_name="निको भएको")
+    result_waiting = models.IntegerField(
+        default=0, null=True, blank=True, verbose_name="नतिजा आउन बाँकी")
+    
