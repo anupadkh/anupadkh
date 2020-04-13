@@ -79,6 +79,7 @@ def lb_index(request):
 import json
 from django.conf import settings
 
+@login_required(login_url="users:login")
 def test(request):    
     data = []
     
@@ -90,6 +91,14 @@ def test(request):
                 values.append({
                     'title': z.title,
                     'value': z.value
+                })
+            for z in StatCounters.objects.filter(reference=m):
+                App = eval(z.class_name)
+                constraint = eval(z.constraint)
+                count = App.objects.filter(**constraint).count()
+                values.append({
+                    'title': z.title,
+                    'value': count
                 })
 
             data.append({

@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 from covid_gandaki.public.models import Person,Address
-from covid_gandaki.users.models import User
+from covid_gandaki.users.models import User, Office
 
 class Travel(models.Model):
     traveller = models.ForeignKey(Person, on_delete=models.CASCADE)
@@ -19,7 +19,10 @@ class Travel(models.Model):
         auto_now=True
     )
     created_by = models.ForeignKey(User,blank=True, null=True, on_delete=models.SET_NULL)
+    created_office = models.ForeignKey(Office, on_delete=models.SET_NULL, null=True, blank=True)
     remarks = models.TextField(blank=True,null=True)
+
+    
 
 class Stat(models.Model):
     title = models.CharField(max_length=300)
@@ -36,3 +39,10 @@ class StatValues(models.Model):
 
     def __str__(self):
         return self.title
+    
+class StatCounters(models.Model):
+    reference = models.ForeignKey(Stat, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    class_name = models.CharField(max_length=300)
+    constraint = models.CharField(max_length=100)
+
