@@ -13,6 +13,7 @@ from covid_gandaki.lb.models import *
 from covid_gandaki.public.models import *
 from covid_gandaki.users.models import *
 from covid_gandaki.users.forms import MunForm, Person2Form
+from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb
 
