@@ -31,6 +31,10 @@ class Stat(models.Model):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        verbose_name = 'ड्यासबोर्ड सेटिङ्ग र काउन्टर'
+        verbose_name_plural = 'ड्यासबोर्डका काउन्टरहरु'
 
 class StatValues(models.Model):
     reference = models.ForeignKey(Stat, on_delete=models.CASCADE)
