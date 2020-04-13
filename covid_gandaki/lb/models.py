@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Person2(models.Model):
     full_name = models.CharField(verbose_name = "पुरा नाम" ,max_length=300)
@@ -8,7 +9,7 @@ class Person2(models.Model):
     mobile = models.CharField(verbose_name="मोबाइल नं",
         max_length=300, null=True, blank=True, unique=True)
     remarks = models.TextField(blank=True, null=True)
-    created = models.DateField(auto_now_add=True)
+    created = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=300, null=True, blank=True)
     formtype = models.IntegerField(default=1) # 1 for others, 2 for Relief_Form_Submittors(Distributors)
     # permanent_full_address = models.ForeignKey(
@@ -18,6 +19,11 @@ class Person2(models.Model):
 
     def __str__(self):
         return self.full_name
+    
+    def save(self,*args,**kwargs):
+        if not self.id:
+            self.created = timezone.now()
+        return super(Person2, self).save(*args,**kwargs)
     
     
     class Meta:

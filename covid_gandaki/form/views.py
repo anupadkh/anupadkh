@@ -43,32 +43,25 @@ def lb_index(request):
                 covid_instance = covid_form.save()
             
         else:
-            man = Person2Form(data)
             with transaction.atomic():
-                if man.is_valid():
-                    instance = man.save(commit=False)
                     if data['submit'] == 'chair':
-                        if mun.chairman:
-                            instance.pk = mun.chairman.pk
-                        instance.save()
-                        mun.chairman = instance
+                        man = Person2Form(data, instance = mun.chairman)
+                        if man.is_valid():
+                            mun.chairman = man.save()
                     elif data['submit'] == 'd_chair':
-                        if mun.deputy_chairman:
-                            instance.pk = mun.deputy_chairman.pk
-                        instance.save()
-                        mun.deputy_chairman = instance
+                        man = Person2Form(data, instance=mun.deputy_chairman)
+                        if man.is_valid():
+                            mun.deputy_chairman = man.save()
                     elif data['submit'] == 'admin':
-                        if mun.administrator:
-                            instance.pk = mun.administrator.pk
-                        instance.save()
-                        mun.administrator = instance
+                        man = Person2Form(data, instance=mun.administrator)
+                        if man.is_valid():
+                            mun.administrator = man.save()
                     else:
-                        pass
+                        message = "Errors: " + str(man.errors)
                     
                     mun.save()
                     message="SAVED !"
-                else:
-                    message = "Errors: " + str(man.errors)
+                    
 
     if mun.chairman:
         chair = Person2Form(instance=mun.chairman)
