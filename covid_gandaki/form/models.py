@@ -53,7 +53,7 @@ class StatCounters(models.Model):
 class CovidCounters(models.Model):
     mun = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     no_person = models.BooleanField(
-        default=0, null=True, blank=True, verbose_name="COVID-19 को CASE नभएको भए")
+        default=0, null=True, blank=True, verbose_name="COVID-19 को CASE नभएको")
     samples = models.IntegerField(default=0, null=True, blank=True, verbose_name="सङ्कलित नमुना")
     infected = models.IntegerField(
         default=0, null=True, blank=True, verbose_name="सङ्क्रमित")
