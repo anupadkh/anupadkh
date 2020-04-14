@@ -79,7 +79,7 @@ class Hospital(models.Model):
     total_beds = models.IntegerField(default=1)
     mun = models.ForeignKey(
         Municipality, on_delete=models.SET_NULL, blank=True, null=True)
-    ward = models.IntegerField(default=1)
+    ward = models.CharField(default=1, blank=True, null=True, max_length=30)
     # Not a quarantine zone, Is a quarantine zone, Is an isolation zone
     is_quarantine = models.IntegerField(default=1)
     currently_quarantined = models.IntegerField(
