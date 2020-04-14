@@ -123,17 +123,7 @@
         }
         x = 2;
     };
-    var changed = function (instance, cell, x, y, value) {
-        var cellName = jexcel.getColumnNameFromId([x, y]);
-        // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
-        console.log('New change on cell ' + cellName + ' to: ' + value + '');
-        console.log(x, y);
-मृत्यु
-    };
-    var beforeChange = function (instance, cell, x, y, value) {
-        var cellName = jexcel.getColumnNameFromId([x, y]);
-        // $('#log').append('The cell ' + cellName + ' will be changed');
-    };
+    
 
     var selectionActive = function (instance, x1, y1, x2, y2, origin) {
         var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
@@ -280,8 +270,6 @@
 
         },
     onload: loaded,
-        onchange: changed,
-            onbeforechange: beforeChange,
                 onselection: selectionActive,
                     // persistance: "/router/travel/?format=json",
                     allowDeleteColumn: false,
