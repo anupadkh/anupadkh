@@ -38,7 +38,7 @@ class Petroleum(models.Model):
     name = models.CharField(max_length=300)
     qty_unit = models.CharField(max_length=160, default='वटा')
     qty = models.CharField(max_length=400)
-    sufficiency = models.IntegerField(default=1)
+    sufficiency = models.CharField(default=1, null=True, blank=True, max_length=100)
     remarks = models.TextField(null=True, blank=True)
     demand_by = models.ForeignKey(Municipality, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

@@ -180,7 +180,7 @@
                 },
                 {
                     type: 'numeric',
-                    title: 'मौज्दात परिमाण/ संख्या',
+                    title: 'परिमाण/ संख्या',
                     width: '50',
                     name: 'qty',
                     mask: '#,##', decimal: '.',
@@ -188,20 +188,21 @@
                 }, 
                 {
                     type: 'dropdown',
-                    title: 'परिमाण मापन विधि',
+                    title: 'ईकाइ',
                     width: '100',
                     name: 'qty_unit',
+                    autocomplete: true,
                     source: [
-                        'के.जी.', 'लिटर', 'पाथी', 'वटा', 'मिटर', 'square meter', 'दिन'
+                        'के.जी.', 'लिटर',  'वटा', 'मिटर', 'square meter', 'Bundle', 'Bag'
                     ]
                     // primaryKey: true
                 },
                 
                 {
-                    type: 'numeric',
+                    type: 'text',
                     title: 'माग गरिएको बस्तुले पुग्ने अवधि',
-                    width: '50',
-                    mask: '#,##', decimal: '.',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
                     name: 'sufficiency'
 
                     // editor: 'number',
