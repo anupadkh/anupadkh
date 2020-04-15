@@ -43,7 +43,7 @@ def login_view(request):
     else:
         #instantiate
         form = AuthenticationForm()
-    request.session.set_expiry(3000)
+    # request.session.set_expiry(3000)
     return render(request, 'users/login.html', {'form': form, 'message':request.session.get('message', "Welcome")})
     
 
