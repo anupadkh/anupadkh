@@ -463,6 +463,22 @@
     </div>
     
     <script>
+        function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            };
+
         $("#save_food").click(function () {
                 data = table_food.getData();
                 for (let i = 0; i < data.length; i++) {
@@ -545,8 +561,42 @@
                 document.getElementById("column_food_header").innerHTML = table_food.getHeader(x1)
             };
 
-            function ask() {
-                return confirm("You can't delete this data on server. Please contact MOITFE-Gandaki.");
+            function ask_food() {
+                
+                 y = table_food.getSelectedRows(true);
+
+                if (confirm("Delete ?")) {
+
+                    for (let i = 0; i < y.length; i = i + 1) {
+                        var values = table_food.getRowData(y[i]);
+                        let status = true;
+                        // console.log(y[i]);
+                        $.ajax({
+                            url: '/router/relieffoodname/' + values[0] + '/',
+                            type: 'DELETE',
+                            async: true,
+                            beforeSend: function (xhr, settings) {
+                                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                            },
+                            success: function (result) {
+                                $("#success").append(
+                                    "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i +y[0]+ 1) + "> " + values[1] + "</div>"
+                                );
+                            },
+                            error: function (xhr, text, errors) {
+
+                                $("#errors_food").append(
+                                    "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Deleting ID :" + eval(values[0]) + "> " + xhr.responseText + errors + "</div>"
+                                    
+                                );
+                                status = false;
+                            },
+                        });
+                        if(status==false){
+                            return false;
+                        };
+                    }
+                };
 
             }
 
@@ -625,7 +675,7 @@
                 allowInsertColumn: false,
                 allowManualInsertRow: true,
                 defaultColWidth: "70",
-                onbeforedeleterow: ask,tableOverflow: true,
+                onbeforedeleterow: ask_food,tableOverflow: true,
             tableWidth: "900px",
 
 
