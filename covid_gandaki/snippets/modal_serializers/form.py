@@ -9,7 +9,7 @@ from django.db import transaction
 class Lb_Travel_Serializer(serializers.ModelSerializer):
     # user =
     name = serializers.CharField(write_only=True)
-    age = serializers.IntegerField(write_only=True, allow_blank=True, allow_null=True)
+    age = serializers.IntegerField(write_only=True, allow_null=True)
     ward = serializers.IntegerField(write_only=True)
     gender = serializers.IntegerField(write_only=True)
     
