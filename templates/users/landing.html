@@ -19,24 +19,7 @@
                             COVID-19 को घटनागत विवरण तथा राहतसम्बन्धी पोर्टल
                         </h3>
                     </div>
-                    <div class="cell-12"><div class="row">{% for x in data %}
-                        <div class="cell-sm-6">
-                            <div class="social-box">
-                                <div class="header bg-cyan fg-white">
-                                    <div class="title text-left">{{x.title}}</div>
-                                    <div class="subtitle text-left">{{x.subtitle}}</div>
-                                    <img src="{{x.image}}" alt="" class="avatar bg-red">
-                                </div>
-                                <ul class="skills">
-                                    {% for z in x.values %}<li>
-                                        <div class="text-bold" style="font-size: 25px;">{{z.value}}</div>
-                                        <div >{{z.title}}</div>
-                                    </li>{% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-
-                    {% endfor %}</div></div>
+                    
                     <div class="row">
                         <div class="card cell-sm-3 ">
                             <div class="card-header">
@@ -102,6 +85,26 @@
                                                 </div> -->
                         </div>
                     </div>
+                </div>
+                <div class="cell-12">
+                    <div class="row">{% for x in data %}
+                        <div class="cell-sm-6">
+                            <div class="social-box">
+                                <div class="header bg-cyan fg-white">
+                                    <div class="title text-left">{{x.title}}</div>
+                                    <div class="subtitle text-left">{{x.subtitle}}</div>
+                                    <img src="{{x.image}}" alt="" class="avatar bg-red">
+                                </div>
+                                <ul class="skills">
+                                    {% for z in x.values %}<li>
+                                        <div class="text-bold" style="font-size: 25px;">{{z.value}}</div>
+                                        <div>{{z.title}}</div>
+                                    </li>{% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                
+                        {% endfor %}</div>
                 </div>
                 {% block main %} <h2>{{message}}</h2>{% endblock %}
             </div>
