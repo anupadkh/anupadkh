@@ -2,7 +2,7 @@
 
 NAME="covid_gandaki"                              #Name of the application (*)
 DJANGODIR=/home/covid/deploy/covid_gandaki             # Django project directory (*)
-SOCKFILE=/home/covid/deploy/run/gunicorn.sock        # we will communicate using this unix socket (*)
+SOCKFILE=/usr/tmp/run/gunicorn.sock        # we will communicate using this unix socket (*)
 USER=covid                                        # the user to run as (*)
 GROUP=covid                                     # the group to run as (*)
 NUM_WORKERS=1                                     # how many worker processes should Gunicorn spawn (*)
