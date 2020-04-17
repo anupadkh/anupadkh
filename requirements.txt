@@ -3,3 +3,8 @@ requests
 djangorestframework-bulk
 django-material 
 django-viewflow
+python-dev-tools
+libpq-dev
+psycopg2
+
+# yum install python3.6-devel
