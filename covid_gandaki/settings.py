@@ -103,11 +103,11 @@ DATABASES = {
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME' : 'moitfe',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME' : 'covid',
         'USER'  : 'postgres',
         'PASSWORD' : 'Adhik@ri1',
-        'HOST' : '127.0.0.1',
+        'HOST' : 'localhost',
         'PORT': '5432'
     }
 
