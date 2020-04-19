@@ -208,17 +208,21 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
         except:
             data['grandfather_name'] = ''
         try:
-            fooditems = food_meds.FoodName.objects.filter(mun=obj.current_full_address.mun)
-            for item in fooditems:
-                data[item.id] = 0
-                try:
-                    rel_item = rahat.ReliefItem.objects.get(
-                        receiver=obj, food_type=item)
-                    data[item.id] = rel_item.qty
-                except:
-                    pass
+            rel_item = rahat.ReliefItem.objects.get(receiver=obj)
+            data['package'] = rel_item.qty
         except:
-            data['error'] = "error loading fooditems"
+            pass
+        #     fooditems = food_meds.FoodName.objects.filter(mun=obj.current_full_address.mun)
+        #     for item in fooditems:
+        #         data[item.id] = 0
+        #         try:
+        #             rel_item = rahat.ReliefItem.objects.get(
+        #                 receiver=obj, food_type=item)
+        #             data[item.id] = rel_item.qty
+        #         except:
+        #             pass
+        # except:
+        #     data['error'] = "error loading fooditems"
         return data
     
     # def get_relief_items(self, request):
