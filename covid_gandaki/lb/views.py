@@ -39,8 +39,8 @@ def reliefs(request, id):
     mun = employee.municipality.address.mun
 
     if request.method == 'GET':
-        foods = FoodName.objects.filter(mun=mun)
-        context['foods'] = foods
+        # foods = FoodName.objects.filter(mun=mun)
+        # context['foods'] = foods
         page = "jdata/relief/lb_distributor.html"
         return render(request, page, context=context)
 
@@ -65,14 +65,14 @@ def reliefs(request, id):
             else:
                 return JsonResponse({'status':'false', 'message':{"errors":{"message":"Please check the input format for the data inserted", "data":data, "errors":person.errors}}}, status=500)
             
-            for y in foods:
-                obj,created = ReliefItem.objects.get_or_create(receiver = receiver, food_type=y, fund=rf)
-                if data[str(y.id)] == '':
-                    obj.qty = 0
-                else:
-                    obj.qty = data[str(y.id)]
-                # obj.is_valid()
-                obj.save()
+            
+            obj,created = ReliefItem.objects.get_or_create(receiver = receiver,  fund=rf)
+            if data['package'] == '':
+                obj.qty = 0
+            else:
+                obj.qty = data['package']
+            # obj.is_valid()
+            obj.save()
             
         serializer = lb.ReliefPersonSerializer(receiver)
         return JsonResponse(serializer.data)

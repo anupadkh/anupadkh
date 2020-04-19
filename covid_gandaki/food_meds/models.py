@@ -75,6 +75,7 @@ class Fulfilled(models.Model):
 class FoodName(models.Model):
     name = models.CharField(max_length=100)
     mun = models.ForeignKey(Municipality, on_delete=models.CASCADE, null=True, blank=True)
+    qty = models.CharField(max_length=30, default='1', verbose_name='परिमाण')
     unit = models.CharField(max_length=50)
     rate_equivalent = models.FloatField(default=0.0)
 

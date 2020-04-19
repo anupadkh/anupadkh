@@ -141,8 +141,10 @@ class Lb_FoodName(serializers.ModelSerializer):
             obj.rate_equivalent = validated_data.get('rate_equivalent', obj.rate_equivalent)
             obj.name = validated_data.get('name', obj.name)
             obj.unit = validated_data.get('unit', obj.unit)
+            obj.qty = validated_data.get('qty', obj.qty)
             
             instance = obj
+            instance.save()
             
         return instance
         

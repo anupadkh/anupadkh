@@ -41,8 +41,8 @@
                     "permanent_address": to_post[4],
                     "father_name": to_post[5],
                     "grandfather_name": to_post[6],
-                    "remarks": to_post[7],{% for item in foods %}
-                    "{{item.id}}":to_post[{{forloop.counter0|add:8}}],{% endfor %}
+                    "remarks": to_post[7],
+                    "package":to_post[8],
                     "submitter":{{submittor}},
                 };
                 if (my_obj.id == "") {
@@ -181,15 +181,13 @@
                     name: 'remarks',
                     mask: '###'
                 },
-                {% for item in foods %}
-                    {
-                        type:'numeric',
-                        title:'{{item.name}}({{item.unit}})',
-                        width: '150',
-                        name: '{{item.id}}',
-                        mask: '###'
-                    },
-                {% endfor %}
+                {
+                    type:'number',
+                    title: 'जम्मा प्याकेज संख्या',
+                    width: '120',
+                    name: 'package',
+                    mask: '###'
+                },
                 { type: 'hidden' },
                 { type: 'hidden' },
                 { type: 'hidden' },

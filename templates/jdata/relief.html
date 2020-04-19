@@ -236,36 +236,40 @@
             <h2>वितरण गर्न खटिएका प्रतिनिधीहरुको सुची</h2>
         </div>
 
-        <div class="col-md-12 row">
-            <div class="col-md-6">
-                <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ थप्नुहोस् ।</button>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-primary float-right" id="save_distribute">Save</button>
-            </div>
-        </div>
+
         <div class="row">
             <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
             <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
         </div>
         <div id="spreadsheet3" class="col-md-12"></div>
-    <div class="col-md-12" id="reliefbuttons">
-        <div class="row">
-            <div class="col-md-6" id="errors">
-        
+        <div class="col-md-12" id="reliefbuttons">
+            <div class="col-md-12 row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ प्रतिनिधि
+                        थप्नुहोस् ।</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary float-right" id="save_distribution">प्रतिनिधिहरुलाई Save गर्नुहोस
+                    </button>
+                </div>
             </div>
-            <div class="col-md-6" id="success">
-        
+            <div class="row">
+                <div class="col-md-6" id="errors">
+
+                </div>
+                <div class="col-md-6" id="success">
+
+                </div>
             </div>
+
         </div>
 
     </div>
 
-    </div>
-
     <script>
-        $("#save_distribute").click(function () {
+        $("#reliefbuttons").on("click", "#save_distribution", function () {
             data = table_distribute.getData();
+            console.log(data);
             for (let i = 0; i < data.length; i++) {
                 to_post = data[i];
                 my_obj = {
@@ -326,19 +330,19 @@
             }
             distributors = table_distribute.getData();
             myhtml = document.getElementById('reliefbuttons').innerHTML;
-            for (let m = 0; m < distributors.length; m=m+1){
-                if (distributors[m][0] == ""){
+            for (let m = 0; m < distributors.length; m = m + 1) {
+                if (distributors[m][0] == "") {
                     break;
-                } else{
-                    
+                } else {
+
                     myhtml = myhtml + '<a href=\"/lb/' + distributors[m][0] + '/reliefperson\" class=\"btn-warning btn\">' + distributors[m][1] + '</a>';
-                    
+
                 }
             }
             document.getElementById('reliefbuttons').innerHTML = myhtml;
             x = 2;
         };
-        
+
 
         var selectionDistributeActive = function (instance, x1, y1, x2, y2, origin) {
             var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
@@ -349,13 +353,13 @@
         };
 
         function ask() {
-            
+
             return confirm("You can't delete this data on server. Please contact MOITFE-Gandaki.");
-            
+
 
         }
 
-        table_distribute= jexcel(document.getElementById('spreadsheet3'), {
+        table_distribute = jexcel(document.getElementById('spreadsheet3'), {
 
             url: "/router/reliefdistributers/mun/",
 
@@ -407,7 +411,7 @@
             allowInsertColumn: false,
             allowManualInsertRow: true,
             defaultColWidth: "70",
-            onbeforedeleterow: ask,tableOverflow: true,
+            onbeforedeleterow: ask, tableOverflow: true,
             tableWidth: "900px",
 
 
@@ -436,265 +440,274 @@
         <div class="col-md-12">
             <h2>वितरण गरिएका खाद्यसामाग्रीहरुको सुची</h2>
         </div>
-        
-        <div class="col-md-12 row">
-            <div class="col-md-6">
-                <button class="btn btn-primary float-left" onclick="table_food.insertRow()">नयाँ थप्नुहोस् ।</button>
-            </div>
-            <div class="col-md-6">
-                <button class="btn btn-primary float-right" id="save_food">Save</button>
-            </div>
-        </div>
+
+
         <div class="row">
             <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
             <h3 class="col-md-9"><span id="column_food_header"></span></h3>
         </div>
         <div id="spreadsheet2" class="col-md-12"></div>
         <div class="row">
+            <div class="col-md-12 row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary float-left" onclick="table_food.insertRow()">नयाँ थप्नुहोस्
+                        ।</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-primary float-right" id="save_food">Save</button>
+                </div>
+            </div>
             <div class="col-md-6" id="errors_food">
-        
+
             </div>
             <div class="col-md-6" id="success_food">
-        
+
             </div>
         </div>
 
-        
+
     </div>
-    
+
     <script>
         function getCookie(name) {
-                var cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    var cookies = document.cookie.split(';');
-                    for (var i = 0; i < cookies.length; i++) {
-                        var cookie = cookies[i].trim();
-                        // Does this cookie string begin with the name we want?
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
                     }
                 }
-                return cookieValue;
-            };
+            }
+            return cookieValue;
+        };
 
         $("#save_food").click(function () {
-                data = table_food.getData();
-                for (let i = 0; i < data.length; i++) {
-                    to_post = data[i];
-                    my_obj = {
-                        "id": to_post[0],
-                        "name": to_post[1],
-                        "unit": to_post[2],
-                        "rate_equivalent": to_post[3],
-                    };
-                    if (my_obj.id == "") {
-                        delete my_obj.id;
-                    };
-                    $.ajax({
-                        url: "/router/relieffoodname/",
-                        type: "POST",
+            data = table_food.getData();
+            for (let i = 0; i < data.length; i++) {
+                to_post = data[i];
+                my_obj = {
+                    "id": to_post[0],
+                    "name": to_post[1],
+                    "unit": to_post[2],
+                    "qty": to_post[3],
+                    "rate_equivalent": to_post[4],
+                };
+                if (my_obj.id == "") {
+                    delete my_obj.id;
+                };
+                $.ajax({
+                    url: "/router/relieffoodname/",
+                    type: "POST",
 
-                        data: JSON.stringify(
-                            my_obj
-                        ), contentType: "application/json",
+                    data: JSON.stringify(
+                        my_obj
+                    ), contentType: "application/json",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    success: function (arg) {
+                        // if (i == data.length - 1) {
+                        //     location.reload();
+                        // };
+                        table_food.updateCell(0, i, arg['id'], true);
+                        $("#success_food").append(
+                            "<div class=\"alert alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Saved Row :" + eval(i + 1) + "> " + arg["name"] + "</div>"
+                        );
+
+                    }, error: function (xhr, text, errors) {
+
+                        $("#errors_food").append(
+                            "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
+
+                        );
+                    },
+                    async: false,
+                }
+                    // function(data,status){
+                    //     alert("saved!");
+                    //     console.log(data,status);
+                    // }
+                );
+            };
+        }
+
+        );
+
+
+        // window.onload = function(e){
+        var x = 1;
+        // var data = ;
+        var loaded = function (instance) {
+            // $('#log').append('New data is loaded');
+            if (table_food.getData().length == 0) {
+                table_food.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
+            }
+            x = 2;
+        };
+        var changed = function (instance, cell, x, y, value) {
+            var cellName = jexcel.getColumnNameFromId([x, y]);
+            // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
+            console.log('New change on cell ' + cellName + ' to: ' + value + '');
+            console.log(x, y);
+
+        };
+        var beforeChange = function (instance, cell, x, y, value) {
+            var cellName = jexcel.getColumnNameFromId([x, y]);
+            // $('#log').append('The cell ' + cellName + ' will be changed');
+        };
+
+        var selectionFoodActive = function (instance, x1, y1, x2, y2, origin) {
+            var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
+            var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
+            // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
+            // console.log(table.getHeader(x1));
+            document.getElementById("column_food_header").innerHTML = table_food.getHeader(x1)
+        };
+
+        function ask_food() {
+
+            y = table_food.getSelectedRows(true);
+
+            if (confirm("Delete ?")) {
+
+                for (let i = 0; i < y.length; i = i + 1) {
+                    var values = table_food.getRowData(y[i]);
+                    let status = true;
+                    // console.log(y[i]);
+                    $.ajax({
+                        url: '/router/relieffoodname/' + values[0] + '/',
+                        type: 'DELETE',
+                        async: true,
                         beforeSend: function (xhr, settings) {
                             xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                         },
-                        success: function (arg) {
-                            // if (i == data.length - 1) {
-                            //     location.reload();
-                            // };
-                            table_food.updateCell(0, i, arg['id'], true);
-                            $("#success_food").append(
-                                "<div class=\"alert alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Saved Row :" + eval(i + 1) + "> " + arg["name"] + "</div>"
-                            );
-
-                        }, error: function (xhr, text, errors) {
-
-                            $("#errors_food").append(
-                                "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
-
+                        success: function (result) {
+                            $("#success").append(
+                                "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i + y[0] + 1) + "> " + values[1] + "</div>"
                             );
                         },
-                        async: false,
-                    }
-                        // function(data,status){
-                        //     alert("saved!");
-                        //     console.log(data,status);
-                        // }
-                    );
-                };
-            }
+                        error: function (xhr, text, errors) {
 
-            );
+                            $("#errors_food").append(
+                                "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Deleting ID :" + eval(values[0]) + "> " + xhr.responseText + errors + "</div>"
 
-
-            // window.onload = function(e){
-            var x = 1;
-            // var data = ;
-            var loaded = function (instance) {
-                // $('#log').append('New data is loaded');
-                if (table_food.getData().length == 0) {
-                    table_food.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
+                            );
+                            status = false;
+                        },
+                    });
+                    if (status == false) {
+                        return false;
+                    };
                 }
-                x = 2;
-            };
-            var changed = function (instance, cell, x, y, value) {
-                var cellName = jexcel.getColumnNameFromId([x, y]);
-                // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
-                console.log('New change on cell ' + cellName + ' to: ' + value + '');
-                console.log(x, y);
-
-            };
-            var beforeChange = function (instance, cell, x, y, value) {
-                var cellName = jexcel.getColumnNameFromId([x, y]);
-                // $('#log').append('The cell ' + cellName + ' will be changed');
             };
 
-            var selectionFoodActive = function (instance, x1, y1, x2, y2, origin) {
-                var cellName1 = jexcel.getColumnNameFromId([x1, y1]);
-                var cellName2 = jexcel.getColumnNameFromId([x2, y2]);
-                // console.log('The selection from ' + cellName1 + ' to ' + cellName2 + '');
-                // console.log(table.getHeader(x1));
-                document.getElementById("column_food_header").innerHTML = table_food.getHeader(x1)
-            };
+        }
 
-            function ask_food() {
-                
-                 y = table_food.getSelectedRows(true);
-
-                if (confirm("Delete ?")) {
-
-                    for (let i = 0; i < y.length; i = i + 1) {
-                        var values = table_food.getRowData(y[i]);
-                        let status = true;
-                        // console.log(y[i]);
-                        $.ajax({
-                            url: '/router/relieffoodname/' + values[0] + '/',
-                            type: 'DELETE',
-                            async: true,
-                            beforeSend: function (xhr, settings) {
-                                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-                            },
-                            success: function (result) {
-                                $("#success").append(
-                                    "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i +y[0]+ 1) + "> " + values[1] + "</div>"
-                                );
-                            },
-                            error: function (xhr, text, errors) {
-
-                                $("#errors_food").append(
-                                    "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Deleting ID :" + eval(values[0]) + "> " + xhr.responseText + errors + "</div>"
-                                    
-                                );
-                                status = false;
-                            },
-                        });
-                        if(status==false){
-                            return false;
-                        };
-                    }
-                };
-
-            }
-
-            table_food = jexcel(document.getElementById('spreadsheet2'), {
-                // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
+        table_food = jexcel(document.getElementById('spreadsheet2'), {
+            // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
 
 
 
 
-                url: "/router/relieffoodname/user/",
+            url: "/router/relieffoodname/user/",
 
-                columns: [
-                    //  type: hidden, dropdown, text, calendar, text
-                    // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
-                    {
-                        type: 'hidden',
-                        title: 'सि.नं.',
-                        name: 'id',
-                        readOnly: true,
-                        primaryKey: true,
-                        mask: '#,##'
-
-                    },
-                    {
-                        type: 'text',
-                        title: 'खाद्यान्नको नाम',
-                        width: '200',
-                        name: 'name'
-                        // primaryKey: true
-                    },
-                    {
-                        type: 'text',
-                        title: 'खाद्यान्नको मापन विधि',
-                        width: '150',
-                        name: 'unit',
-                        // primaryKey: true
-                    },
-                    {
-                        type: 'numeric',
-                        title: 'प्रति मापन विधि तोकिएको खाद्यान्नको बजार मुल्य',
-                        width: '250',
-                        name: 'rate_equivalent',
-                        mask: '#,##', decimal: '.'
-
-                    },
-                    { type: 'hidden' },
-                    { type: 'hidden' },
-                    { type: 'hidden' },
-
-                    // {
-                    //     type: 'autocomplete',
-                    //     title: 'Name of Hospital',
-                    //     width: '300',
-                    //     url: '{% url 'snippets:hospital' %}'
-                    // },
-                    // {
-                    //     type: 'dropdown',
-                    //     title: 'Food',
-                    //     width: '150',
-                    //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
-                    // },
-                    // {
-                    //     type: 'checkbox',
-                    //     title: 'Stock',
-                    //     width: '100'
-                    // },
-                ],
-                updateTable: function (instance, cell, col, row, val, label, cellName) {
-                    
+            columns: [
+                //  type: hidden, dropdown, text, calendar, text
+                // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+                {
+                    type: 'hidden',
+                    title: 'सि.नं.',
+                    name: 'id',
+                    readOnly: true,
+                    primaryKey: true,
+                    mask: '#,##'
 
                 },
-                onload: loaded,
-                onselection: selectionFoodActive,
-                // persistance: "/router/travel/?format=json",
-                allowDeleteColumn: false,
-                allowInsertColumn: false,
-                allowManualInsertRow: true,
-                defaultColWidth: "70",
-                onbeforedeleterow: ask_food,tableOverflow: true,
+                {
+                    type: 'text',
+                    title: 'खाद्यान्नको नाम',
+                    width: '200',
+                    name: 'name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'खाद्यान्नको मापन विधि',
+                    width: '150',
+                    name: 'unit',
+                    // primaryKey: true
+                },
+                {
+                    type: 'numeric',
+                    title: 'राहत प्याकेजमा राखिएको खाद्यान्न परिमाण',
+                    width: '120',
+                    name: 'qty'
+                },
+                {
+                    type: 'numeric',
+                    title: 'प्रति मापन विधि तोकिएको खाद्यान्नको बजार मुल्य',
+                    width: '250',
+                    name: 'rate_equivalent',
+                    mask: '#,##', decimal: '.'
+
+                },
+                { type: 'hidden' },
+                { type: 'hidden' },
+                { type: 'hidden' },
+
+                // {
+                //     type: 'autocomplete',
+                //     title: 'Name of Hospital',
+                //     width: '300',
+                //     url: '{% url 'snippets:hospital' %}'
+                // },
+                // {
+                //     type: 'dropdown',
+                //     title: 'Food',
+                //     width: '150',
+                //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+                // },
+                // {
+                //     type: 'checkbox',
+                //     title: 'Stock',
+                //     width: '100'
+                // },
+            ],
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
+
+
+            },
+            onload: loaded,
+            onselection: selectionFoodActive,
+            // persistance: "/router/travel/?format=json",
+            allowDeleteColumn: false,
+            allowInsertColumn: false,
+            allowManualInsertRow: true,
+            defaultColWidth: "70",
+            onbeforedeleterow: ask_food, tableOverflow: true,
             tableWidth: "900px",
 
 
 
-            });
-            var myTracker = jSuites.tracker(document.getElementById('spreadsheet2'));
-            // };
-            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-            function csrfSafeMethod(method) {
-                // these HTTP methods do not require CSRF protection
-                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-            }
-            $.ajaxSetup({
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
+        });
+        var myTracker = jSuites.tracker(document.getElementById('spreadsheet2'));
+        // };
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
                 }
-            });
+            }
+        });
     </script>
 </div>
 

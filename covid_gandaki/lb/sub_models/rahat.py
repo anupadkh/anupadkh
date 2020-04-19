@@ -17,7 +17,7 @@ class ReliefFund(models.Model):
 class ReliefItem(models.Model):
     fund = models.ForeignKey(ReliefFund, on_delete=models.CASCADE)
     qty = models.FloatField(default=0)
-    food_type = models.ForeignKey(FoodName, on_delete=models.CASCADE)
+    # food_type = models.ForeignKey(FoodName, on_delete=models.CASCADE)
     receiver = models.ForeignKey(
         Person, on_delete=models.SET_NULL, null=True, blank=True,
         related_name='receiver')
