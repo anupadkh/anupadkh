@@ -16,6 +16,8 @@ from covid_gandaki.snippets.modal_serializers import lb
 from django.db import transaction
 from django.http import JsonResponse
 
+from pprint import pprint
+
 def index(request):
     context = {}
     return render(request, 'lb/need_assessment.html', context=context)
@@ -37,7 +39,7 @@ def reliefs(request, id):
         }
     employee = Employee.objects.get(user=request.user)
     mun = employee.municipality.address.mun
-
+        
     if request.method == 'GET':
         # foods = FoodName.objects.filter(mun=mun)
         # context['foods'] = foods
@@ -47,8 +49,18 @@ def reliefs(request, id):
     elif request.method == 'POST':
         data = request.body
         data = json.loads(data)
+        pprint(data)
+        if data['delete'] == 1:
+            try:
+                deletes = Person.objects.get(id=data['id'])
+                deletes.delete()
+                return JsonResponse({'message': "Successfully Deleted"}, status=200)
+            except:
+                return JsonResponse({'message': 'The person wasn\'t found in the database, Contact the administrator', "status": "false"}, status=500)
         try:
-            rf = ReliefFund.objects.get(id=id)
+            receiver = Person.objects.get(id=id)
+            ri = ReliefItem.objects.filter(receiver = receiver)
+            rf = ri[0].fund
             distributer = rf.submitter
         except:
             return JsonResponse({"message":{"error": "There is no such submitter"}, "status":"false"}, status=500)

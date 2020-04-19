@@ -109,7 +109,45 @@
         };
 
         function ask() {
-            return confirm("Delete ?")
+            y = table_distribute.getSelectedRows(true);
+            if (confirm("Delete ?")){
+                for (i=0; i<y.length; i=i+1){
+                    var values = table_distribute.getRowData(y[i]);
+                    let status = true;
+                    my_obj = {
+                        "id": values[0],
+                        "delete": true
+                    }
+                    // console.log(y[i]);
+                    $.ajax({
+                        url: '{% url 'lb:relief' id=submittor %}',
+                        type: 'POST',
+                        async: true,
+                        data: JSON.stringify(
+                            my_obj
+                        ), contentType: "application/json",
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                        },
+                        success: function (result) {
+                            $("#success").append(
+                                "<div class=\"danger alert-success alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Deleted Row :" + eval(i + y[0] + 1) + "> " + values[1] + "</div>"
+                            );
+                        },
+                        error: function (xhr, text, errors) {
+
+                            $("#errors_food").append(
+                                "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Deleting ID :" + eval(values[0]) + "> " + xhr.responseText + errors + "</div>"
+
+                            );
+                            status = false;
+                        },
+                    });
+                    if (status == false) {
+                        return false;
+                    };
+                }
+            }
 
         }
 
@@ -121,7 +159,7 @@
                 //  type: hidden, dropdown, text, calendar, text
                 // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
                 {
-                    type: 'hidden',
+                    type: 'text',
                     title: 'सि.नं.',
                     name: 'id',
                     readOnly: true,
