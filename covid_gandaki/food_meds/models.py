@@ -1,13 +1,13 @@
 from django.db import models
-from viewflow.models import Process
+# from viewflow.models import Process
 from covid_gandaki.public.models import Person
 from covid_gandaki.lb.models import Municipality
 from covid_gandaki.users.models import User
 
 
-class HelloWorldProcess(Process):
-    text = models.CharField(max_length=150)
-    approved = models.BooleanField(default=False)
+# class HelloWorldProcess(Process):
+#     text = models.CharField(max_length=150)
+#     approved = models.BooleanField(default=False)
 
 class Food(models.Model):
     # खाद्यान्न, तरकारी, दुध, अण्डा, मासु) र पशुपंक्षिको दाना, ग्याँस, पेट्रोलियम पदार्थ

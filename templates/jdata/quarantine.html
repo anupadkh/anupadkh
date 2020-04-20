@@ -45,8 +45,9 @@
     $("#save").click(function () {
         data = table.getData();
         var a = []
-        for (let i = 0; i < data.length; i++) {
-            to_post = data[i];
+        unchanged_data = [];
+        for (let i = 0; i < items_changed.length; i++) {
+            to_post = data[items_changed[i]];
             // a.push(
             //     {
             //         "id": to_post[0],
@@ -94,7 +95,7 @@
                 );
 
             }, error: function (xhr, text, errors) {
-
+                unchanged_data.push(items_changed[i]);
                 $("#errors").append(
                     "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
 
@@ -108,6 +109,7 @@
             // }
         );
     }
+    items_changed = unchanged_data;
 }
 
     );
@@ -161,6 +163,23 @@
         
 
     }
+    var items_changed = [];
+        var changed = function (instance, cell, x, y, value) {
+            var cellName = jexcel.getColumnNameFromId([x, y]);
+            // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
+            // console.log('New change on cell ' + cellName + ' to: ' + value + '');
+            // console.log(x, y);
+            if (!items_changed.includes(parseInt(y))) {
+                if (parseInt(x) != 0) {
+                    // Updating of row ids shouldn't be considered as change
+                    items_changed.push(parseInt(y));
+                }
+            }
+            if ((items_changed.length >= 20) && (x != 0)) {
+                alert('Please save the data Urgently.');
+            }
+
+        };
 
     table = jexcel(document.getElementById('spreadsheet'), {
             // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
@@ -271,6 +290,7 @@
         },
     onload: loaded,
                 onselection: selectionActive,
+                onchange: changed,
                     // persistance: "/router/travel/?format=json",
                     allowDeleteColumn: false,
                     deleteRow: deletess,

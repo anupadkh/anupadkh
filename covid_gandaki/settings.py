@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     # 'rest_framework_datatables',
 
     'rest_framework',
-    'material',
-    'material.frontend',
+    # 'material',
+    # 'material.frontend',
     'viewflow',
-    'viewflow.frontend',
+    # 'viewflow.frontend',
     'crispy_forms',
     
     'covid_gandaki.food_meds',

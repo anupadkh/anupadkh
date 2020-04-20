@@ -3,8 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from covid_gandaki.form.models import Stat, StatValues, StatCounters
 
-admin.site.unregister(Stat)
-admin.site.unregister(StatValues)
+# admin.site.unregister(Stat)
+# admin.site.unregister(StatValues)
 
 class StatInline(admin.TabularInline):
     model=StatValues

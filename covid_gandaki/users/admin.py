@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from covid_gandaki.users.models import User, Employee
+from django.contrib.auth.models import Group
+
 # Register your models here.
 
 
@@ -17,11 +19,15 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User,UserAdmin )
 
+admin.site.unregister(Group)
+
+
 from django.apps import apps
 
 
 for x in apps.get_models():
     if 'User' in str(x):
         continue
-    if 'covid' in str(x):
-        admin.site.register(x)
+    if 'viewflow' in str(x):
+        admin.site.unregister(x)
+    
