@@ -47,14 +47,16 @@ def reliefs(request, id):
     elif request.method == 'POST':
         data = request.body
         data = json.loads(data)
-
-        if data['delete'] == 1:
-            try:
+        try:
+            if data['delete'] == 1:
+        
                 deletes = Person.objects.get(id=data['id'])
                 deletes.delete()
                 return JsonResponse({'message': "Successfully Deleted"}, status=200)
-            except:
+            else:
                 return JsonResponse({'message': 'The person wasn\'t found in the database, Contact the administrator', "status": "false"}, status=500)
+        except:
+            pass
                 
         try:
             rf = ReliefFund.objects.get(id=id)
