@@ -18,6 +18,7 @@ from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, public
 from subprocess import PIPE, Popen
+from covid_gandaki.form.management.commands.report_generate import generate_mun_list
 
 # from covid_gandaki.form.report_generate import generate_mun_list
 
@@ -136,6 +137,7 @@ def test(request):
                             bufsize=0, cwd=settings.BASE_DIR, stdout=PIPE, stderr=PIPE, encoding='UTF-8')
             process = subprocess.run(
                 ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
+            generate_mun_list()
 
 
         
