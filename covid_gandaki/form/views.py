@@ -123,6 +123,7 @@ def test(request):
         
         if settings.DEBUG == False:
             async_task ('covid_gandaki.form.report_generate.generate_mun_list')
+            generate_mun_list()
         else:
             generate_mun_list()
 
