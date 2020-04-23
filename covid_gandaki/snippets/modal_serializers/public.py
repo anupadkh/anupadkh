@@ -88,7 +88,6 @@ class QTPersonSerializer(serializers.ModelSerializer):
         data['name'] = obj.person.full_name
         data['age'] = obj.person.age
         data['gender'] = obj.person.gender
-        data['mun'] = obj.created_by.address.mun
 
         try:
             data['ward'] = obj.person.current_full_address.ward
