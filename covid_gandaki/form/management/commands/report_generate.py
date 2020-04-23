@@ -2,6 +2,11 @@ from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, publi
 import json
 from django.conf import settings
 
+from django.core.management.base import BaseCommand, CommandError
+
+
+
+
 def generate_mun_list():
     mun_stat = {}
     mun_stat['muns'] = list(lb.Municipality.objects.all().values())
@@ -29,4 +34,25 @@ def generate_mun_list():
         f.close()
         pass
 
+    return True
 
+
+class Command(BaseCommand):
+    help = 'Generates the Data File for analytics'
+
+    # def add_arguments(self, parser):
+    #     parser.add_argument('poll_ids', nargs='+', type=int)
+
+    def handle(self, *args, **options):
+        return generate_mun_list()
+        # for poll_id in options['poll_ids']:
+        #     try:
+        #         poll = Poll.objects.get(pk=poll_id)
+        #     except Poll.DoesNotExist:
+        #         raise CommandError('Poll "%s" does not exist' % poll_id)
+
+        #     poll.opened = False
+        #     poll.save()
+
+        #     self.stdout.write(self.style.SUCCESS(
+        #         'Successfully closed poll "%s"' % poll_id))

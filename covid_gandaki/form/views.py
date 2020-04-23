@@ -18,8 +18,9 @@ from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, public
 
-from covid_gandaki.form.report_generate import generate_mun_list
+# from covid_gandaki.form.report_generate import generate_mun_list
 
+import subprocess
 if settings.DEBUG == False:
     from django_q.tasks import async_task, schedule
 
@@ -121,11 +122,18 @@ def test(request):
             f.close()
             pass
         
-        if settings.DEBUG == False:
-            async_task ('covid_gandaki.form.report_generate.generate_mun_list')
-            generate_mun_list()
+        # if settings.DEBUG == False:
+        #     async_task ('covid_gandaki.form.report_generate.generate_mun_list')
+        #     generate_mun_list()
+        # else:
+        #     generate_mun_list()
+        if settings.DEBUG:
+            process = subprocess.run(
+                ["python" , settings.BASE_DIR+ "/manage.py", "report_generate"], stdout=subprocess.PIPE)
         else:
-            generate_mun_list()
+            process = subprocess.run(
+                ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
+
 
         
     context = {}
