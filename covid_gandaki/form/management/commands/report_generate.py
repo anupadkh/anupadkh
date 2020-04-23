@@ -9,6 +9,10 @@ from django.core.management.base import BaseCommand, CommandError
 
 def generate_mun_list():
     mun_stat = {}
+    if settings.DEBUG == False:
+        mydir = settings.STATIC_ROOT
+    else:
+        mydir = settings.STATICFILES_DIRS[0]
     mun_stat['muns'] = list(lb.Municipality.objects.all().values())
     mun_stat['district'] = list(lb.District.objects.all().values())
     mun_stat['employees'] = list(users.Employee.objects.all().values('user__id', 'municipality__address__mun__id', 'id', 'municipality__id'))
@@ -20,7 +24,7 @@ def generate_mun_list():
     mun_stat['medicine'] = list(food_meds.Medical.objects.all().values('name', 'required_qty', 'qty_unit', 'available', 'produced_by__id', 'created_by__id' ))
     mun_stat['relief_packages'] = list(food_meds.FoodName.objects.all().values('name', 'mun__id', 'qty', 'unit', 'rate_equivalent'))
     mun_stat['production'] = list(food_meds.Production.objects.all().values('name', 'qty', 'produce_freq', 'qty_unit', 'produced_by__id', 'created_by__id'))
-    with open(settings.STATICFILES_DIRS[0] + '/data_mun.json', 'w+') as f:
+    with open( mydir + '/data_mun.json', 'w+') as f:
         f.write(json.dumps(mun_stat))
         f.close()
         pass
@@ -29,7 +33,7 @@ def generate_mun_list():
     mun_stat['public_food'] = list(food_meds.Food.objects.all().values('name', 'qty', 'qty_unit', 'sufficiency'))
     mun_stat['public_medicine'] = list(food_meds.Medicine.objects.all().values('name', 'qty', 'type_medicine', 'sufficiency'))
 
-    with open(settings.STATICFILES_DIRS[0] + '/data_public.json', 'w+') as f:
+    with open(mydir + '/data_public.json', 'w+') as f:
         f.write(json.dumps(mun_stat))
         f.close()
         pass
