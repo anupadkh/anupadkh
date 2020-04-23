@@ -190,7 +190,125 @@
             
             url: "{{url}}user/",
             
-                        updateTable: function (instance, cell, col, row, val, label, cellName) {
+            columns: [
+                //  type: hidden, dropdown, text, calendar, text
+                // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
+                {
+                    type: 'hidden',
+                    title: 'सि.नं.',
+                    name: 'id',
+                    readOnly:true,
+                    primaryKey: true
+                    
+                },
+                {
+                    type: 'hidden',
+                    name: 'traveller'
+                },
+                {
+                    type: 'hidden',
+                    name: 'created_by'
+                    
+                },
+                {
+                    type: 'text',
+                    title: 'नाम',
+                    width: '150',
+                    name: 'name'
+                    // primaryKey: true
+                },
+                {
+                    type: 'text',
+                    title: 'उमेर',
+                    width: '50',
+                    name: 'age'
+
+                },
+                {
+                    type: 'dropdown',
+                    title: 'लिङ्ग',
+                    width: '50',
+                    name: 'gender',
+                    autocomplete:true,
+                    source:[{"id":2, "name":'महिला'},{"id":1, "name":'पुरुष'},{"id":3,"name":'अन्य'}]
+
+                },
+                {
+                    type: 'numeric',
+                    title: 'वडा',
+                    width: '50',
+                    mask: '#,##', decimal: '.',
+                    name: 'ward'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'बाहिर रहेको देश',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
+                    name: 'Foreign Country'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'विदेशवाट नेपाल प्रवेश गर्दा प्रयोग गरेको यातायात साधन',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
+                    name: 'mode_of_transport_international'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'काठमाडौँ वा नाकावाट स्थानिय तहमा आउदा प्रयोग गरेको यातायात साधन',
+                    width: '150',
+                    // mask: '#,##', decimal: '.',
+                    name: 'mode_of_transport_national'
+
+                    // editor: 'number',
+                },
+                {
+                    type: 'text',
+                    title: 'नेपाल प्रवेश मिति',
+                    width: '100',
+                    // mask: '#,##', decimal: '.',
+                    name: 'Arrival Date',
+                    // options: { format: 'YYYY-MM-DD' },
+                    mask : '0000-00-00'
+
+                    // editor: 'number',
+                },
+                
+                {
+                    type: 'text',
+                    title: 'अन्य विवरण',
+                    width: '300',
+                    name: 'remarks'
+                },
+                { type: 'hidden' },
+                { type: 'hidden' }
+
+                // {
+                //     type: 'autocomplete',
+                //     title: 'Name of Hospital',
+                //     width: '300',
+                //     url: '{% url 'snippets:hospital' %}'
+                // },
+                // {
+                //     type: 'dropdown',
+                //     title: 'Food',
+                //     width: '150',
+                //     source: ['Apples', 'Bananas', 'Carrots', 'Oranges', 'Cheese']
+                // },
+                // {
+                //     type: 'checkbox',
+                //     title: 'Stock',
+                //     width: '100'
+                // },
+            ],
+            updateTable: function (instance, cell, col, row, val, label, cellName) {
                 // Number formating
                 // if (col == 3) {
                 //     // Get text
