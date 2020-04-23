@@ -9,9 +9,9 @@ from django.core.management.base import BaseCommand, CommandError
 
 def generate_mun_list():
     mun_stat = {}
-    if settings.DEBUG == False:
+    try:
         mydir = settings.STATIC_ROOT
-    else:
+    except:
         mydir = settings.STATICFILES_DIRS[0]
     mun_stat['muns'] = list(lb.Municipality.objects.all().values())
     mun_stat['district'] = list(lb.District.objects.all().values())
