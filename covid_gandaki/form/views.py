@@ -16,7 +16,12 @@ from covid_gandaki.users.forms import MunForm, Person2Form
 from covid_gandaki.form.forms import CounterCovidForm, CovidCounters
 from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
-from covid_gandaki.snippets.modal_serializers import lb
+from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, public
+
+from covid_gandaki.form.report_generate import generate_mun_list
+
+if settings.DEBUG == False:
+    from django_q.tasks import async_task, schedule
 
 # Create your views here.
 # @login_required(login_url='users:login')
@@ -115,6 +120,13 @@ def test(request):
             f.write(json.dumps(data))
             f.close()
             pass
+        
+        if settings.DEBUG == False:
+            async_task ('covid_gandaki.form.report_generate.generate_mun_list')
+        else:
+            generate_mun_list()
+
+        
     context = {}
     return render(request, 'd3js/data.html', context=context)
 

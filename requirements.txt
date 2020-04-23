@@ -6,5 +6,5 @@ django-viewflow
 python-dev-tools
 libpq-dev
 psycopg2
-
+django-q
 # yum install python3.6-devel

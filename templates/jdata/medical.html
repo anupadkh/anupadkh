@@ -115,11 +115,12 @@
             if (parseInt(x) != 0) {
                 // Updating of row ids shouldn't be considered as change
                 items_changed.push(parseInt(y));
-            }
-        }
-        if ((items_changed.length >= 20) && (x != 0)) {
+if ((items_changed.length >= 20) && (x != 0)) {
             alert('Please save the data Urgently.');
         }
+            }
+        }
+        
 
     };
     var beforeChange = function (instance, cell, x, y, value) {

@@ -25,7 +25,7 @@ class HospitalSerializer(serializers.ModelSerializer):
         data = super().to_representation(obj)
         Quarantines = CovidCases.objects.filter(positive_cases=0).count()
         Covids = CovidCases.objects.filter(positive_cases=1).count()
-        data['quarantine_count'] = Quarantines
+        data['quarantine_count'] = Quarantines + obj.currently_quarantined
         data['covid_count'] = Covids
         return data
     

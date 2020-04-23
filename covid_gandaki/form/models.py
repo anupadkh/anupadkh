@@ -64,3 +64,32 @@ class CovidCounters(models.Model):
     result_waiting = models.IntegerField(
         default=0, null=True, blank=True, verbose_name="नतिजा आउन बाँकी")
     
+
+
+
+class Dashboard(models.Model):
+    name = models.CharField(max_length=300)
+    url = models.CharField(max_length=300,null=True, blank=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Tabular Reports"
+
+
+class DashFields(models.Model):
+    dash = models.ForeignKey(Dashboard, on_delete=models.CASCADE)
+    name = models.CharField(max_length=300)
+    width = models.IntegerField(default=100)
+    title = models.CharField(max_length=300)
+    read_only = models.BooleanField(default=False)
+    mask = models.CharField(max_length=100, null=True, blank=True)
+    source = models.TextField(null=True, blank=True)
+    col_type = models.CharField(max_length=60)
+    autocomplete = models.BooleanField(default=False, null=True, blank=True)
+    url = models.CharField(max_length=300, null=True, blank=True)
+    ordering = models.IntegerField(default=1)
+
+
+

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # 'material',
     # 'material.frontend',
     'viewflow',
+    'django_q',
     # 'viewflow.frontend',
     'crispy_forms',
     
@@ -188,3 +189,5 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
     # 'PAGE_SIZE': 50,
 }
+
+from .common import *
