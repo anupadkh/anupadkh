@@ -6,6 +6,11 @@
     <div class="col-md-12">
         <h2>{{heading}}</h2>
     </div>
+    <div class="row">
+        <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
+        <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
+    </div>
+    <div id="spreadsheet" class="col-md-12"></div>
     <div class="col-md-12 row">
         <div class="col-md-6">
             <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ थप्नुहोस् ।</button>
@@ -14,11 +19,6 @@
             <button class="btn btn-primary float-right" id="save_distribute">Save</button>
         </div>
     </div>
-    <div class="row">
-        <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
-        <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
-    </div>
-    <div id="spreadsheet" class="col-md-12"></div>
     <div class="row">
         <div class="col-md-6" id="errors">
     
@@ -101,6 +101,7 @@
             }
             x = 2;
             var extra_columns ;
+            $('#spreadsheet').jexcel('orderBy',0);
         };
 
         var changed = function (instance, cell, x, y, value) {
