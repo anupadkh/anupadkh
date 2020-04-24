@@ -169,7 +169,8 @@ class HospitalViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def user(self, request, pk=None):
         employee = users.Employee.objects.get(user=request.user )
-        y = lb.Hospital.objects.filter( mun = employee.municipality.address.mun )
+        y = list(lb.Hospital.objects.filter( mun = employee.municipality.address.mun ))
+        y.append(lb.Hospital(name="नभएको"))
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
 
@@ -183,7 +184,7 @@ class CovidViewSet(viewsets.ModelViewSet):
         employee = users.Employee.objects.get(user=request.user)
         mun = employee.municipality.address.mun
         hospitals = lb.Hospital.objects.filter(mun = mun)
-        y = public.QTPerson.objects.filter(quarantined_zone__in = hospitals )
+        y = public.QTPerson.objects.filter(person__current_full_address__mun = mun )
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
 
