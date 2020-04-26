@@ -84,7 +84,7 @@
         if (table.getData().length == 0){
         table.setData ([[, 'पाउनेको नाम', 10, "लिटर", 5, "यसलाई हटाउनुहोस्"]]);
     }
-        x = 2;
+        x = 2; table.insertRow(5);
     };
 
     var selectionActive = function (instance, x1, y1, x2, y2, origin) {
@@ -241,8 +241,9 @@
             <h3 style="color:red" class="col-md-3"> प्रश्न: </h3>
             <h3 class="col-md-9"><span id="column_distribute_header"></span></h3>
         </div>
+        <div class="col-md-12" id="reliefbuttons"></div>
         <div id="spreadsheet3" class="col-md-12"></div>
-        <div class="col-md-12" id="reliefbuttons">
+        
             <div class="col-md-12 row">
                 <div class="col-md-6">
                     <button class="btn btn-primary float-left" onclick="table_distribute.insertRow()">नयाँ प्रतिनिधि
@@ -340,7 +341,7 @@
                 }
             }
             document.getElementById('reliefbuttons').innerHTML = myhtml;
-            x = 2;
+            x = 2; table.insertRow(5);
         };
 
 
@@ -546,7 +547,7 @@
             if (table_food.getData().length == 0) {
                 table_food.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
             }
-            x = 2;
+            x = 2; table.insertRow(5);
         };
         var changed = function (instance, cell, x, y, value) {
             var cellName = jexcel.getColumnNameFromId([x, y]);
