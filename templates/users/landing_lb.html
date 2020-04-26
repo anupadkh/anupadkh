@@ -72,7 +72,7 @@
                 <section>
                     <div class="page-content">
                        <p class="container" style="font-size: 20px;"> तपाईँले {{request.session.employee}}बारे अगाडीका फारमहरु भर्नुभएकोमा धन्यवाद । <br/><br/>कृपया अन्य अनुसुचिहरु भरेर COVID-19का जोखिमहरुबारे सुचना दिनुहोला । </p><br/><br/>
-                    <p><a href="{% url 'lb:table_view' id=0 %}" class="button primary center">फारममा जानुहोस</a></p>
+                    <p><a href="{% url 'lb:table_view' id=7 %}" class="button primary center">फारममा जानुहोस</a></p>
                     </div>
                 </section>
                 <!-- <section>
@@ -82,7 +82,7 @@
         </div>
         <div class="cell-3">
                 <h3>COVID-19 सँग सम्बन्धित अनुसुचि फारमहरुमा जान तल क्लिक गर्नुहोस् ।</h3>
-                <p><a href="{% url 'lb:table_view' id=0 %}" class="button primary center">फारममा जानुहोस</a></p>
+                <p><a href="{% url 'lb:table_view' id=7 %}" class="button primary center">फारममा जानुहोस</a></p>
                 <h3>कोरोना काउन्टर अपडेट - {{request.session.employee}}</h3>
                 <form action="{% url 'form:lbindex' %}" method="POST">
                     {{covid_form}}
