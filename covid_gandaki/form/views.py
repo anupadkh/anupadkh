@@ -23,8 +23,8 @@ from covid_gandaki.form.management.commands.report_generate import generate_mun_
 # from covid_gandaki.form.report_generate import generate_mun_list
 
 import subprocess
-if settings.DEBUG == False:
-    from django_q.tasks import async_task, schedule
+# if settings.DEBUG == False:
+#     from django_q.tasks import async_task, schedule
 
 # Create your views here.
 # @login_required(login_url='users:login')
