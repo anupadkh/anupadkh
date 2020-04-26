@@ -129,7 +129,7 @@ def test(request):
         #     generate_mun_list()
         # else:
         #     generate_mun_list()
-        if settings.DEBUG:
+        if settings.DEBUG == False:
             process = subprocess.run(
                 ["python" , settings.BASE_DIR+ "/manage.py", "report_generate"], stdout=subprocess.PIPE)
         else:
