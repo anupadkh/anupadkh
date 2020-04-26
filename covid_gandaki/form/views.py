@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -138,6 +138,8 @@ def test(request):
             process = subprocess.run(
                 ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
             # generate_mun_list()
+        
+        return redirect('form:landing')
 
 
         
