@@ -42,7 +42,7 @@ def reliefs(request, id):
         # foods = FoodName.objects.filter(mun=mun)
         # context['foods'] = foods
         page = "jdata/relief/lb_distributor.html"
-        context['submitter_object'] = Person2.objects.get(id=id)
+        context['submitter_object'] = ReliefFund.objects.get(id=id).submitter
         return render(request, page, context=context)
 
     elif request.method == 'POST':
