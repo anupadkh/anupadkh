@@ -128,15 +128,29 @@ class ReliefItemViewSet(viewsets.ModelViewSet):
     serializer_class = lb.ReliefItemSerializer
 
     @action(detail=False, methods=['get'])
-    def user(self,request,pk=None):
-        if pk==None:
-            employee = users.Employee.objects.get(user=request.user)
-            RI = lb.ReliefItem.objects.filter(fund__office__address__mun = employee.municipality.address.mun)
-            receivers = RI.values_list('receiver', flat=True)
-            y = public.Person.objects.filter(id__in=receivers)
-            serializer = lb.ReliefPersonSerializer(y, many=True)
-            foodsitems = food_meds.FoodName.objects.filter(mun=employee.municipality.address.mun)
-            return Response(serializer.data)
+    def user(self,request,pk=None, sid=None):
+        employee = users.Employee.objects.get(user=request.user)
+        if self.kwargs.get('sid', False):
+            RI = lb.ReliefItem.objects.filter(
+                fund__office__address__mun=employee.municipality.address.mun, fund = self.kwargs['sid'])
+        else:
+            RI = lb.ReliefItem.objects.filter(
+                fund__office__address__mun=employee.municipality.address.mun)
+        receivers = RI.values_list('receiver', flat=True)
+        y = public.Person.objects.filter(id__in=receivers)
+        serializer = lb.ReliefPersonSerializer(y, many=True)
+        foodsitems = food_meds.FoodName.objects.filter(
+            mun=employee.municipality.address.mun)
+        return Response(serializer.data)
+    
+    def get_queryset(self):
+        query = super().get_queryset()
+        if self.kwargs.get('sid', False):
+            query = query.filter(fund=self.kwargs['sid'])
+        return query
+
+
+        
         
             # employee = users.Employee.objects.get(user=request.user)
             # RI = lb.ReliefItem.objects.filter(
@@ -285,4 +299,5 @@ router.register(r'district', DistrictViewSet)
 router.register(r'reliefdistributers', ReliefDistributerViewSet)
 router.register(r'relieffoodname', FoodNameViewSet)
 router.register(r'reliefItem', ReliefItemViewSet)
+router.register(r'myObjects/(?P<sid>\d+)', ReliefItemViewSet)
 router.register(r'reliefOffice', OfficeViewSet)
