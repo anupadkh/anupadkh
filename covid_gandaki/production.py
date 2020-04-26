@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '-3+wwibqm2o32pp*r(g$#t&m178-rkvwsn)3bd!ornojfcmb*q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '10.20.21.144',
                  'localhost', '202.45.146.192', 'moitfe-covid.astahm.com', 'covid19moitfe.gandaki.gov.np']
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'django_q',
     'rest_framework',
     'material',
