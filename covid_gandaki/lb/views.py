@@ -42,6 +42,7 @@ def reliefs(request, id):
         # foods = FoodName.objects.filter(mun=mun)
         # context['foods'] = foods
         page = "jdata/relief/lb_distributor.html"
+        context['submitter_object'] = Person2.objects.get(id=id)
         return render(request, page, context=context)
 
     elif request.method == 'POST':
@@ -163,8 +164,8 @@ def list_dtable(request,id):
             'url' : '/router/needy/',
         },
         7:{
-            # 'app': 'lb',
-            # 'model': 'sub_models.rahat.'
+            'app': 'lb',
+            'model': 'sub_models.rahat.',
             'heading' : 'राहत सम्बन्धी जानकारी',
             'url' : '/router/relief/',
             'page': 'jdata/relief.html'
@@ -179,6 +180,7 @@ def list_dtable(request,id):
             'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url'], 'next_page': id+1}
     elif id == 7:
         # App = ReliefFund.objects.filter
+
         context = {
             'login': True, "heading": applications[id]['heading'], 'url': applications[id]['url']}
     else:
