@@ -133,8 +133,8 @@ def test(request):
             process = subprocess.run(
                 ["python" , settings.BASE_DIR+ "/manage.py", "report_generate"], stdout=subprocess.PIPE)
         else:
-            process1 = Popen(["python", settings.BASE_DIR + "/production_manage.py", "report_generate"],
-                            bufsize=0, cwd=settings.BASE_DIR, stdout=PIPE, stderr=PIPE, encoding='UTF-8')
+            # process1 = Popen(["python", settings.BASE_DIR + "/production_manage.py", "report_generate"],
+            #                 bufsize=0, cwd=settings.BASE_DIR, stdout=PIPE, stderr=PIPE, encoding='UTF-8')
             process = subprocess.run(
                 ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
             # generate_mun_list()
