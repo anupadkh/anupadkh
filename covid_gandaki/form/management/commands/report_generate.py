@@ -8,7 +8,12 @@ from django_q.models import Schedule
 
 from django.core.management.base import BaseCommand, CommandError
 
-
+from covid_gandaki.food_meds.models import *
+from covid_gandaki.form.models import *
+from covid_gandaki.lb.models import *
+from covid_gandaki.public.models import *
+from covid_gandaki.users.models import *
+from covid_gandaki.lb.sub_models.rahat import *
 
 def generate_mun_list():
     mun_stat = {}
@@ -47,6 +52,7 @@ def generate_mun_list():
 def dash_generate():
     data = []
     y = Stat.objects.all()
+    
     for m in y:
         values = []
         for z in StatValues.objects.filter(reference=m):
