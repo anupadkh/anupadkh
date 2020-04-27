@@ -100,7 +100,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if Schedule.objects.count() == 0:
             schedule(dash_generate,schedule_type=Schedule.HOURLY)
-        return generate_mun_list()
+        self.stdout.write('Added Successfully the dashboard tasks')
+        
         # for poll_id in options['poll_ids']:
         #     try:
         #         poll = Poll.objects.get(pk=poll_id)
