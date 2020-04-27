@@ -34,7 +34,7 @@
         if (table.getData().length == 0) {
             table.setData([[, "Sample: हरेराम शर्मा: यसलाई हटाउनुहोस् ।", 50, 2, 1, 2, "In full Isolation"]]);
         }
-        x = 2;
+        x = 2; table.insertRow(5);
     };
     var selectionActive = function (instance, x1, y1, x2, y2, origin) {
         var cellName1 = jexcel.getColumnNameFromId([x1, y1]);

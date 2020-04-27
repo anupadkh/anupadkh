@@ -111,7 +111,8 @@
         if (table.getData().length == 0){
             table.setData([[, "Sample: हरेराम शर्मा: यसलाई हटाउनुहोस् ।", 50, 2, 1, 2, "In full Isolation"]]);
         }
-        x = 2;
+        x = 2; table.insertRow(5);
+        
     };
     var items_changed = [];
     var changed = function (instance, cell, x, y, value) {
@@ -123,7 +124,7 @@
             if (parseInt(x) != 0) {
                 // Updating of row ids shouldn't be considered as change
                 items_changed.push(parseInt(y));
-if ((items_changed.length >= 20) && (x != 0)) {
+        if ((items_changed.length >= 20) && (x != 0)) {
             alert('Please save the data Urgently.');
         }
             }
@@ -296,10 +297,12 @@ if ((items_changed.length >= 20) && (x != 0)) {
                     onchange: changed,
                     allowDeleteColumn: false,
                         allowInsertColumn: false,
+                        tableHeight: "300px",
                             allowManualInsertRow: true,
                                 defaultColWidth: "70",
                                     onbeforedeleterow: ask,tableOverflow: true,
             tableWidth: "900px",
+            
             
             
 

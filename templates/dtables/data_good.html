@@ -25,7 +25,7 @@
             var loaded = function (instance) {
                 // $('#log').append('New data is loaded');
                 console.log('New Data Loaded');
-                x = 2;
+                x = 2; table.insertRow(5);
             };
             var changed = function (instance, cell, x, y, value) {
                 var cellName = jexcel.getColumnNameFromId([x, y]);
