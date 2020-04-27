@@ -2,9 +2,59 @@ from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, publi
 import json
 from django.conf import settings
 
+from covid_gandaki.form.models import Stat, StatCounters, StatValues
+from django_q.tasks import async_task, schedule
+from django_q.models import Schedule
+
 from django.core.management.base import BaseCommand, CommandError
 
+def dash_generate():
+        data=[]
+        y = Stat.objects.all()
+        for m in y:
+            values = []
+            for z in StatValues.objects.filter(reference=m):
+                values.append({
+                    'title': z.title,
+                    'value': z.value
+                })
+            for z in StatCounters.objects.filter(reference=m):
+                App = eval(z.class_name)
+                constraint = eval(z.constraint)
+                count = App.objects.filter(**constraint).count()
+                values.append({
+                    'title': z.title,
+                    'value': count
+                })
 
+            data.append({
+                "title": m.title,
+                "subtitle": m.subtitle,
+                "image": m.image,
+                "values": values,
+            })
+
+        with open(settings.STATICFILES_DIRS[0] + '/data1.json', 'w+') as f:
+            f.write(json.dumps(data))
+            f.close()
+            pass
+
+        if settings.DEBUG == False:
+            async_task(generate_mun_list)
+
+        else:
+            async_task(generate_mun_list)
+        
+        # if settings.DEBUG == False:
+        #     process = subprocess.run(
+        #         ["python" , settings.BASE_DIR+ "/manage.py", "report_generate"], stdout=subprocess.PIPE)
+        # else:
+        #     # process1 = Popen(["python", settings.BASE_DIR + "/production_manage.py", "report_generate"],
+        #     #                 bufsize=0, cwd=settings.BASE_DIR, stdout=PIPE, stderr=PIPE, encoding='UTF-8')
+        #     process = subprocess.run(
+        #         ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
+        #     # generate_mun_list()
+        return True
 
 
 def generate_mun_list():
@@ -48,6 +98,8 @@ class Command(BaseCommand):
     #     parser.add_argument('poll_ids', nargs='+', type=int)
 
     def handle(self, *args, **options):
+        if Schedule.objects.count() == 0:
+            schedule(dash_generate,schedule_type=Schedule.HOURLY)
         return generate_mun_list()
         # for poll_id in options['poll_ids']:
         #     try:

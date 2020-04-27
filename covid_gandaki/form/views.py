@@ -18,13 +18,12 @@ from covid_gandaki.lb.sub_models.rahat import *
 from pprint import pprint
 from covid_gandaki.snippets.modal_serializers import lb, users, food_meds, public
 from subprocess import PIPE, Popen
-from covid_gandaki.form.management.commands.report_generate import generate_mun_list
+from covid_gandaki.form.management.commands.report_generate import generate_mun_list, dash_generate
 
 # from covid_gandaki.form.report_generate import generate_mun_list
 
 import subprocess
-# if settings.DEBUG == False:
-from django_q.tasks import async_task, schedule
+
 
 # Create your views here.
 # @login_required(login_url='users:login')
@@ -92,54 +91,9 @@ from django.conf import settings
 
 @login_required(login_url="users:login")
 def test(request):    
-    data = []
-    
     if request.GET.get('generate'):
-        y = Stat.objects.all()
-        for m in y:
-            values = []
-            for z in StatValues.objects.filter(reference=m):
-                values.append({
-                    'title': z.title,
-                    'value': z.value
-                })
-            for z in StatCounters.objects.filter(reference=m):
-                App = eval(z.class_name)
-                constraint = eval(z.constraint)
-                count = App.objects.filter(**constraint).count()
-                values.append({
-                    'title': z.title,
-                    'value': count
-                })
-
-            data.append({
-                "title": m.title,
-                "subtitle": m.subtitle,
-                "image": m.image,
-                "values": values,
-            })
-        
-        with open(settings.STATICFILES_DIRS[0] + '/data1.json', 'w+') as f:
-            f.write(json.dumps(data))
-            f.close()
-            pass
-        
-        if settings.DEBUG == False:
-            async_task (generate_mun_list)
-            
-        else:
-            async_task(generate_mun_list)
-        # if settings.DEBUG == False:
-        #     process = subprocess.run(
-        #         ["python" , settings.BASE_DIR+ "/manage.py", "report_generate"], stdout=subprocess.PIPE)
-        # else:
-        #     # process1 = Popen(["python", settings.BASE_DIR + "/production_manage.py", "report_generate"],
-        #     #                 bufsize=0, cwd=settings.BASE_DIR, stdout=PIPE, stderr=PIPE, encoding='UTF-8')
-        #     process = subprocess.run(
-        #         ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
-        #     # generate_mun_list()
-        
-        return redirect('form:landing')
+       dash_generate()
+       return redirect('form:landing')
 
 
         
