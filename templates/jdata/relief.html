@@ -341,7 +341,7 @@
                 }
             }
             document.getElementById('reliefbuttons').innerHTML = myhtml;
-            x = 2; table.insertRow(5);
+            x = 2; table_distribute.insertRow(5);
         };
 
 
@@ -547,7 +547,7 @@
             if (table_food.getData().length == 0) {
                 table_food.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
             }
-            x = 2; table.insertRow(5);
+            x = 2; table_food.insertRow(5);
         };
         var changed = function (instance, cell, x, y, value) {
             var cellName = jexcel.getColumnNameFromId([x, y]);
