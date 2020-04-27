@@ -30,4 +30,6 @@ for x in apps.get_models():
         continue
     if 'viewflow' in str(x):
         admin.site.unregister(x)
+    if 'django_q' in str(x):
+        admin.site.unregister(x)
     
