@@ -70,16 +70,14 @@ def dash_generate():
             "values": values,
         })
 
-        with open(settings.STATICFILES_DIRS[0] + '/data1.json', 'w+') as f:
-            f.write(json.dumps(data))
-            f.close()
-            pass
+    with open(settings.STATICFILES_DIRS[0] + '/data1.json', 'w+') as f:
+        f.write(json.dumps(data)) 
 
-        if settings.DEBUG == False:
-            async_task(generate_mun_list)
+    if settings.DEBUG == False:
+        async_task(generate_mun_list)
 
-        else:
-            async_task(generate_mun_list)
+    else:
+        async_task(generate_mun_list)
 
         # if settings.DEBUG == False:
         #     process = subprocess.run(
@@ -90,7 +88,7 @@ def dash_generate():
         #     process = subprocess.run(
         #         ["python", settings.BASE_DIR + "/production_manage.py", "report_generate"], stdout=subprocess.PIPE)
         #     # generate_mun_list()
-        return True
+    return True
 
 
 class Command(BaseCommand):
