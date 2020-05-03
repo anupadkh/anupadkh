@@ -119,7 +119,7 @@ class ReliefDistributerViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = users.User.objects.all()
+    queryset = users.User.objects.filter(id__lte = 0)
     serializer_class = users.UserSerializer
 
 
@@ -278,14 +278,12 @@ class OfficeViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
 
-
     
 
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'relief',ReliefViewSet )
 router.register(r'quarantines', HospitalViewSet)
 router.register(r'travel', TravelViewSet)
 router.register(r'covid', CovidViewSet)
@@ -296,8 +294,34 @@ router.register(r'supplies', PetroleumViewSet)
 router.register(r'district', DistrictViewSet)
 # router.register(r'travels', FooView.asView())
 
+router.register(r'relief',ReliefViewSet )
 router.register(r'reliefdistributers', ReliefDistributerViewSet)
 router.register(r'relieffoodname', FoodNameViewSet)
 router.register(r'reliefItem', ReliefItemViewSet)
 router.register(r'myObjects/(?P<sid>\d+)', ReliefItemViewSet)
 router.register(r'reliefOffice', OfficeViewSet)
+
+class ColumnSize(viewsets.ModelViewSet):
+    queryset = form.ColumnSize.objects.all()
+    serializer_class = form.ColumnSizeSerializer
+
+    @action(detail=False, methods=['get', 'post'], url_path='column', url_name='column_user')
+    def user(self, request, table=None):
+        employee = users.Employee.objects.get(user=request.user)
+        mun = employee.municipality.address.mun
+        if request.method == "POST":
+            data = request.data
+            column = form.ColumnSize.objects.get_or_create(table_name= data['file'], mun=mun)[0]
+            column.column_size = str(data['column'])
+            # column.is_valid()
+            column.save()
+            return Response(form.ColumnSizeSerializer(column).data)
+        elif request.method == "GET":
+            # table = request.data['table']
+            query, status = form.ColumnSize.objects.get_or_create(mun=mun, table_name = table)
+            queryset = form.ColumnSizeSerializer(query, many=False)
+            return Response(queryset.data)
+
+
+router.register(r'columnSize', ColumnSize)
+router.register(r'column/(?P<table>\w+)', ColumnSize)

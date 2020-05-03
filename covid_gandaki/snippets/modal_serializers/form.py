@@ -1,4 +1,4 @@
-from covid_gandaki.form.models import Travel
+from covid_gandaki.form.models import Travel, ColumnSize
 from covid_gandaki.public.models import Person
 from covid_gandaki.lb.models import Address
 from covid_gandaki.users.models import Employee
@@ -90,4 +90,9 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
     # def __init__(self, *args, **kwargs):
     #     many = kwargs.pop('many', True)
     #     super(Lb_Travel_Serializer, self).__init__(many=many, *args, **kwargs)
-        
+
+class ColumnSizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ColumnSize
+        fields = "__all__"
+

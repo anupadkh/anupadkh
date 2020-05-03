@@ -92,4 +92,7 @@ class DashFields(models.Model):
     ordering = models.IntegerField(default=1)
 
 
-
+class ColumnSize(models.Model):
+    column_size = models.CharField(max_length=400, blank=True, null=True)
+    mun = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    table_name = models.CharField(max_length=300)

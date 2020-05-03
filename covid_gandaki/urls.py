@@ -33,7 +33,7 @@ urlpatterns = [
     path('users/', include('covid_gandaki.users.urls')),
     path('lb/', include('covid_gandaki.lb.urls')),
     # url(r'^api-auth/', include('rest_framework.urls')),
-    url(r'^router/', include(router.urls)),
+    url(r'^router/', include((router.urls, 'router'), namespace='router')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('snip/', include('covid_gandaki.snippets.urls')),
 ]

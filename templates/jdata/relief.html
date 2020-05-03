@@ -270,8 +270,7 @@
     <script>
         $("#reliefbuttons").on("click", "#save_distribution", function () {
             data = table_distribute.getData();
-            console.log(data);
-            console.log(items_changed_distribute);
+            unchanged_data = []
             for (let i = 0; i < items_changed_distribute.length; i++) {
                 to_post = data[items_changed_distribute[i]];
                 my_obj = {
@@ -303,7 +302,7 @@
                         );
 
                     }, error: function (xhr, text, errors) {
-
+                        unchanged_data.push(items_changed[i]);
                         $("#errors").append(
                             "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
 
@@ -317,6 +316,7 @@
                     // }
                 );
             };
+            items_changed_distribute = unchanged_data;
         }
 
         );
@@ -507,6 +507,7 @@
 
             $("#save_food").click(function () {
                 data = table_food.getData();
+                unchanged_data = [];
                 for (let i = 0; i < items_changed.length; i++) {
                     to_post = data[items_changed[i]];
                     my_obj = {
@@ -538,7 +539,7 @@
                             );
 
                         }, error: function (xhr, text, errors) {
-
+                            unchanged_data.push(items_changed[i]);
                             $("#errors_food").append(
                                 "<div class=\"alert alert-warning alert-dismissible\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>" + "Error Saving Row :" + eval(i + 1) + "> " + xhr.responseText + errors + "</div>"
 
@@ -552,6 +553,7 @@
                         // }
                     );
                 };
+                items_changed = unchanged_data;
             }
 
             );
@@ -716,9 +718,6 @@
                 onbeforedeleterow: ask_food, tableOverflow: true,
                 tableWidth: "900px",
                 onchange: changed,
-
-
-
             });
             var myTracker = jSuites.tracker(document.getElementById('spreadsheet2'));
             // };

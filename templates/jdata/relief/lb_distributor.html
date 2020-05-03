@@ -99,9 +99,30 @@
             if (table_distribute.getData().length == 0) {
                 table_distribute.setData([[, 'Sample: धान', "पाथी", "150.00"]]);
             }
-            x = 2; table_distribute.insertRow(5);
+            table_distribute.insertRow(5);
             var extra_columns ;
             table_distribute.orderBy(0);
+            
+            $.ajax({
+                url: "{% url 'router:columnsize-column_user' table='distributor_lb' %}",
+                type: "GET",
+                contentType: "application/json",
+                success: function (result) {
+                    console.log(result);
+                    col_widths = eval(result.column_size);
+                    if (col_widths == null) {
+                        col_widths = [];
+                    }
+                    for (i = 0; i < col_widths.length; i = i + 1) {
+                        table_distribute.setWidth(i, eval(col_widths[i]));
+                    }
+                    x = 2;
+                },
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                }
+            })
+        
         };
 
         var changed = function (instance, cell, x, y, value) {
@@ -272,10 +293,27 @@
             onbeforedeleterow: ask,
             tableOverflow: true,
             tableWidth: "900px",
+            onresizecolumn: save_row,
 
 
 
         });
+
+        function save_row() {
+            col_sizes = JSON.stringify({ 'column': table_distribute.getWidth(), 'file': 'distributor_lb' });
+            if (x == 2) {
+                $.ajax({
+                    url: "{% url 'router:columnsize-column_user' %}",
+                    type: "POST",
+                    data: col_sizes,
+                    contentType: "application/json",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    async: false,
+                });
+            }
+        }
         var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
         // };
         var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();

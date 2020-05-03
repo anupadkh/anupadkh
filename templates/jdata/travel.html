@@ -123,7 +123,28 @@
         }
 
         console.log('New Data Loaded');
-        x = 2; table.insertRow(5);
+        table.insertRow(5);
+
+        $.ajax({
+            url: "{% url 'router:columnsize-column_user' table='travel' %}",
+            type: "GET",
+            data: JSON.stringify({ 'table': 'travel' }),
+            contentType: "application/json",
+            success: function (result) {
+                console.log(result);
+                col_widths = eval(result.column_size);
+                if (col_widths == null) {
+                    col_widths = [];
+                }
+                for (i = 0; i < col_widths.length; i = i + 1) {
+                    table.setWidth(i, eval(col_widths[i]));
+                }
+                x = 2;
+            },
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            }
+        })
     };
     var items_changed = [];
     var changed = function (instance, cell, x, y, value) {
@@ -356,10 +377,26 @@
             defaultColWidth: "70",
             onbeforedeleterow: ask,tableOverflow: true,
             tableWidth: "900px",
+            onresizecolumn: save_row,
             
             
 
         });
+        function save_row() {
+            col_sizes = JSON.stringify({ 'column': table.getWidth(), 'file': 'travel' });
+            if (x == 2) {
+                $.ajax({
+                    url: "{% url 'router:columnsize-column_user' %}",
+                    type: "POST",
+                    data: col_sizes,
+                    contentType: "application/json",
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    },
+                    async: false,
+                });
+            }
+        }
     var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
     // };
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();

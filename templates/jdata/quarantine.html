@@ -123,7 +123,26 @@
         if (table.getData().length == 0){
             table.setData([[, "Sample: LakeCity Hospital: यसलाई हटाउनुहोस् ।", 50, 2, 1, , , ,]]);
         }
-        x = 2; table.insertRow(5);
+        table.insertRow(5);
+        $.ajax({
+            url: "{% url 'router:columnsize-column_user' table='quarantine' %}",
+            type: "GET",
+            contentType: "application/json",
+            success: function (result) {
+                console.log(result);
+                col_widths = eval(result.column_size);
+                if (col_widths == null){
+                    col_widths =[];
+                }
+                for (i = 0; i < col_widths.length; i = i + 1) {
+                    table.setWidth(i, eval(col_widths[i]));
+                }
+                x = 2;
+            },
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            }
+        });
     };
     
 
@@ -182,15 +201,10 @@
 
         };
 
-    table = jexcel(document.getElementById('spreadsheet'), {
-            // data: [{"name":"Shyam Kumar Basnet", "age":24,"gender":1,"Foreign Country":"India", "mode_of_transport_international":"Plane", "mode_of_transport_national":"Bus", "traveller":1, "ward":2, "Arrival Date":"2020-04-20"}],
-            
-           
+    table = jexcel(document.getElementById('spreadsheet'), {    
+        url: "{{url}}user/",
     
-    
-    url: "{{url}}user/",
-    
-    columns: [
+        columns: [
         //  type: hidden, dropdown, text, calendar, text
         // numeric,hidden, dropdown,autocomplete,checkbox,radio,calendar,image,color,html
         {
@@ -253,57 +267,40 @@
 
     ],
         updateTable: function (instance, cell, col, row, val, label, cellName) {
-            // Number formating
-            // if (col == 3) {
-            //     // Get text
-            //     txt = cell.innerText;
-            //     // Format text
-            //     txt = numeral(txt).format('0,0.00');
-            //     // Update cell value
-            //     cell.innerHTML = '$ ' + txt;
-            // }
-
-            // // Odd row colours
-            // if (row % 2) {
-            //     cell.style.backgroundColor = '#edf3ff';
-            // }
-
-            // // Total row
-            // if (row == 9) {
-            //     if (col < 3) {
-            //         cell.innerHTML = '';
-            //     }
-
-            //     if (col == 2) {
-            //         cell.innerHTML = 'Total';
-            //         cell.style.fontWeight = 'bold';
-            //     }
-
-            //     cell.className = '';
-            //     cell.style.backgroundColor = '#f46e42';
-            //     cell.style.color = '#ffffff';
-            // }
-            // console.log(instance,cell);
-            // if (x == 2) {
-            //     console.log(col, row, val, label, cellName);
-            // }
-
         },
-    onload: loaded,
-                onselection: selectionActive,
-                onchange: changed,
-                    // persistance: "/router/travel/?format=json",
-                    allowDeleteColumn: false,
-                    deleteRow: deletess,
-                        allowInsertColumn: false,
-                            allowManualInsertRow: true,
-                                defaultColWidth: "70",
-                                    onbeforedeleterow: ask,tableOverflow: true,
-            tableWidth: "900px",
+        onload: loaded,
+        onselection: selectionActive,
+        onchange: changed,
+        // persistance: "/router/travel/?format=json",
+        allowDeleteColumn: false,
+        deleteRow: deletess,
+        allowInsertColumn: false,
+        allowManualInsertRow: true,
+        defaultColWidth: "70",
+        onbeforedeleterow: ask,tableOverflow: true,
+        tableWidth: "900px",
+        onresizecolumn: save_row,
             
             
 
-        });
+    });
+    
+    function save_row() {
+        col_sizes = JSON.stringify({ 'column': table.getWidth(), 'file': 'quarantine' });
+        if (x == 2) {
+            $.ajax({
+                url: "{% url 'router:columnsize-column_user' %}",
+                type: "POST",
+                data: col_sizes,
+                contentType: "application/json",
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                },
+                async: false,
+            });
+        }
+    };
+    
     var myTracker = jSuites.tracker(document.getElementById('spreadsheet'));
     // };
     var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();

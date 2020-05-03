@@ -104,9 +104,15 @@ class Command(BaseCommand):
     #     parser.add_argument('poll_ids', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        if Schedule.objects.count() == 0:
-            schedule(dash_generate,schedule_type=Schedule.HOURLY)
-        self.stdout.write('Added Successfully the dashboard tasks')
+        if Schedule.objects.count() != 0:
+            Schedule.objects.all().delete()
+            schedule('covid_gandaki.form.management.commands.report_generate.dash_generate',
+                     schedule_type=Schedule.HOURLY)
+            self.stdout.write('Added Successfully the dashboard tasks')
+        else:
+            schedule('covid_gandaki.form.management.commands.report_generate.dash_generate',
+                     schedule_type=Schedule.HOURLY)
+            self.stdout.write('The scheduled queues was added already')
         
         # for poll_id in options['poll_ids']:
         #     try:

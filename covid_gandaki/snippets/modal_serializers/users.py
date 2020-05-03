@@ -21,14 +21,18 @@ class CreateUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User(
-            email=validated_data['email'],
-            username=validated_data['username']
-        )
-        user.set_password(validated_data['password'])
-        user.is_active = False
-        user.is_staff = False
-        user.first_name = validated_data.get('first_name')
-        user.last_name = validated_data.get('last_name')
-        user.save()
-        return user
+        request = self.context['request']
+        if request.user.is_superuser == False:
+            return None
+        else:
+            user = User(
+                email=validated_data['email'],
+                username=validated_data['username']
+            )
+            user.set_password(validated_data['password'])
+            user.is_active = False
+            user.is_staff = False
+            user.first_name = validated_data.get('first_name')
+            user.last_name = validated_data.get('last_name')
+            user.save()
+            return user
