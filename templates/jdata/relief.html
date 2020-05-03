@@ -507,8 +507,8 @@
 
             $("#save_food").click(function () {
                 data = table_food.getData();
-                for (let i = 0; i < data.length; i++) {
-                    to_post = data[i];
+                for (let i = 0; i < items_changed.length; i++) {
+                    to_post = data[items_changed[i]];
                     my_obj = {
                         "id": to_post[0],
                         "name": to_post[1],
@@ -522,7 +522,6 @@
                     $.ajax({
                         url: "/router/relieffoodname/",
                         type: "POST",
-
                         data: JSON.stringify(
                             my_obj
                         ), contentType: "application/json",
@@ -568,11 +567,17 @@
                 }
                 x = 2; table_food.insertRow(5);
             };
+            var items_changed = [];
             var changed = function (instance, cell, x, y, value) {
-                var cellName = jexcel.getColumnNameFromId([x, y]);
-                // $('#log').append('New change on cell ' + cellName + ' to: ' + value + '');
-                console.log('New change on cell ' + cellName + ' to: ' + value + '');
-                console.log(x, y);
+                if (!items_changed.includes(parseInt(y))) {
+                    if (parseInt(x) != 0) {
+                        // Updating of row ids shouldn't be considered as change
+                        items_changed.push(parseInt(y));
+                        if ((items_changed.length >= 20) && (x != 0)) {
+                            alert('Please save the data Urgently.');
+                        }
+                    }
+                }
 
             };
             var beforeChange = function (instance, cell, x, y, value) {
@@ -710,6 +715,7 @@
                 defaultColWidth: "70",
                 onbeforedeleterow: ask_food, tableOverflow: true,
                 tableWidth: "900px",
+                onchange: changed,
 
 
 
