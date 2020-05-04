@@ -88,6 +88,11 @@ class QTPersonSerializer(serializers.ModelSerializer):
         data['name'] = obj.person.full_name
         data['age'] = obj.person.age
         data['gender'] = obj.person.gender
+        try:
+            employee = Employee.objects.get(user=obj.created_by)
+            data['mun'] = employee.municipality.address.mun.id
+        except:
+            pass
 
         try:
             data['ward'] = obj.person.current_full_address.ward

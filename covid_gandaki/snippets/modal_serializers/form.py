@@ -71,6 +71,7 @@ class Lb_Travel_Serializer(serializers.ModelSerializer):
         data['name'] = obj.traveller.full_name
         data['age'] = obj.traveller.age
         data['gender'] = obj.traveller.gender
+        data['mun'] = obj.traveller.current_full_address.mun.id
         return data
         
         # Traveller = data['traveller']

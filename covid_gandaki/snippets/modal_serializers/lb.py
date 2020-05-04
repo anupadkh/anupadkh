@@ -16,6 +16,11 @@ class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Municipality
         fields = '__all__'
+    
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        data['name'] = data['mun_name']
+        return data
 
 
 class HospitalSerializer(serializers.ModelSerializer):
@@ -138,6 +143,7 @@ class ReliefFundSerializer(serializers.ModelSerializer):
         data['submitter_name'] = obj.submitter.full_name
         data['mobile'] = obj.submitter.mobile
         data['address'] = obj.submitter.current_address
+        data['mun'] = obj.office.address.mun.id
         return data
 
     
@@ -223,6 +229,7 @@ class ReliefPersonSerializer(serializers.ModelSerializer):
         #             pass
         # except:
         #     data['error'] = "error loading fooditems"
+        data['mun'] = obj.current_full_address.mun.id
         return data
     
     # def get_relief_items(self, request):

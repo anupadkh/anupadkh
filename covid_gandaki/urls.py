@@ -36,4 +36,5 @@ urlpatterns = [
     url(r'^router/', include((router.urls, 'router'), namespace='router')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('snip/', include('covid_gandaki.snippets.urls')),
+    path('dash_counter', include('covid_gandaki.dashboard.urls')),
 ]

@@ -10,26 +10,6 @@ from covid_gandaki.snippets.modal_serializers import lb,users,form,food_meds,pub
 # ViewSets define the view behavior.
 from rest_framework.decorators import action
 
-# from rest_framework_bulk import (
-#     BulkListSerializer,
-#     BulkSerializerMixin,
-#     ListBulkCreateUpdateDestroyAPIView,
-# )
-
-
-
-# class FooView(ListBulkCreateUpdateDestroyAPIView):
-#     queryset = form.Travel.objects.all()
-#     model = form.Travel
-#     serializer_class = form.Lb_Travel_Serializer
-
-#     def get(self,request,format=None):
-#         return self.queryset
-    
-#     @classmethod
-#     def get_extra_actions(cls):
-#         return []
-
  
 
 
@@ -63,6 +43,12 @@ class TravelViewSet(viewsets.ModelViewSet):
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
         return request.method in SAFE_METHODS
+
+class MunViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = lb.Municipality.objects.all()
+    permission_classes = [ReadOnly] 
+    serializer_class = lb.MunicipalitySerializer
+
     
 class DistrictViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = lb.District.objects.all()
@@ -124,8 +110,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class ReliefItemViewSet(viewsets.ModelViewSet):
-    queryset = lb.ReliefItem.objects.all()
-    serializer_class = lb.ReliefItemSerializer
+    receivers = lb.ReliefItem.objects.all().values_list('receiver', flat=True)
+    queryset = public.Person.objects.filter(id__in=receivers)
+    serializer_class = lb.ReliefPersonSerializer
 
     @action(detail=False, methods=['get'])
     def user(self,request,pk=None, sid=None):
@@ -300,6 +287,7 @@ router.register(r'relieffoodname', FoodNameViewSet)
 router.register(r'reliefItem', ReliefItemViewSet)
 router.register(r'myObjects/(?P<sid>\d+)', ReliefItemViewSet)
 router.register(r'reliefOffice', OfficeViewSet)
+router.register(r'muns', MunViewSet)
 
 class ColumnSize(viewsets.ModelViewSet):
     queryset = form.ColumnSize.objects.all()

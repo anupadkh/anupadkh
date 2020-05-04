@@ -1,0 +1,123 @@
+{% extends 'jdata/body.html' %}
+{% load static %}
+{% block table-script %}
+{% autoescape off %}
+    {% for table in table_descriptions %} 
+    <select id="district">
+        <option value="-">Loading</option>
+    </select>
+    <select id="municipality" name="municipality">
+        <option value="-" id="loading">पहिला जिल्ला रोज्नुहोस्</option>
+    </select>
+        <div id="spreadsheet_{{table.name}}"></div>
+        
+        <script>
+            var a ={{table.columns}};
+            table = jexcel(document.getElementById('spreadsheet_{{table.name}}'), {
+                url: '{{table.url}}',
+                
+                search: true,
+                // pagination: 10,
+                columns: {{table.columns}},
+                tableWidth: "900px",
+                onload: loaded
+            });
+            var loaded = function (){
+                document.getElementsByClassName('jexcel').style.whiteSpace='normal';
+            }
+            </script>
+    {% endfor %}
+
+{% endautoescape %}
+<script>
+
+    load_muns = function municipality(id) {
+
+        let dropdown = $('#municipality');
+        dropdown.empty();
+        dropdown.append('<option selected="true" disabled>आफ्नो कार्यालय रोज्नुहोस्</option>');
+        dropdown.prop('selectedIndex', 0);
+        url = '/router/district/' + String(id) + '/mun/';
+        // Populate dropdown with list of provinces
+        $.getJSON(url, function (data) {
+            // console.log(data);
+            x=0;
+            $.each(data, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.mun_name));
+                if (original_data == ''){
+                   original_data = JSON.parse(JSON.stringify(table.options.data));
+                }
+                // console.log(original_data);
+                rows = original_data.filter(function (new_data) {
+                    return new_data[0] == entry.id;
+                })
+                // console.log(rows, 'check')
+                for (i = 0; i < rows.length; i++) {
+                    table.insertRow(rows[i],0,1);
+                    console.log(JSON.stringify(rows[i]));
+                    if (x==0){
+                        table.deleteRow(1,table.options.data.length - 1);
+                        x=2;
+                    }
+                    
+                    // console.log(JSON.stringify(rows[i]));
+                }
+            });
+        });
+    }
+    $('#district').empty().append(
+        "<option selected=\"false\" disabled>जिल्ला रोज्नुहोस्</option>"
+    ).prop('selectedIndex', 0);
+    $.getJSON('/router/district/', function (data) {
+        $.each(data, function (key, entry) {
+            $('#district').append(
+                $('<option></option>').attr('value', entry.id).text(entry.nep_name)
+            );
+        }
+        )
+    });
+    $('#district').change(function () {
+        if (original_data == '') {
+            original_data = JSON.parse(JSON.stringify(table.options.data));
+        }
+        
+        
+        load_muns($(this)[0].value);
+        
+    });
+    var original_data = '';
+
+    
+
+    $('#municipality').change(
+        function () {
+                table.setData(
+                    original_data.filter(function (data) {
+                        return data[0] == $('#municipality').val();
+                    })
+                )
+            
+
+        }
+    )
+</script>
+{% endblock %}
+
+{% block header-scripts %}
+<script src="{% static 'jsuites/dist/jsuites.js' %}"></script>
+<script src="{% static 'jexcel/jexcel.js' %}"></script>
+<link rel="stylesheet" href="{% static 'jsuites/dist/jsuites.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'jexcel/jexcel.css' %}" type="text/css" />
+<!-- <link rel="stylesheet" href="{% static 'jexcel/jexcel.datatables.css' %}" type="text/css" /> -->
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<style>
+    a {
+        color: #222;
+    }
+
+    .active {
+        color: blue;
+    }
+    
+</style>
+{% endblock %}
