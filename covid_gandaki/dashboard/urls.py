@@ -3,7 +3,8 @@ from django.conf.urls import include, url
 from covid_gandaki.dashboard import views
 
 urlpatterns = [
-    path('', views.index, name='landing'),
+    path('index/', views.index, name='landing'),
+    path('<int:id>/', views.index, name="navigate"),
 ]
 
 app_name = "dashboard"

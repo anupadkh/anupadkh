@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky pt-4">
+                <ul class="nav flex-column" id="sidebar">
+
+                    <li class="nav-item"><a class="nav-link" href='/'><i class="fas fa-home"></i> गृहपृष्ठ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'form:lbindex' %}"><i
+                                class="fas fa-sitemap"></i> स्थानिय निकाय
+                            बारे</a></li>
+                    <li class="nav-item"><a href="{% url 'lb:table_view' id=7 %}" class="nav-link"><i
+                                class="fas fa-hand-holding-water"></i>
+                            राहत वितरणको विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=0 %}"><i
+                                class="far fa-address-card"></i> विदेशवाट आएकाहरुको विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=1 %}"><i
+                                class="fas fa-head-side-mask"></i> क्वारेन्टाईन र आईसोलेसन सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=2 %}"><i
+                                class="fas fa-hospital-user"></i> COVID 19 टेस्ट सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=3 %}"><i
+                                class="fas fa-seedling"></i> स्थानिय तहलाई आवश्यक पर्ने खाद्यवस्तु </a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=4 %}"><i
+                                class="fas fa-cloud-meatball"></i> स्थानियतहमा उत्पादित तर बिक्रि हुन नसकी खेर गईरहेको
+                            वस्तुः</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=5 %}"><i
+                                class="fas fa-capsules"></i> तत्काल आवश्यक औषधि र मेडीकल उपकरण सम्वन्धि विवरण</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lb:table_view' id=6 %}"><i
+                                class="fas fa-portrait"></i> आर्थिक रुपमा आफै किनेर खाने क्षमता नभएका (Needy People)
+                            सम्वन्धि विवरण</a></li>
+                    <li class="nav-item" class="divider"></li>
+                </ul>
+            </div>
+        </nav>
+        <script>
+            $(function () {
+                var current = location.pathname;
+                $('#sidebar li a').each(function () {
+                    var $this = $(this);
+                    // if the current path is like this link, make it active
+                    if ($this.attr('href').indexOf(current) !== -1) {
+                        $this.addClass('active');
+                    }
+                })
+            })
+        </script>
+
+        <main role="main" class="container col-md-9 ml-sm-auto col-lg-10 px-4" style="margin-top:50px;">
+
+
+
+            {% block table-script %}
+            {% endblock %}
+
+            {% block table2 %}
+            {% endblock table2 %}
+            <!-- </div> -->
+            {% if next_page %}
+            <div class="col-12"><br /><br />
+                <a class="btn btn-secondary" href="{% url 'lb:table_view' id=next_page|add:"-2" %}"> अगाडीको पृष्ठ</a>
+                <a class="btn btn-secondary float-right" href="{% url 'lb:table_view' id=next_page %}"> अर्को पृष्ठ</a>
+            </div>
+            {% endif %}
+            <!-- <a href="#" type="button" class="btn btn-primary" onclick="toggler();">Toggle</a> -->
+        </main>
+    </div>
+</div>

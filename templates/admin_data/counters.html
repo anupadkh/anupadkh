@@ -1,7 +1,10 @@
-{% extends 'jdata/body.html' %}
+{% extends 'jdata/head.html' %}
 {% load static %}
-{% block table-script %}
+{% block body %}
 {% autoescape off %}
+{% for x in menu %}
+<a href="{% url 'dashboard:navigate' id=forloop.counter0 %}" class="btn btn-primary">{{x.name}}</a>
+{% endfor %}
     {% for table in table_descriptions %} 
     <select id="district">
         <option value="-">Loading</option>
@@ -19,12 +22,9 @@
                 search: true,
                 // pagination: 10,
                 columns: {{table.columns}},
-                tableWidth: "900px",
-                onload: loaded
+                tableWidth: 900,
             });
-            var loaded = function (){
-                document.getElementsByClassName('jexcel').style.whiteSpace='normal';
-            }
+            
             </script>
     {% endfor %}
 
@@ -53,12 +53,13 @@
                 })
                 // console.log(rows, 'check')
                 for (i = 0; i < rows.length; i++) {
-                    table.insertRow(rows[i],0,1);
-                    console.log(JSON.stringify(rows[i]));
-                    if (x==0){
-                        table.deleteRow(1,table.options.data.length - 1);
-                        x=2;
+                    if (x == 0 && table.options.data.length !=0 ) {
+                        table.deleteRow(1, table.options.data.length - 1);
+                        x = 2;
                     }
+                    table.insertRow(rows[i],0,0);
+                    console.log(JSON.stringify(rows[i]));
+                    
                     
                     // console.log(JSON.stringify(rows[i]));
                 }
