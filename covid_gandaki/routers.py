@@ -16,7 +16,7 @@ from rest_framework.decorators import action
 
 
 class TravelViewSet(viewsets.ModelViewSet):
-    queryset = form.Travel.objects.all()
+    queryset = form.Travel.objects.all().prefetch_related('traveller')
     serializer_class  = form.Lb_Travel_Serializer
 
     @action(detail=False, methods=['get'])
@@ -28,7 +28,7 @@ class TravelViewSet(viewsets.ModelViewSet):
         employee = users.Employee.objects.get(user=request.user)
         mun = employee.municipality.address.mun
         creators = users.Employee.objects.filter(municipality=employee.municipality).values('user')
-        y = form.Travel.objects.filter(created_by__in=creators)
+        y = form.Travel.objects.filter(created_by__in=creators).prefetch_related('traveller')
         serializer = self.get_serializer(y, many=True)
         return Response(serializer.data)
         # return Response(serializer.data)

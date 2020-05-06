@@ -50,9 +50,10 @@ def reliefs(request, id):
         data = json.loads(data)
         try:
             if data['delete'] == 1:
-        
-                deletes = Person.objects.get(id=data['id'])
-                deletes.delete()
+                with transaction.atomic():
+                    Person.objects.get(id=data['id']).delete()
+                    ReliefItem.objects.get(receiver=data['id']).delete()
+                
                 return JsonResponse({'message': "Successfully Deleted"}, status=200)
             else:
                 return JsonResponse({'message': 'The person wasn\'t found in the database, Contact the administrator', "status": "false"}, status=500)
